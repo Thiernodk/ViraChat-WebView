@@ -1,0 +1,288 @@
+{
+  "1": {
+    "current": {
+      "title": "Journal de 13h",
+      "description": "Toute l'actualité nationale et internationale présentée par Jean-Pierre Pernaut.",
+      "startTime": "2026-06-26T13:00:00+02:00",
+      "endTime": "2026-06-26T13:50:00+02:00"
+    },
+    "next": {
+      "title": "Les Feux de l'Amour",
+      "description": "Série américaine. Les intrigues passionnelles des familles Newman et Abbott.",
+      "startTime": "2026-06-26T13:50:00+02:00",
+      "endTime": "2026-06-26T14:20:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "Journal de 13h",
+        "description": "Toute l'actualité nationale et internationale.",
+        "startTime": "2026-06-26T13:00:00+02:00",
+        "endTime": "2026-06-26T13:50:00+02:00"
+      },
+      {
+        "title": "Les Feux de l'Amour",
+        "description": "Série américaine.",
+        "startTime": "2026-06-26T13:50:00+02:00",
+        "endTime": "2026-06-26T14:20:00+02:00"
+      },
+      {
+        "title": "Amour, Gloire et Beauté",
+        "description": "Série américaine.",
+        "startTime": "2026-06-26T14:20:00+02:00",
+        "endTime": "2026-06-26T14:50:00+02:00"
+      }
+    ]
+  },
+  "2": {
+    "current": {
+      "title": "13h15, le dimanche",
+      "description": "Magazine d'investigation présenté par Laurent Delahousse.",
+      "startTime": "2026-06-26T13:15:00+02:00",
+      "endTime": "2026-06-26T14:15:00+02:00"
+    },
+    "next": {
+      "title": "Des racines et des ailes",
+      "description": "Magazine de voyage et de découverte.",
+      "startTime": "2026-06-26T14:15:00+02:00",
+      "endTime": "2026-06-26T15:10:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "13h15, le dimanche",
+        "description": "Magazine d'investigation.",
+        "startTime": "2026-06-26T13:15:00+02:00",
+        "endTime": "2026-06-26T14:15:00+02:00"
+      },
+      {
+        "title": "Des racines et des ailes",
+        "description": "Magazine de voyage.",
+        "startTime": "2026-06-26T14:15:00+02:00",
+        "endTime": "2026-06-26T15:10:00+02:00"
+      }
+    ]
+  },
+  "3": {
+    "current": {
+      "title": "12/13",
+      "description": "Journal régional de France 3.",
+      "startTime": "2026-06-26T12:00:00+02:00",
+      "endTime": "2026-06-26T12:30:00+02:00"
+    },
+    "next": {
+      "title": "C'est pas bête",
+      "description": "Magazine scientifique.",
+      "startTime": "2026-06-26T12:30:00+02:00",
+      "endTime": "2026-06-26T13:00:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "12/13",
+        "description": "Journal régional.",
+        "startTime": "2026-06-26T12:00:00+02:00",
+        "endTime": "2026-06-26T12:30:00+02:00"
+      },
+      {
+        "title": "C'est pas bête",
+        "description": "Magazine scientifique.",
+        "startTime": "2026-06-26T12:30:00+02:00",
+        "endTime": "2026-06-26T13:00:00+02:00"
+      }
+    ]
+  },
+  "4": {
+    "current": {
+      "title": "La Grande Magasine",
+      "description": "Talk-show présenté par Daphné Bürki.",
+      "startTime": "2026-06-26T12:10:00+02:00",
+      "endTime": "2026-06-26T13:10:00+02:00"
+    },
+    "next": {
+      "title": "Clique",
+      "description": "Magazine sur l'actualité du web.",
+      "startTime": "2026-06-26T13:10:00+02:00",
+      "endTime": "2026-06-26T13:40:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "Le Grand Match",
+        "description": "Talk-show.",
+        "startTime": "2026-06-26T12:10:00+02:00",
+        "endTime": "2026-06-26T13:10:00+02:00"
+      },
+      {
+        "title": "Clique",
+        "description": "Magazine web.",
+        "startTime": "2026-06-26T13:10:00+02:00",
+        "endTime": "2026-06-26T13:40:00+02:00"
+      }
+    ]
+  },
+  "5": {
+    "current": {
+      "title": "Movies Bollywood",
+      "description": "Journal de M6.",
+      "startTime": "2026-06-26T12:45:00+02:00",
+      "endTime": "2026-06-26T13:00:00+02:00"
+    },
+    "next": {
+      "title": "Capital",
+      "description": "Magazine économique.",
+      "startTime": "2026-06-26T13:00:00+02:00",
+      "endTime": "2026-06-26T14:00:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "Movies Bollywood",
+        "description": "Journal de M6.",
+        "startTime": "2026-06-26T12:45:00+02:00",
+        "endTime": "2026-06-26T13:00:00+02:00"
+      },
+      {
+        "title": "Capital",
+        "description": "Magazine économique.",
+        "startTime": "2026-06-26T13:00:00+02:00",
+        "endTime": "2026-06-26T14:00:00+02:00"
+      }
+    ]
+  },
+  "6": {
+    "current": {
+      "title": "ARTE Journal",
+      "description": "Journal d'information culturel.",
+      "startTime": "2026-06-26T12:00:00+02:00",
+      "endTime": "2026-06-26T12:15:00+02:00"
+    },
+    "next": {
+      "title": "28 minutes",
+      "description": "Magazine d'actualité européenne.",
+      "startTime": "2026-06-26T12:15:00+02:00",
+      "endTime": "2026-06-26T12:45:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "ARTE Journal",
+        "description": "Journal culturel.",
+        "startTime": "2026-06-26T12:00:00+02:00",
+        "endTime": "2026-06-26T12:15:00+02:00"
+      },
+      {
+        "title": "28 minutes",
+        "description": "Magazine européen.",
+        "startTime": "2026-06-26T12:15:00+02:00",
+        "endTime": "2026-06-26T12:45:00+02:00"
+      }
+    ]
+  },
+  "7": {
+    "current": {
+      "title": "BFM Midi",
+      "description": "Journal d'information continue.",
+      "startTime": "2026-06-26T12:00:00+02:00",
+      "endTime": "2026-06-26T13:00:00+02:00"
+    },
+    "next": {
+      "title": "Audrey Crespo-Mara",
+      "description": "Interview politique.",
+      "startTime": "2026-06-26T13:00:00+02:00",
+      "endTime": "2026-06-26T14:00:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "BFM Midi",
+        "description": "Journal continue.",
+        "startTime": "2026-06-26T12:00:00+02:00",
+        "endTime": "2026-06-26T13:00:00+02:00"
+      },
+      {
+        "title": "Audrey Crespo-Mara",
+        "description": "Interview politique.",
+        "startTime": "2026-06-26T13:00:00+02:00",
+        "endTime": "2026-06-26T14:00:00+02:00"
+      }
+    ]
+  },
+  "8": {
+    "current": {
+      "title": "Touche pas à mon poste",
+      "description": "Talk-show présenté par Cyril Hanouna.",
+      "startTime": "2026-06-26T12:00:00+02:00",
+      "endTime": "2026-06-26T14:00:00+02:00"
+    },
+    "next": {
+      "title": "C'est que de la TV",
+      "description": "Magazine sur les programmes télévisés.",
+      "startTime": "2026-06-26T14:00:00+02:00",
+      "endTime": "2026-06-26T15:00:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "Touche pas à mon poste",
+        "description": "Talk-show.",
+        "startTime": "2026-06-26T12:00:00+02:00",
+        "endTime": "2026-06-26T14:00:00+02:00"
+      },
+      {
+        "title": "C'est que de la TV",
+        "description": "Magazine TV.",
+        "startTime": "2026-06-26T14:00:00+02:00",
+        "endTime": "2026-06-26T15:00:00+02:00"
+      }
+    ]
+  },
+  "9": {
+    "current": {
+      "title": "W9 Music",
+      "description": "Clips musicaux et actualité de la musique.",
+      "startTime": "2026-06-26T12:00:00+02:00",
+      "endTime": "2026-06-26T14:00:00+02:00"
+    },
+    "next": {
+      "title": "Top 50",
+      "description": "Le classement des meilleurs titres.",
+      "startTime": "2026-06-26T14:00:00+02:00",
+      "endTime": "2026-06-26T15:00:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "W9 Music",
+        "description": "Clips musicaux.",
+        "startTime": "2026-06-26T12:00:00+02:00",
+        "endTime": "2026-06-26T14:00:00+02:00"
+      },
+      {
+        "title": "Top 50",
+        "description": "Classement musical.",
+        "startTime": "2026-06-26T14:00:00+02:00",
+        "endTime": "2026-06-26T15:00:00+02:00"
+      }
+    ]
+  },
+  "10": {
+    "current": {
+      "title": "Quotidien",
+      "description": "Magazine d'actualité présenté par Yann Barthès.",
+      "startTime": "2026-06-26T12:00:00+02:00",
+      "endTime": "2026-06-26T13:00:00+02:00"
+    },
+    "next": {
+      "title": "90' Enquêtes",
+      "description": "Magazine d'investigation.",
+      "startTime": "2026-06-26T13:00:00+02:00",
+      "endTime": "2026-06-26T14:30:00+02:00"
+    },
+    "timeline": [
+      {
+        "title": "Quotidien",
+        "description": "Magazine d'actualité.",
+        "startTime": "2026-06-26T12:00:00+02:00",
+        "endTime": "2026-06-26T13:00:00+02:00"
+      },
+      {
+        "title": "90' Enquêtes",
+        "description": "Magazine d'investigation.",
+        "startTime": "2026-06-26T13:00:00+02:00",
+        "endTime": "2026-06-26T14:30:00+02:00"
+      }
+    ]
+  }
+}

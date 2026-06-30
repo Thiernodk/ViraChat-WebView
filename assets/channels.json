@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "France 24",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/6/65/France_24_logo.svg",
+    "stream": "https://dash4.antik.sk/live/test_france24_france/playlist.m3u8"
+  },
+  {
+    "id": 2,
+    "name": "Al Jazeera",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/f/f2/Aljazeera_eng.svg",
+    "stream": "https://viamotionhsi.netplus.ch/live/eds/canalj/browser-HLS8/canalj.m3u8"
+  },
+  {
+    "id": 3,
+    "name": "NS TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg",
+    "stream": "http://192.168.55.253:8080/hls/test.m3u8"
+  }
+]

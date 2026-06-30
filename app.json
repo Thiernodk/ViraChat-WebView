@@ -1,29 +1,79 @@
 {
   "expo": {
-    "name": "LimonTVBox",
-    "slug": "LimonTVBox",
+    "owner": "thiernodk",
+    "name": "Limon+ TV Box",
+    "slug": "limonplustvbox",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "orientation": "landscape",
+    "icon": "./assets/favicon.png",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#000000",
+      "translucent": false
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "requireFullScreen": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSExceptionDomains": {
+            "upload.wikimedia.org": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            },
+            "viamotionhsi.netplus.ch": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            },
+            "live.france24.com": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            },
+            "nasatv-lh.akamaihd.net": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        }
+      }
     },
     "android": {
+      "package": "com.limonplustvbox.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#000000",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.CHANGE_WIFI_MULTICAST_STATE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "tv": {
+        "android:banner": "./assets/tv-banner.png"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-av",
+      "./plugins/withNetworkPermissions",
+      "./plugins/withAndroidTV"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "668041d7-7db6-47aa-a680-9983b49872fe"
+      }
     }
   }
 }

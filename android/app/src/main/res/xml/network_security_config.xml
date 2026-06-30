@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">192.168</domain>
+        <domain includeSubdomains="true">10.0</domain>
+        <domain includeSubdomains="true">172.16</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">upload.wikimedia.org</domain>
+        <domain includeSubdomains="true">viamotionhsi.netplus.ch</domain>
+        <domain includeSubdomains="true">live.france24.com</domain>
+        <domain includeSubdomains="true">nasatv-lh.akamaihd.net</domain>
+        <domain includeSubdomains="true">wurl.com</domain>
+        <domain includeSubdomains="true">kalura.com</domain>
+        <domain includeSubdomains="true">cflive.kalura.com</domain>
+    </domain-config>
+</network-security-config>
