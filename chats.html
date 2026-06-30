@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Opportun Messenger</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .chats-container {
+            min-height: 100vh;
+            background: var(--background-dark);
+            padding-bottom: 80px;
+        }
+
+        .chats-header {
+            background: var(--primary-dark);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-section {
+            padding: 1rem;
+            background: var(--background-medium);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: var(--background-light);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-tabs {
+            display: flex;
+            background: var(--background-medium);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+        }
+
+        .filter-tab {
+            flex: 1;
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .filter-tab.active {
+            color: var(--accent-green);
+            background: rgba(72, 187, 120, 0.1);
+        }
+
+        .filter-tab:hover {
+            background: var(--hover-bg);
+        }
+
+        .tab-badge {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            background: var(--accent-green);
+            color: var(--text-primary);
+            padding: 0.125rem 0.375rem;
+            border-radius: 1rem;
+            font-size: 0.625rem;
+            font-weight: 600;
+        }
+
+        .chats-list {
+            padding: 0.5rem;
+        }
+
+        .chat-item {
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .chat-item:hover {
+            background: var(--hover-bg);
+            transform: translateX(2px);
+        }
+
+        .chat-item.unread {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .chat-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.125rem;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.group {
+            background: var(--primary-light);
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--card-bg);
+            border-radius: 50%;
+        }
+
+        .status-indicator.online {
+            background: var(--accent-green);
+        }
+
+        .status-indicator.away {
+            background: #f6ad55;
+        }
+
+        .status-indicator.offline {
+            background: var(--text-muted);
+        }
+
+        .chat-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .chat-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .chat-message {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .message-type {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .unread-badge {
+            background: var(--accent-green);
+            color: var(--text-primary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .archive-section {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+
+        .archive-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .archive-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .archive-toggle {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .archived-chats {
+            display: none;
+        }
+
+        .archived-chats.show {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-text {
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-action {
+            background: var(--accent-green);
+            color: var(--text-primary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .empty-action:hover {
+            background: var(--accent-green-light);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 90px;
+            right: 1rem;
+            width: 56px;
+            height: 56px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.2s;
+            z-index: 50;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 428px) {
+            .chat-avatar {
+                width: 48px;
+                height: 48px;
+                font-size: 1rem;
+            }
+
+            .chat-message {
+                font-size: 0.8rem;
+            }
+
+            .filter-tabs {
+                padding: 0.5rem;
+            }
+
+            .filter-tab {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="chats-container">
+            <!-- Header -->
+            <header class="chats-header">
+                <h1 class="header-title">Messages</h1>
+                <div class="header-actions">
+                    <button class="icon-btn">🔍</button>
+                    <button class="icon-btn">📝</button>
+                </div>
+            </header>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Rechercher des conversations...">
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">
+                    Tout
+                    <span class="tab-badge">2</span>
+                </button>
+                <button class="filter-tab" data-filter="unread">
+                    Non lus
+                    <span class="tab-badge">2</span>
+                </button>
+                <button class="filter-tab" data-filter="groups">
+                    Groupes
+                </button>
+                <button class="filter-tab" data-filter="private">
+                    Privés
+                </button>
+            </div>
+
+            <!-- Chats List -->
+            <div class="chats-list">
+                <!-- Unread Chat -->
+                <div class="chat-item unread" data-type="private">
+                    <div class="chat-avatar">
+                        MC
+                        <div class="status-indicator online"></div>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header">
+                            <span class="chat-name">Marie Curie</span>
+                            <span class="chat-time">10:30</span>
+                        </div>
+                        <div class="chat-message">
+                            Le rapport est prêt pour review
+                        </div>
+                    </div>
+                    <div class="unread-badge">2</div>
+                </div>
+
+                <!-- Online Chat with Typing -->
+                <div class="chat-item unread" data-type="private">
+                    <div class="chat-avatar">
+                        SD
+                        <div class="status-indicator online"></div>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header">
+                            <span class="chat-name">Sophie Dubois</span>
+                            <span class="chat-time">maintenant</span>
+                        </div>
+                        <div class="chat-message">
+                            <div class="typing-indicator">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="unread-badge">1</div>
+                </div>
+
+                <!-- Group Chat -->
+                <div class="chat-item" data-type="groups">
+                    <div class="chat-avatar group">
+                        📊
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header">
+                            <span class="chat-name">Marketing Team</span>
+                            <span class="chat-time">09:15</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="message-type">Thomas:</span> Réunion à 14h confirmée
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Private Chat -->
+                <div class="chat-item" data-type="private">
+                    <div class="chat-avatar">
+                        TL
+                        <div class="status-indicator away"></div>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header">
+                            <span class="chat-name">Thomas Lambert</span>
+                            <span class="chat-time">Hier</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="message-type">📎</span> Document partagé
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Another Group Chat -->
+                <div class="chat-item" data-type="groups">
+                    <div class="chat-avatar group">
+                        💻
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header">
+                            <span class="chat-name">Dev Team</span>
+                            <span class="chat-time">Hier</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="message-type">Paul:</span> Merge request ready
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Private Chat -->
+                <div class="chat-item" data-type="private">
+                    <div class="chat-avatar">
+                        PL
+                        <div class="status-indicator offline"></div>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header">
+                            <span class="chat-name">Paul Lemoine</span>
+                            <span class="chat-time">Lun</span>
+                        </div>
+                        <div class="chat-message">
+                            Merci pour ton aide!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Private Chat -->
+                <div class="chat-item" data-type="private">
+                    <div class="chat-avatar">
+                        AJ
+                        <div class="status-indicator online"></div>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header">
+                            <span class="chat-name">Alice Johnson</span>
+                            <span class="chat-time">Lun</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="message-type">📞</span> Appel manqué
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group Chat -->
+                <div class="chat-item" data-type="groups">
+                    <div class="chat-avatar group">
+                        🎯
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-header">
+                            <span class="chat-name">Projet Alpha</span>
+                            <span class="chat-time">Dim</span>
+                        </div>
+                        <div class="chat-message">
+                            <span class="message-type">Marie:</span> Deadline déplacée à vendredi
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Archive Section -->
+            <div class="archive-section">
+                <div class="archive-header">
+                    <h3 class="archive-title">Conversations archivées</h3>
+                    <button class="archive-toggle" id="archiveToggle">Voir</button>
+                </div>
+                <div class="archived-chats" id="archivedChats">
+                    <div class="chat-item" data-type="private">
+                        <div class="chat-avatar">
+                            RB
+                            <div class="status-indicator offline"></div>
+                        </div>
+                        <div class="chat-content">
+                            <div class="chat-header">
+                                <span class="chat-name">Robert Bernard</span>
+                                <span class="chat-time">Oct</span>
+                            </div>
+                            <div class="chat-message">
+                                Bonne journée!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State (hidden by default) -->
+            <div class="empty-state" style="display: none;">
+                <div class="empty-icon">💬</div>
+                <h2 class="empty-title">Aucune conversation</h2>
+                <p class="empty-text">Commencez à discuter avec vos collègues</p>
+                <button class="empty-action">Nouvelle conversation</button>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab" id="fabButton">
+            ✏️
+        </button>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Accueil</span>
+            </a>
+            <a href="chats.html" class="nav-item active">
+                <span class="nav-icon">💬</span>
+                <span class="nav-label">Messages</span>
+            </a>
+            <a href="calls.html" class="nav-item">
+                <span class="nav-icon">📞</span>
+                <span class="nav-label">Appels</span>
+            </a>
+            <a href="meetings.html" class="nav-item">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">Réunions</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Profil</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.querySelector('.search-input');
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const chatItems = document.querySelectorAll('.chat-item');
+            const archiveToggle = document.getElementById('archiveToggle');
+            const archivedChats = document.getElementById('archivedChats');
+            const fabButton = document.getElementById('fabButton');
+
+            // Search functionality
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                chatItems.forEach(item => {
+                    const name = item.querySelector('.chat-name').textContent.toLowerCase();
+                    const message = item.querySelector('.chat-message').textContent.toLowerCase();
+                    
+                    if (name.includes(query) || message.includes(query)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            // Filter tabs
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+
+                    const filter = tab.dataset.filter;
+                    
+                    chatItems.forEach(item => {
+                        const type = item.dataset.type;
+                        
+                        switch(filter) {
+                            case 'all':
+                                item.style.display = 'flex';
+                                break;
+                            case 'unread':
+                                item.style.display = item.classList.contains('unread') ? 'flex' : 'none';
+                                break;
+                            case 'groups':
+                                item.style.display = type === 'groups' ? 'flex' : 'none';
+                                break;
+                            case 'private':
+                                item.style.display = type === 'private' ? 'flex' : 'none';
+                                break;
+                        }
+                    });
+                });
+            });
+
+            // Archive toggle
+            archiveToggle.addEventListener('click', () => {
+                const isVisible = archivedChats.classList.contains('show');
+                
+                if (isVisible) {
+                    archivedChats.classList.remove('show');
+                    archiveToggle.textContent = 'Voir';
+                } else {
+                    archivedChats.classList.add('show');
+                    archiveToggle.textContent = 'Masquer';
+                }
+            });
+
+            // Chat item clicks
+            chatItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Remove unread class and badge
+                    item.classList.remove('unread');
+                    const badge = item.querySelector('.unread-badge');
+                    if (badge) {
+                        badge.remove();
+                    }
+                    
+                    // Navigate to conversation
+                    window.location.href = 'conversation.html';
+                });
+            });
+
+            // FAB button
+            fabButton.addEventListener('click', () => {
+                // In a real app, this would open a new chat modal
+                alert('Nouvelle conversation');
+            });
+
+            // Header actions
+            document.querySelectorAll('.header-actions .icon-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    if (button.textContent === '🔍') {
+                        searchInput.focus();
+                    } else if (button.textContent === '📝') {
+                        alert('Nouveau message');
+                    }
+                });
+            });
+
+            // Simulate typing indicator
+            setTimeout(() => {
+                const typingIndicator = document.querySelector('.typing-indicator');
+                if (typingIndicator) {
+                    setTimeout(() => {
+                        const messageElement = typingIndicator.parentElement;
+                        messageElement.innerHTML = 'Salut, comment ça va?';
+                    }, 3000);
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

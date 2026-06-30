@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Paramètres - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .toggle-checkbox:checked + .toggle-slot {
+            background-color: #006d37;
+        }
+        .toggle-checkbox:checked + .toggle-slot .toggle-dot {
+            transform: translateX(1.25rem);
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-24">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-5 h-16 w-full">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high border border-outline-variant">
+                <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuD83zVOxjl3k7SqGLEVAg-kH4u_JFuW_8c9xn_Z1hX-eMgZbXwa-xjsrqyOk2H1-wkY_dr13-2nqI11JoRilLaxXHjOOFOpw7mC-Z2zAHDcmp7Wbqmh2s6sRUagJOn7LUTFun5lEwErIv6aoSrwhMpoH6F8g8eBtE4CwBW_PvwiRPKL65ZaKdcVNvfhic7T6m_kU9gnK78RAH6ta-syZziVFE1Gl9RaOmDa06Kv4etp5UgwEe0SVVd4Cxx6YIra-TVWW1F2VGDtNPM"/>
+            </div>
+            <h1 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tighter font-inter">Opportun</h1>
+        </div>
+        <button class="w-10 h-10 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-200" onclick="showSearch()">
+            <span class="material-symbols-outlined">search</span>
+        </button>
+    </header>
+
+    <main class="pt-24 px-5 max-w-2xl mx-auto">
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Paramètres</h2>
+            <p class="font-body-md text-on-surface-variant">Gérez vos préférences de compte et la sécurité.</p>
+        </div>
+
+        <!-- Profile Section Card -->
+        <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 p-md mb-lg flex items-center gap-md">
+            <div class="relative">
+                <img class="w-16 h-16 rounded-full object-cover" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuB-sm1vRmQ6hlVu4c_VrDz9TL7lsjCUaHMDoU0jsfm7uJtBRiVOUgb66DoeIGMUqyF1V3VQz27f8gtS3bxa7ni0nbXSaNM-BTZceqJmYobE5cnhUqSZ69g4Sfi3sc8uLl9gw1ONpFu4VhVtpOHUrg4JRMljvjQBdJmwnUK0z4q9Tgup73fH5PZf4tE4VJGlovJSxaj-kkQh4rIjJY3f45OSH4Kps-kaWVaxi0sa_Ya9ibZ7mL0yfuSl0i_3BKR6byFcieI_yJ_g2GU"/>
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-secondary border-2 border-surface-container-lowest rounded-full"></div>
+            </div>
+            <div>
+                <h3 class="font-headline-sm text-headline-sm text-primary">Jean-Marc Lefebvre</h3>
+                <p class="font-body-md text-on-surface-variant">Directeur de Stratégie</p>
+            </div>
+        </div>
+
+        <!-- Settings List -->
+        <div class="space-y-sm">
+            <!-- Theme -->
+            <div class="flex items-center justify-between p-md bg-surface-container-lowest rounded-xl border border-outline-variant/20 hover:border-outline-variant transition-colors group">
+                <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                    </div>
+                    <div>
+                        <p class="font-body-lg text-body-lg font-semibold">Mode Sombre</p>
+                        <p class="text-label-sm text-on-surface-variant">Activer le thème visuel sombre</p>
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input class="sr-only peer toggle-checkbox" type="checkbox" id="darkModeToggle"/>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 toggle-slot transition-colors">
+                        <div class="absolute top-[2px] left-[2px] bg-white border border-slate-300 rounded-full h-5 w-5 transition-all toggle-dot"></div>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Notifications -->
+            <div class="flex items-center justify-between p-md bg-surface-container-lowest rounded-xl border border-outline-variant/20 hover:border-outline-variant transition-colors group">
+                <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">notifications_active</span>
+                    </div>
+                    <div>
+                        <p class="font-body-lg text-body-lg font-semibold">Notifications</p>
+                        <p class="text-label-sm text-on-surface-variant">Alertes de réunions et messages</p>
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input checked="" class="sr-only peer toggle-checkbox" type="checkbox" id="notificationsToggle"/>
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 toggle-slot transition-colors">
+                        <div class="absolute top-[2px] left-[2px] bg-white border border-slate-300 rounded-full h-5 w-5 transition-all toggle-dot"></div>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Privacy -->
+            <button class="w-full flex items-center justify-between p-md bg-surface-container-lowest rounded-xl border border-outline-variant/20 hover:border-outline-variant transition-colors group" onclick="openPrivacy()">
+                <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">shield_person</span>
+                    </div>
+                    <div>
+                        <p class="font-body-lg text-body-lg font-semibold">Confidentialité</p>
+                        <p class="text-label-sm text-on-surface-variant">Gérer la visibilité des données</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-outline">chevron_right</span>
+            </button>
+
+            <!-- Language -->
+            <button class="w-full flex items-center justify-between p-md bg-surface-container-lowest rounded-xl border border-outline-variant/20 hover:border-outline-variant transition-colors group" onclick="openLanguage()">
+                <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">language</span>
+                    </div>
+                    <div>
+                        <p class="font-body-lg text-body-lg font-semibold">Langue</p>
+                        <p class="text-label-sm text-on-surface-variant">Français (France)</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-outline">expand_more</span>
+            </button>
+
+            <!-- Security -->
+            <div class="w-full flex items-center justify-between p-md bg-surface-container-lowest rounded-xl border border-outline-variant/20 hover:border-outline-variant transition-colors group">
+                <div class="flex items-center gap-md">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">security</span>
+                    </div>
+                    <div>
+                        <p class="font-body-lg text-body-lg font-semibold">Sécurité</p>
+                        <p class="text-label-sm text-on-surface-variant">Authentification à deux facteurs</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1 bg-secondary/15 px-2 py-0.5 rounded-full">
+                    <span class="w-1.5 h-1.5 bg-secondary rounded-full"></span>
+                    <span class="text-label-sm text-on-secondary-container">Activée</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Out Section -->
+        <div class="mt-xl pb-12">
+            <button class="w-full h-[48px] flex items-center justify-center gap-2 border-2 border-primary text-primary rounded-lg font-body-lg font-bold hover:bg-primary/5 transition-all active:scale-95 duration-150" onclick="logout()">
+                <span class="material-symbols-outlined">logout</span>
+                Se déconnecter
+            </button>
+            <p class="mt-4 text-center text-label-sm text-outline-variant">Version 2.4.0 (2026 Edition)</p>
+        </div>
+    </main>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_24px_rgba(10,37,64,0.06)] flex justify-around items-center px-2 py-3 pb-safe-offset-2">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="home-tailwind.html">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Accueil</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="chats-tailwind.html">
+            <span class="material-symbols-outlined">chat_bubble</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Messages</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="calls-tailwind.html">
+            <span class="material-symbols-outlined">call</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Appels</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="meetings-tailwind.html">
+            <span class="material-symbols-outlined">videocam</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Réunions</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl px-4 py-1.5 active:scale-90 duration-150 ease-out" href="profile-tailwind.html">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Profil</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const html = document.documentElement;
+            
+            darkModeToggle.addEventListener('change', () => {
+                if (darkModeToggle.checked) {
+                    html.classList.add('dark');
+                } else {
+                    html.classList.remove('darkMode');
+                }
+            });
+
+            // Check system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                darkModeToggle.checked = true;
+                html.classList.add('dark');
+            }
+
+            // Notifications toggle
+            const notificationsToggle = document.getElementById('notificationsToggle');
+            notificationsToggle.addEventListener('change', () => {
+                if (notificationsToggle.checked) {
+                    console.log('Notifications activées');
+                } else {
+                    console.log('Notifications désactivées');
+                }
+            });
+
+            // Privacy handler
+            function openPrivacy() {
+                const privacyOptions = [
+                    'Qui peut voir mon profil?',
+                    'Qui peut me contacter?',
+                    'Visibilité du statut',
+                    'Supprimer les données personnelles',
+                    'Historique des activités',
+                    'Télécharger mes données'
+                ];
+
+                const selected = prompt(`Options de confidentialité:\n${privacyOptions.map((opt, i) => `${i + 1}. ${opt}`).join('\n')}`);
+                
+                if (selected && selected >= '1' && selected <= privacyOptions.length) {
+                    const selectedOption = privacyOptions[parseInt(selected) - 1];
+                    console.log(`Option confidentialité: ${selectedOption}`);
+                    alert(`Fonctionnalité "${selectedOption}" - En développement`);
+                }
+            }
+
+            // Language handler
+            function openLanguage() {
+                const languages = [
+                    'Français (France)',
+                    'English (US)',
+                    'Español (Espagne)',
+                    'Deutsch (Allemagne)',
+                    'Italian (Italie)',
+                    'Português (Portugal)',
+                    'Nederlands (Pays-Bas)',
+                    '日本語 (Japonais)',
+                    '한국어 (Coréen)',
+                    '中文 (Chinois)'
+                ];
+
+                const selected = prompt(`Langue:\n${languages.map((lang, i) => `${i + 1}. ${lang}`).join('\n')}`);
+                
+                if (selected && selected >= '1' && selected <= languages.length) {
+                    const selectedLanguage = languages[parseInt(selected) - 1];
+                    console.log(`Langue changée vers: ${selectedLanguage}`);
+                    alert(`Langue changée vers ${selectedLanguage}`);
+                }
+            }
+
+            // Security handler
+            const securitySection = document.querySelector('.bg-surface-container-lowest.rounded-xl.border.border-outline-variant\\/20');
+            const securityStatus = securitySection.querySelector('.bg-secondary\\/15');
+            
+            // Simulate 2FA status
+            const is2FAEnabled = true; // In a real app, this would check actual 2FA status
+            
+            if (is2FAEnabled) {
+                securityStatus.innerHTML = `
+                    <span class="w-1.5 h-1.5 bg-secondary rounded-full"></span>
+                    <span class="text-label-sm text-on-secondary-container">Activée</span>
+                `;
+            }
+
+            // Logout handler
+            function logout() {
+                if (confirm('Êtes-vous sûr de vouloir vous déconnecter?')) {
+                    console.log('Déconnexion en cours...');
+                    
+                    // Simulate logout process
+                    const logoutOverlay = document.createElement('div');
+                    logoutOverlay.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                    logoutOverlay.innerHTML = `
+                        <div class="bg-white rounded-xl p-8 max-w-sm mx-auto text-center">
+                            <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="material-symbols-outlined text-red-600 text-2xl" style="font-variation-settings: 'FILL' 1;">logout</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-slate-900 mb-2">Déconnexion...</h3>
+                            <p class="text-slate-600">Veuillez patienter</p>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(logoutOverlay);
+                    
+                    // Simulate logout delay
+                    setTimeout(() => {
+                        logoutOverlay.remove();
+                        console.log('Déconnecté avec succès!');
+                        window.location.href = 'login-tailwind.html';
+                    }, 2000);
+                }
+            }
+
+            // Search handler
+            function showSearch() {
+                const searchQuery = prompt('Rechercher dans les paramètres:');
+                if (searchQuery) {
+                    console.log(`Recherche: ${searchQuery}`);
+                    // Implement settings search functionality
+                }
+            }
+
+            // Add hover effects to action cards
+            const actionCards = document.querySelectorAll('.bg-surface-container-lowest.rounded-xl');
+            actionCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '';
+                });
+            });
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add ripple effect styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .ripple {
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s ease-out;
+                    pointer-events: none;
+                }
+                
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'd':
+                    case 'D':
+                        document.getElementById('darkModeToggle').click();
+                        e.preventDefault();
+                        break;
+                    case 'n':
+                    case 'N':
+                        document.getElementById('notificationsToggle').click();
+                        e.preventDefault();
+                        break;
+                    'p':
+                    case 'P':
+                        openPrivacy();
+                        e.preventDefault();
+                        break;
+                    'l':
+                    case 'L':
+                        openLanguage();
+                        e.preventDefault();
+                        break;
+                    's':
+                    case 'S':
+                        showSearch();
+                        e.preventDefault();
+                        break;
+                    'o':
+                    case 'O':
+                        logout();
+                        e.preventDefault();
+                        break;
+                }
+            });
+
+            // Simulate real-time settings updates
+            setInterval(() => {
+                // Simulate notification count changes
+                const notificationCount = document.querySelector('.text-label-sm.text-on-secondary-container');
+                if (notificationCount) {
+                    const currentCount = parseInt(notificationCount.textContent);
+                    const newCount = Math.max(0, Math.min(99, currentCount + Math.floor(Math.random() * 5) - 2));
+                    notificationCount.textContent = newCount;
+                }
+            }, 20000); // Update every 20 seconds
+
+            // Add haptic feedback for mobile
+            function vibrate(pattern) {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(pattern);
+                }
+            }
+
+            // Vibrate on button press (mobile)
+            if ('vibrate' in navigator) {
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        vibrate(50);
+                    });
+                }
+            });
+
+            // Save preferences to localStorage
+            function savePreferences() {
+                const preferences = {
+                    darkMode: document.getElementById('darkModeToggle').checked,
+                    notifications: document.getElementById('notificationsToggle').checked,
+                    language: 'Français (France)'
+                };
+                localStorage.setItem('opportun_preferences', JSON.stringify(preferences));
+            }
+
+            // Load preferences from localStorage
+            function loadPreferences() {
+                const saved = localStorage.getItem('opportun_preferences');
+                if (saved) {
+                    const preferences = JSON.parse(saved);
+                    
+                    // Apply dark mode preference
+                    document.getElementById('darkModeToggle').checked = preferences.darkMode;
+                    if (preferences.darkMode) {
+                        document.documentElement.classList.add('dark');
+                    }
+                    
+                    // Apply notifications preference
+                    document.getElementById('notificationsToggle').checked = preferences.notifications;
+                    
+                    // Apply language preference
+                    console.log('Préférences chargées:', preferences);
+                }
+            }
+
+            // Initialize preferences
+            loadPreferences();
+            
+            // Save preferences on change
+            document.getElementById('darkModeToggle').addEventListener('change', savePreferences);
+            document.getElementById('notificationsToggle').addEventListener('change', savePreferences);
+
+            // Add smooth transitions
+            const root = document.documentElement;
+            root.style.transition = 'color-scheme 0.3s ease';
+        });
+    </script>
+</body>
+</html>

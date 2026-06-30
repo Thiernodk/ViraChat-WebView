@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Notifications - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { 
+            display: none; 
+        }
+        .hide-scrollbar { 
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-5 h-16 w-full">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high">
+                <img alt="Photo de profil" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuAUyxqlJT4UUccWUM8z-CK25kSIP0V0mCJS_78tXhHY4cgjCyKMGNTiyJa4FrwgP5zkkoOqui2jlb-hJaDQHYrhlMWkhg6sMDg4jFNaa6GbRenrVUBPpcLjktyLMtH9zNborpAkHNynEDAmq-KlTbtUM86mhxks4yGgq81_0yL9Jxcs703-AkR3-W0ch3nwAmLSSf6nRVQ_D0ARc0c8WnEpFzm6WWJdogDUQ_Tj0_1Pdd62lNti15y0KgJqiVMWct89YZZSn23dv4I"/>
+            </div>
+            <h1 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tighter">Opportun</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 transition-transform duration-200 text-slate-500" onclick="showSearch()">
+                <span class="material-symbols-outlined" data-icon="search">search</span>
+            </button>
+            <button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 transition-transform duration-200 text-slate-500" onclick="showMoreOptions()">
+                <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="pt-20 px-margin max-w-2xl mx-auto">
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-lg">
+            <h2 class="font-headline-md text-headline-md text-on-surface">Notifications</h2>
+            <button class="text-secondary font-label-md hover:underline decoration-2 underline-offset-4" onclick="markAllRead()">Tout marquer comme lu</button>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="flex gap-sm mb-lg overflow-x-auto hide-scrollbar pb-2">
+            <span class="px-md py-xs bg-primary-container text-on-primary-container rounded-full font-label-md whitespace-nowrap cursor-pointer" onclick="filterNotifications('all')">Toutes</span>
+            <span class="px-md py-xs bg-surface-container-low text-on-surface-variant border border-outline-variant/30 rounded-full font-label-md whitespace-nowrap cursor-pointer hover:bg-surface-container transition-colors" onclick="filterNotifications('messages')">Messages</span>
+            <span class="px-md py-xs bg-surface-container-low text-on-surface-variant border border-outline-variant/30 rounded-full font-label-md whitespace-nowrap cursor-pointer hover:bg-surface-container transition-colors" onclick="filterNotifications('meetings')">Réunions</span>
+            <span class="px-md py-xs bg-surface-container-low text-on-surface-variant border border-outline-variant/30 rounded-full font-label-md whitespace-nowrap cursor-pointer hover:bg-surface-container transition-colors" onclick="filterNotifications('admin')">Admin</span>
+        </div>
+
+        <!-- Section: Unread -->
+        <section class="mb-xl">
+            <div class="flex items-center gap-2 mb-md">
+                <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Non lu</h3>
+                <div class="h-1.5 w-1.5 rounded-full bg-secondary"></div>
+            </div>
+            <div class="space-y-sm" id="unreadNotifications">
+                <!-- Notification Card: Meeting Invite -->
+                <div class="group relative bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-md shadow-sm transition-all hover:border-secondary/30 notification-item" data-type="meetings">
+                    <div class="flex gap-md">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary-container/20 flex items-center justify-center text-on-secondary-container">
+                            <span class="material-symbols-outlined text-[28px]" data-icon="videocam">videocam</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-xs">
+                                <span class="font-headline-sm text-label-md text-on-surface">Invitation Réunion</span>
+                                <span class="font-label-sm text-on-surface-variant">il y a 2 min</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface-variant mb-sm">
+                                <span class="font-semibold text-on-surface">Sarah Jenkins</span> vous a invité à <span class="font-semibold text-on-surface">Revue Roadmap Stratégique Q3</span>.
+                            </p>
+                            <div class="flex gap-sm">
+                                <button class="px-md py-1.5 bg-secondary text-on-secondary rounded-lg font-label-md active:scale-95 transition-transform" onclick="acceptMeeting()">Accepter</button>
+                                <button class="px-md py-1.5 border border-outline text-on-surface rounded-lg font-label-md hover:bg-surface-container active:scale-95 transition-transform" onclick="declineMeeting()">Décliner</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Card: New Message -->
+                <div class="group relative bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-md shadow-sm transition-all hover:border-secondary/30 notification-item" data-type="messages">
+                    <div class="flex gap-md">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-secondary">
+                            <img alt="Photo Sarah" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuALMZp8CSUAtj8OabZsJ4SIMAsTOYe9kE-0nSYja8tSG5Bs7IvJbJOlHKK80ow1giM9eokyknP8fHLq-lXuElkRuxzvKHEhXPsHas_J8N7k-yFBSo2y91Yyp0TJLSVKmn-3dIBBV-a3OH8AxvOnkyMj5Wv49quACLOVUKyIh6cpL9VnS87Vi2I50odiLb6KKcRH_MweGRhZrqKiNVOPXgj5jyvCFRWK0wWv3_zjP4HdhUnAXvveW-faH2EYH_WblxrmsAfbJbQAdvU"/>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-xs">
+                                <span class="font-headline-sm text-label-md text-on-surface">Sarah Jenkins</span>
+                                <span class="font-label-sm text-on-surface-variant">il y a 15 min</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">
+                                "Les projections finales pour l'expansion Opportun semblent prometteuses. Pouvez-vous jeter un œil rapide au PDF joint avant notre réunion?"
+                            </p>
+                            <div class="mt-sm flex items-center gap-2">
+                                <div class="px-sm py-0.5 bg-secondary/10 rounded-full flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px] text-secondary" data-icon="description">description</span>
+                                    <span class="text-[11px] font-semibold text-secondary">opportun_q3.pdf</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-2 h-2 rounded-full bg-secondary mt-2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Earlier -->
+        <section>
+            <div class="mb-md">
+                <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Précédent</h3>
+            </div>
+            <div class="space-y-sm" id="earlierNotifications">
+                <!-- Notification Card: Admin -->
+                <div class="group relative bg-surface-container-low border border-transparent rounded-xl p-md transition-all hover:bg-surface-container notification-item" data-type="admin">
+                    <div class="flex gap-md">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-fixed">
+                            <span class="material-symbols-outlined text-[28px]" data-icon="admin_panel_settings">admin_panel_settings</span>
+                        </div>
+                        <div class="flex-1 opacity-80">
+                            <div class="flex justify-between items-start mb-xs">
+                                <span class="font-headline-sm text-label-md text-on-surface">Mise à jour Système</span>
+                                <span class="font-label-sm text-on-surface-variant">il y a 4h</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface-variant">
+                                Les protocoles de sécurité ont été mis à jour avec succès vers v4.2. Tous les canaux chiffrés utilisent maintenant le nouveau moteur Opportun-Shield.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Card: Missed Call -->
+                <div class="group relative bg-surface-container-low border border-transparent rounded-xl p-md transition-all hover:bg-surface-container notification-item" data-type="calls">
+                    <div class="flex gap-md">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-error-container/20 flex items-center justify-center text-error">
+                            <span class="material-symbols-outlined text-[28px]" data-icon="phone_missed">phone_missed</span>
+                        </div>
+                        <div class="flex-1 opacity-80">
+                            <div class="flex justify-between items-start mb-xs">
+                                <span class="font-headline-sm text-label-md text-on-surface">Appel Manqué • David Chen</span>
+                                <span class="font-label-sm text-on-surface-variant">il y a 6h</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface-variant">
+                                David Chen a essayé de vous contacter concernant l'allocation budgétaire.
+                            </p>
+                            <div class="mt-sm">
+                                <button class="px-md py-1.5 bg-surface-container-lowest text-primary border border-outline-variant/50 rounded-lg font-label-md active:scale-95 transition-transform flex items-center gap-2" onclick="callBack()">
+                                    <span class="material-symbols-outlined text-sm" data-icon="call">call</span>
+                                    Rappeler
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Card: Calendar -->
+                <div class="group relative bg-surface-container-low border border-transparent rounded-xl p-md transition-all hover:bg-surface-container notification-item" data-type="meetings">
+                    <div class="flex gap-md">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-on-surface">
+                            <span class="material-symbols-outlined text-[28px]" data-icon="calendar_today">calendar_today</span>
+                        </div>
+                        <div class="flex-1 opacity-80">
+                            <div class="flex justify-between items-start mb-xs">
+                                <span class="font-headline-sm text-label-md text-on-surface">Récapitulatif Quotidien</span>
+                                <span class="font-label-sm text-on-surface-variant">Hier</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface-variant">
+                                Vous avez 4 réunions prévues aujourd'hui à partir de 9h00 avec le Comité Exécutif.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Empty State Anchor (Optional reference) -->
+        <div class="py-xl text-center" id="emptyState" style="display: none;">
+            <span class="material-symbols-outlined text-slate-200 text-6xl block mb-md" data-icon="notifications_none">notifications_none</span>
+            <p class="text-on-surface-variant font-body-md italic">Aucune notification pour aujourd'hui</p>
+        </div>
+    </main>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe-offset-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_24px_rgba(10,37,64,0.06)]">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="home-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Accueil</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="chats-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Messages</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl px-4 py-1.5 transition-all active:scale-90 duration-150 ease-out" href="notifications-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Inbox</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="meetings-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Réunions</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="profile-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="person">person</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Profil</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentFilter = 'all';
+            let notificationCount = 2; // Unread notifications count
+
+            // Filter notifications
+            function filterNotifications(type) {
+                currentFilter = type;
+                
+                // Update chip styles
+                const chips = document.querySelectorAll('.px-md.py-xs');
+                chips.forEach(chip => {
+                    chip.classList.remove('bg-primary-container', 'text-on-primary-container');
+                    chip.classList.add('bg-surface-container-low', 'text-on-surface-variant', 'border', 'border-outline-variant/30');
+                });
+                
+                // Activate selected chip
+                event.target.classList.remove('bg-surface-container-low', 'text-on-surface-variant', 'border', 'border-outline-variant/30');
+                event.target.classList.add('bg-primary-container', 'text-on-primary-container');
+                
+                // Filter notification items
+                const notificationItems = document.querySelectorAll('.notification-item');
+                notificationItems.forEach(item => {
+                    const itemType = item.dataset.type;
+                    
+                    if (type === 'all') {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = itemType === type ? 'block' : 'none';
+                    }
+                });
+                
+                console.log(`Filtrage: ${type}`);
+            }
+
+            // Mark all as read
+            function markAllRead() {
+                const unreadSection = document.getElementById('unreadNotifications');
+                const earlierSection = document.getElementById('earlierNotifications');
+                const unreadNotifications = unreadSection.querySelectorAll('.notification-item');
+                
+                // Move unread notifications to earlier section
+                unreadNotifications.forEach(notification => {
+                    notification.style.opacity = '0.8';
+                    notification.classList.remove('bg-surface-container-lowest', 'border', 'border-outline-variant/20', 'shadow-sm');
+                    notification.classList.add('bg-surface-container', 'border-transparent');
+                    
+                    // Remove unread indicator
+                    const indicator = notification.querySelector('.w-2.h-2.rounded-full.bg-secondary');
+                    if (indicator) {
+                        indicator.remove();
+                    }
+                    
+                    earlierSection.appendChild(notification);
+                });
+                
+                // Update unread section
+                unreadSection.innerHTML = '<p class="text-on-surface-variant font-body-md italic">Aucune notification non lue</p>';
+                
+                // Update notification count
+                notificationCount = 0;
+                updateNotificationBadge();
+                
+                console.log('Toutes les notifications marquées comme lues');
+            }
+
+            // Accept meeting
+            function acceptMeeting() {
+                const notification = event.target.closest('.notification-item');
+                const meetingName = 'Revue Roadmap Stratégique Q3';
+                
+                // Create success overlay
+                const successOverlay = document.createElement('div');
+                successOverlay.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                successOverlay.innerHTML = `
+                    <div class="bg-white rounded-xl p-8 max-w-sm mx-auto text-center">
+                        <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="material-symbols-outlined text-green-600 text-2xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">Réunion Acceptée!</h3>
+                        <p class="text-slate-600">Vous avez accepté l'invitation à "${meetingName}"</p>
+                    </div>
+                `;
+                
+                document.body.appendChild(successOverlay);
+                
+                setTimeout(() => {
+                    successOverlay.remove();
+                    // Remove the notification
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        notification.remove();
+                        notificationCount--;
+                        updateNotificationBadge();
+                    }, 300);
+                }, 2000);
+                
+                console.log(`Réunion acceptée: ${meetingName}`);
+            }
+
+            // Decline meeting
+            function declineMeeting() {
+                const notification = event.target.closest('.notification-item');
+                const meetingName = 'Revue Roadmap Stratégique Q3';
+                
+                if (confirm(`Êtes-vous sûr de vouloir décliner l'invitation à "${meetingName}"?`)) {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        notification.remove();
+                        notificationCount--;
+                        updateNotificationBadge();
+                    }, 300);
+                    
+                    console.log(`Réunion déclinée: ${meetingName}`);
+                }
+            }
+
+            // Call back
+            function callBack() {
+                const contactName = 'David Chen';
+                console.log(`Appel de ${contactName}...`);
+                
+                // Navigate to calls page
+                window.location.href = 'calls-tailwind.html';
+            }
+
+            // Search functionality
+            function showSearch() {
+                const query = prompt('Rechercher des notifications:');
+                if (query) {
+                    const notificationItems = document.querySelectorAll('.notification-item');
+                    let foundCount = 0;
+                    
+                    notificationItems.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(query.toLowerCase())) {
+                            item.style.display = 'block';
+                            foundCount++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    console.log(`Recherche: "${query}" - ${foundCount} résultats trouvés`);
+                }
+            }
+
+            // More options
+            function showMoreOptions() {
+                const options = [
+                    'Marquer tout comme lu',
+                    'Supprimer toutes les notifications',
+                    'Paramètres de notification',
+                    'Voir les notifications archivées',
+                    'Exporter les notifications'
+                ];
+                
+                const selected = prompt(`Options:\n${options.map((opt, i) => `${i + 1}. ${opt}`).join('\n')}`);
+                
+                if (selected && selected >= '1' && selected <= options.length) {
+                    const selectedOption = options[parseInt(selected) - 1];
+                    console.log(`Option sélectionnée: ${selectedOption}`);
+                    
+                    if (selectedOption === 'Marquer tout comme lu') {
+                        markAllRead();
+                    } else if (selectedOption === 'Supprimer toutes les notifications') {
+                        if (confirm('Êtes-vous sûr de vouloir supprimer toutes les notifications?')) {
+                            document.querySelectorAll('.notification-item').forEach(item => {
+                                item.style.opacity = '0';
+                                setTimeout(() => item.remove(), 300);
+                            });
+                            notificationCount = 0;
+                            updateNotificationBadge();
+                        }
+                    } else {
+                        alert(`Fonctionnalité "${selectedOption}" - En développement`);
+                    }
+                }
+            }
+
+            // Update notification badge
+            function updateNotificationBadge() {
+                const badge = document.querySelector('.data-icon="notifications"]')?.parentElement;
+                if (badge && notificationCount > 0) {
+                    // Add badge indicator
+                    const existingBadge = badge.querySelector('.notification-badge');
+                    if (existingBadge) {
+                        existingBadge.textContent = notificationCount;
+                    } else {
+                        const badgeElement = document.createElement('span');
+                        badgeElement.className = 'notification-badge absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center';
+                        badgeElement.textContent = notificationCount;
+                        badge.style.position = 'relative';
+                        badge.appendChild(badgeElement);
+                    }
+                }
+            }
+
+            // Simulate new notifications
+            function simulateNewNotification() {
+                const notificationTypes = [
+                    {
+                        type: 'messages',
+                        title: 'Nouveau Message',
+                        content: 'Vous avez reçu un nouveau message de votre équipe.',
+                        icon: 'chat_bubble'
+                    },
+                    {
+                        type: 'meetings',
+                        title: 'Rappel Réunion',
+                        content: 'Votre réunion commence dans 15 minutes.',
+                        icon: 'videocam'
+                    },
+                    {
+                        type: 'admin',
+                        title: 'Mise à jour',
+                        content: 'Une nouvelle mise à jour système est disponible.',
+                        icon: 'system_update'
+                    }
+                ];
+                
+                const randomNotification = notificationTypes[Math.floor(Math.random() * notificationTypes.length)];
+                
+                const newNotification = document.createElement('div');
+                newNotification.className = 'group relative bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-md shadow-sm transition-all hover:border-secondary/30 notification-item fade-in';
+                newNotification.dataset.type = randomNotification.type;
+                newNotification.innerHTML = `
+                    <div class="flex gap-md">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary-container/20 flex items-center justify-center text-on-secondary-container">
+                            <span class="material-symbols-outlined text-[28px]" data-icon="${randomNotification.icon}">${randomNotification.icon}</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-xs">
+                                <span class="font-headline-sm text-label-md text-on-surface">${randomNotification.title}</span>
+                                <span class="font-label-sm text-on-surface-variant">à l\'instant</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface-variant">${randomNotification.content}</p>
+                        </div>
+                        <div class="w-2 h-2 rounded-full bg-secondary mt-2"></div>
+                    </div>
+                `;
+                
+                const unreadSection = document.getElementById('unreadNotifications');
+                const emptyMessage = unreadSection.querySelector('p');
+                if (emptyMessage) {
+                    emptyMessage.remove();
+                }
+                
+                unreadSection.insertBefore(newNotification, unreadSection.firstChild);
+                notificationCount++;
+                updateNotificationBadge();
+                
+                // Add fade-in animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    .fade-in {
+                        animation: fadeIn 0.3s ease-out;
+                    }
+                    @keyframes fadeIn {
+                        from { opacity: 0; transform: translateY(-10px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Add hover effects to notification cards
+            const notificationCards = document.querySelectorAll('.notification-item');
+            notificationCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '';
+                });
+            });
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add ripple effect styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .ripple {
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s ease-out;
+                    pointer-events: none;
+                }
+                
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'a':
+                    case 'A':
+                        markAllRead();
+                        e.preventDefault();
+                        break;
+                    case '1':
+                        filterNotifications('all');
+                        e.preventDefault();
+                        break;
+                    case '2':
+                        filterNotifications('messages');
+                        e.preventDefault();
+                        break;
+                    case '3':
+                        filterNotifications('meetings');
+                        e.preventDefault();
+                        break;
+                    case '4':
+                        filterNotifications('admin');
+                        e.preventDefault();
+                        break;
+                    case '/':
+                        showSearch();
+                        e.preventDefault();
+                        break;
+                }
+            });
+
+            // Simulate new notifications every 30 seconds
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% chance
+                    simulateNewNotification();
+                }
+            }, 30000);
+
+            // Initialize notification badge
+            updateNotificationBadge();
+
+            // Add haptic feedback for mobile
+            function vibrate(pattern) {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(pattern);
+                }
+            }
+
+            // Vibrate on button press (mobile)
+            if ('vibrate' in navigator) {
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        vibrate(50);
+                    });
+                });
+            }
+
+            // Check for notification permissions
+            if ('Notification' in window && Notification.permission === 'default') {
+                // Request permission for browser notifications
+                Notification.requestPermission();
+            }
+
+            // Browser notification simulation
+            function showBrowserNotification(title, body, icon) {
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification(title, {
+                        body: body,
+                        icon: icon || 'https://lh3.googleusercontent.com/IDA-public/AB6AXuAUyxqlJT4UUccWUM8z-CK25kSIP0V0mCJS_78tXhHY4cgjCyKMGNTiyJa4FrwgP5zkkoOqui2jlb-hJaDQHYrhlMWkhg6sMDg4jFNaa6GbRenrVUBPpcLjktyLMtH9zNborpAkHNynEDAmq-KlTbtUM86mhxks4yGgq81_0yL9Jxcs703-AkR3-W0ch3nwAmLSSf6nRVQ_D0ARc0c8WnEpFzm6WWJdogDUQ_Tj0_1Pdd62lNti15y0KgJqiVMWct89YZZSn23dv4I'
+                    });
+                }
+            }
+
+            // Show browser notification for new messages
+            setTimeout(() => {
+                showBrowserNotification(
+                    'Nouveau Message - Opportun',
+                    'Sarah Jenkins vous a envoyé un message',
+                    'https://lh3.googleusercontent.com/IDA-public/AB6AXuALMZp8CSUAtj8OabZsJ4SIMAsTOYe9kE-0nSYja8tSG5Bs7IvJbJOlHKK80ow1giM9eokyknP8fHLq-lXuElkRuxzvKHEhXPsHas_J8N7k-yFBSo2y91Yyp0TJLSVKmn-3dIBBV-a3OH8AxvOnkyMj5Wv49quACLOVUKyIh6cpL9VnS87Vi2I50odiLb6KKcRH_MweGRhZrqKiNVOPXgj5jyvCFRWK0wWv3_zjP4HdhUnAXvveW-faH2EYH_WblxrmsAfbJbQAdvU'
+                );
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

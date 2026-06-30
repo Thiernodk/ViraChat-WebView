@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Opportun Messenger</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-green);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin: 0 auto 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .login-form {
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--background-light);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .password-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox {
+            width: 1.25rem;
+            height: 1.25rem;
+            accent-color: var(--accent-green);
+        }
+
+        .checkbox-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .forgot-link {
+            font-size: 0.875rem;
+            color: var(--accent-green);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .forgot-link:hover {
+            color: var(--accent-green-light);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent-green);
+            border: none;
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-button:hover {
+            background: var(--accent-green-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider-text {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .social-login {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-button {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--background-light);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-button:hover {
+            background: var(--hover-bg);
+            transform: translateY(-1px);
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .signup-link a {
+            color: var(--accent-green);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            color: var(--accent-green-light);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: #f87171;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">OM</div>
+                <h1 class="login-title">Bienvenue</h1>
+                <p class="login-subtitle">Connectez-vous à Opportun Messenger</p>
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="error-message" id="errorMessage">
+                    Email ou mot de passe incorrect
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email professionnel</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        class="form-input" 
+                        placeholder="nom@entreprise.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Mot de passe</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="••••••••"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <div class="remember-forgot">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="remember" class="checkbox">
+                        <label for="remember" class="checkbox-label">Se souvenir</label>
+                    </div>
+                    <a href="#" class="forgot-link">Mot de passe oublié?</a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Se connecter
+                </button>
+
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">Ou</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <div class="social-login">
+                    <button type="button" class="social-button">
+                        <span>🔷</span>
+                        Microsoft
+                    </button>
+                    <button type="button" class="social-button">
+                        <span>🌐</span>
+                        Google
+                    </button>
+                </div>
+
+                <div class="signup-link">
+                    Pas encore de compte? <a href="#">Créer un compte</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordToggle = document.getElementById('passwordToggle');
+            const passwordInput = document.getElementById('password');
+            const loginForm = document.getElementById('loginForm');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Toggle password visibility
+            passwordToggle.addEventListener('click', () => {
+                const type = passwordInput.type === 'password' ? 'text' : 'password';
+                passwordInput.type = type;
+                passwordToggle.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
+            });
+
+            // Handle form submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                // Simple validation
+                if (email && password) {
+                    // Show loading state
+                    const submitButton = loginForm.querySelector('.login-button');
+                    submitButton.textContent = 'Connexion...';
+                    submitButton.disabled = true;
+
+                    // Simulate authentication
+                    setTimeout(() => {
+                        // Redirect to OTP page
+                        window.location.href = 'otp.html';
+                    }, 1500);
+                } else {
+                    errorMessage.classList.add('show');
+                    setTimeout(() => {
+                        errorMessage.classList.remove('show');
+                    }, 3000);
+                }
+            });
+
+            // Handle forgot password
+            document.querySelector('.forgot-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Fonctionnalité de réinitialisation du mot de passe');
+            });
+
+            // Handle social login
+            document.querySelectorAll('.social-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    alert('Connexion via ' + button.textContent.trim());
+                });
+            });
+        });
+    </script>
+</body>
+</html>

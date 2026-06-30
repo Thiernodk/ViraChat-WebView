@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation - Opportun Messenger</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .conversation-container {
+            min-height: 100vh;
+            background: var(--background-dark);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .conversation-header {
+            background: var(--primary-dark);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--primary-dark);
+            border-radius: 50%;
+        }
+
+        .status-indicator.online {
+            background: var(--accent-green);
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .contact-status {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .messages-area {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(72, 187, 120, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(44, 82, 130, 0.05) 0%, transparent 50%);
+        }
+
+        .date-separator {
+            text-align: center;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .date-line {
+            background: var(--border-color);
+            height: 1px;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
+        .date-text {
+            background: var(--background-dark);
+            color: var(--text-muted);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .message {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 85%;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.received {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+            align-self: flex-end;
+        }
+
+        .message-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .message-bubble {
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .message.sent .message-bubble {
+            background: var(--accent-green);
+            color: var(--text-primary);
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .message.received .message-bubble {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .message-text {
+            line-height: 1.4;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 0 0.5rem;
+        }
+
+        .message.sent .message-time {
+            text-align: right;
+        }
+
+        .message-status {
+            display: inline-flex;
+            gap: 2px;
+            margin-left: 0.25rem;
+        }
+
+        .checkmark {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .checkmark.read {
+            color: var(--accent-green);
+        }
+
+        .message-image {
+            max-width: 200px;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+
+        .message-file {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .message-file:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .file-size {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            align-self: flex-start;
+            padding: 0.5rem 1rem;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            padding: 0.75rem 1rem;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .input-area {
+            background: var(--background-medium);
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.75rem;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            background: var(--background-light);
+            border-radius: 1.5rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .message-input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            resize: none;
+            max-height: 100px;
+            line-height: 1.4;
+        }
+
+        .message-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .input-button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            transition: color 0.2s;
+            font-size: 1.25rem;
+        }
+
+        .input-button:hover {
+            color: var(--text-primary);
+        }
+
+        .send-button {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-green);
+            border: none;
+            border-radius: 50%;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .send-button:hover {
+            background: var(--accent-green-light);
+            transform: scale(1.05);
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .send-button:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .voice-recorder {
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--background-light);
+            border-radius: 1.5rem;
+        }
+
+        .voice-recorder.active {
+            display: flex;
+        }
+
+        .recording-dot {
+            width: 12px;
+            height: 12px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .recording-time {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .recording-cancel {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .scroll-to-bottom {
+            position: absolute;
+            bottom: 80px;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+            z-index: 50;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .scroll-to-bottom.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .scroll-to-bottom:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 428px) {
+            .message {
+                max-width: 90%;
+            }
+
+            .message-bubble {
+                padding: 0.625rem 0.875rem;
+            }
+
+            .message-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="conversation-container">
+            <!-- Header -->
+            <header class="conversation-header">
+                <div class="header-left">
+                    <button class="back-button" onclick="window.location.href='chats.html'">←</button>
+                    <div class="contact-info">
+                        <div class="contact-avatar">
+                            MC
+                            <div class="status-indicator online"></div>
+                        </div>
+                        <div class="contact-details">
+                            <span class="contact-name">Marie Curie</span>
+                            <span class="contact-status">En ligne</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn">📞</button>
+                    <button class="icon-btn">📹</button>
+                    <button class="icon-btn">ℹ️</button>
+                </div>
+            </header>
+
+            <!-- Messages Area -->
+            <div class="messages-area" id="messagesArea">
+                <!-- Date Separator -->
+                <div class="date-separator">
+                    <div class="date-line"></div>
+                    <span class="date-text">Aujourd'hui</span>
+                </div>
+
+                <!-- Received Message -->
+                <div class="message received">
+                    <div class="message-avatar">MC</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">Salut Jean! Comment ça va?</div>
+                        </div>
+                        <div class="message-time">09:15</div>
+                    </div>
+                </div>
+
+                <!-- Sent Message -->
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">Bonjour Marie! Ça va bien, merci. Et toi?</div>
+                        </div>
+                        <div class="message-time">
+                            09:18
+                            <span class="message-status">
+                                <span class="checkmark read">✓✓</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Received Message -->
+                <div class="message received">
+                    <div class="message-avatar">MC</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">Super! J'ai une question concernant le rapport Q4. Peux-tu jeter un œil quand tu auras un moment?</div>
+                        </div>
+                        <div class="message-time">09:20</div>
+                    </div>
+                </div>
+
+                <!-- Sent Message -->
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">Bien sûr! Je suis dessus maintenant.</div>
+                        </div>
+                        <div class="message-time">
+                            09:25
+                            <span class="message-status">
+                                <span class="checkmark read">✓✓</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Received Message with File -->
+                <div class="message received">
+                    <div class="message-avatar">MC</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">Parfait! Voici le document:</div>
+                            <div class="message-file">
+                                <span class="file-icon">📄</span>
+                                <div class="file-info">
+                                    <div class="file-name">Rapport_Q4_2026.pdf</div>
+                                    <div class="file-size">2.4 MB</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-time">09:30</div>
+                    </div>
+                </div>
+
+                <!-- Sent Message -->
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">Reçu! Je le regarde tout de suite.</div>
+                        </div>
+                        <div class="message-time">
+                            09:32
+                            <span class="message-status">
+                                <span class="checkmark read">✓✓</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Received Message -->
+                <div class="message received">
+                    <div class="message-avatar">MC</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">Merci! Dis-moi si tu as des questions.</div>
+                        </div>
+                        <div class="message-time">09:35</div>
+                    </div>
+                </div>
+
+                <!-- Sent Message with Image -->
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">J'ai repéré une petite erreur dans les chiffres du département marketing.</div>
+                            <img src="data:image/svg+xml,%3Csvg width='200' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect fill='%23374151' width='200' height='100'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='14' fill='%23fff' text-anchor='middle' dy='.3em'%3EChart Preview%3C/text%3E%3C/svg%3E" alt="Chart" class="message-image">
+                        </div>
+                        <div class="message-time">
+                            10:15
+                            <span class="message-status">
+                                <span class="checkmark read">✓✓</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Received Message -->
+                <div class="message received">
+                    <div class="message-avatar">MC</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <div class="message-text">Ah oui, bien vu! Je vais corriger ça. Merci pour ta vigilance! 🙏</div>
+                        </div>
+                        <div class="message-time">10:20</div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="message-avatar">MC</div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll to Bottom Button -->
+            <button class="scroll-to-bottom" id="scrollToBottom">
+                ↓
+            </button>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            class="message-input" 
+                            id="messageInput"
+                            placeholder="Tapez un message..."
+                            rows="1"
+                        ></textarea>
+                        <div class="input-actions">
+                            <button class="input-button">📎</button>
+                            <button class="input-button">📷</button>
+                            <button class="input-button">😊</button>
+                        </div>
+                    </div>
+                    <button class="send-button" id="sendButton">
+                        ➤
+                    </button>
+                </div>
+
+                <!-- Voice Recorder (hidden by default) -->
+                <div class="voice-recorder" id="voiceRecorder">
+                    <div class="recording-dot"></div>
+                    <span class="recording-time" id="recordingTime">00:00</span>
+                    <button class="recording-cancel">✕</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const messagesArea = document.getElementById('messagesArea');
+            const typingIndicator = document.getElementById('typingIndicator');
+            const scrollToBottom = document.getElementById('scrollToBottom');
+            const voiceRecorder = document.getElementById('voiceRecorder');
+            const recordingTime = document.getElementById('recordingTime');
+
+            let isTyping = false;
+            let typingTimeout;
+            let recordingInterval;
+            let recordingSeconds = 0;
+
+            // Auto-resize textarea
+            messageInput.addEventListener('input', () => {
+                messageInput.style.height = 'auto';
+                messageInput.style.height = Math.min(messageInput.scrollHeight, 100) + 'px';
+                
+                // Enable/disable send button
+                sendButton.disabled = !messageInput.value.trim();
+                
+                // Simulate typing indicator
+                if (!isTyping && messageInput.value.trim()) {
+                    isTyping = true;
+                    showTypingIndicator();
+                }
+                
+                clearTimeout(typingTimeout);
+                typingTimeout = setTimeout(() => {
+                    isTyping = false;
+                    hideTypingIndicator();
+                }, 1000);
+            });
+
+            // Send message
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                if (!message) return;
+
+                // Create message element
+                const messageElement = createMessageElement(message, 'sent');
+                messagesArea.appendChild(messageElement);
+
+                // Clear input
+                messageInput.value = '';
+                messageInput.style.height = 'auto';
+                sendButton.disabled = true;
+
+                // Scroll to bottom
+                scrollToBottomMessage();
+
+                // Simulate response
+                setTimeout(() => {
+                    const responseElement = createMessageElement(
+                        'Le rapport est prêt pour review', 
+                        'received'
+                    );
+                    messagesArea.appendChild(responseElement);
+                    scrollToBottomMessage();
+                }, 2000);
+            }
+
+            // Create message element
+            function createMessageElement(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                
+                if (type === 'sent') {
+                    messageDiv.innerHTML = `
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <div class="message-text">${text}</div>
+                            </div>
+                            <div class="message-time">
+                                ${getCurrentTime()}
+                                <span class="message-status">
+                                    <span class="checkmark">✓</span>
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="message-avatar">MC</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <div class="message-text">${text}</div>
+                            </div>
+                            <div class="message-time">${getCurrentTime()}</div>
+                        </div>
+                    `;
+                }
+                
+                return messageDiv;
+            }
+
+            // Get current time
+            function getCurrentTime() {
+                const now = new Date();
+                return now.getHours().toString().padStart(2, '0') + ':' + 
+                       now.getMinutes().toString().padStart(2, '0');
+            }
+
+            // Scroll to bottom
+            function scrollToBottomMessage() {
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+                checkScrollButton();
+            }
+
+            // Check if scroll button should be visible
+            function checkScrollButton() {
+                const isAtBottom = messagesArea.scrollHeight - messagesArea.scrollTop <= messagesArea.clientHeight + 50;
+                scrollToBottom.classList.toggle('visible', !isAtBottom);
+            }
+
+            // Show/hide typing indicator
+            function showTypingIndicator() {
+                typingIndicator.style.display = 'flex';
+                scrollToBottomMessage();
+            }
+
+            function hideTypingIndicator() {
+                typingIndicator.style.display = 'none';
+            }
+
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+
+            messageInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Scroll button
+            scrollToBottom.addEventListener('click', scrollToBottomMessage);
+
+            // Check scroll position
+            messagesArea.addEventListener('scroll', checkScrollButton);
+
+            // Input buttons
+            document.querySelectorAll('.input-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const action = button.textContent;
+                    if (action === '📎') {
+                        alert('Attacher un fichier');
+                    } else if (action === '📷') {
+                        alert('Prendre une photo');
+                    } else if (action === '😊') {
+                        alert('Choisir un emoji');
+                    }
+                });
+            });
+
+            // Header actions
+            document.querySelectorAll('.header-actions .icon-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const action = button.textContent;
+                    if (action === '📞') {
+                        window.location.href = 'audio-call.html';
+                    } else if (action === '📹') {
+                        window.location.href = 'video-call.html';
+                    } else if (action === 'ℹ️') {
+                        alert('Informations du contact');
+                    }
+                });
+            });
+
+            // File click
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.message-file')) {
+                    alert('Télécharger le fichier');
+                }
+                if (e.target.closest('.message-image')) {
+                    alert('Afficher l\'image en plein écran');
+                }
+            });
+
+            // Hide typing indicator after 3 seconds
+            setTimeout(() => {
+                hideTypingIndicator();
+            }, 3000);
+
+            // Initial scroll check
+            checkScrollButton();
+        });
+    </script>
+</body>
+</html>

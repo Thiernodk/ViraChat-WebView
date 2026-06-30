@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Profil - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pb-safe-offset-2 {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen pb-32">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-slate-50/90 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-5 h-16 w-full">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full overflow-hidden border border-slate-200">
+                <img alt="Photo de profil" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuBX9L2xrJltsZrqfuLujxah12_qwidUiQfr_PJDDgR6CAueAVhdcCe1VjkZpYbqGi4daA1B4iC6NQSVSlxR_gI3c5TYz5CU4wXeVkpSKEqWwHE9kCfU537ERk9RtkjhruCxr2rYLTDudRXTJlgheQIhrD08tU5k5259_zT56zD43IIKdEHoBRDbhhz-0Sk8yaqjbNn9k_WxNnPkEEx2gJutgnHufUD6mYSLy3GgMXX1DgOiY0ssnlEe3cu4VVsMM_XPoULyr6TJgsQ"/>
+            </div>
+            <span class="text-xl font-extrabold text-slate-900 tracking-tighter font-headline-sm">Opportun</span>
+        </div>
+        <button class="p-2 rounded-full hover:bg-slate-200/50 transition-colors active:scale-95 duration-200 text-slate-500" onclick="showSearch()">
+            <span class="material-symbols-outlined" data-icon="search">search</span>
+        </button>
+    </header>
+
+    <main class="pt-24 px-margin max-w-2xl mx-auto space-y-lg">
+        <!-- Profile Header Section -->
+        <section class="flex flex-col items-center text-center space-y-md">
+            <div class="relative">
+                <div class="w-32 h-32 rounded-full p-1 ring-4 ring-secondary-fixed shadow-xl bg-white overflow-hidden">
+                    <img alt="Photo de profil utilisateur" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuAXP8j0LCnautIW0bVXNOLRRqEGlCzyIxyHrl4t2HLKAtojY7JrTbfP-v25uhpcx-QjiymAYhZGmRDOrntY_I-L-sLc5kYWsc__LGJqAcukmaSd5g506B_CXDutgNxyV4WAGRdFTmr0_bLl8PU6GySZ-TW6c00xk07lNFJ4Z-d5IOQT139vNQZu36GUFQ6HwVoufxl01js9Ra13W9grvHxENYKnhrgGadAjxWLdWz8GpFAorY1oR-7wdFkcddl0zbpTrbUOaejWiHE"/>
+                </div>
+                <div class="absolute bottom-1 right-1 w-8 h-8 bg-on-secondary-container border-4 border-white rounded-full flex items-center justify-center">
+                    <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
+                </div>
+            </div>
+            <div class="space-y-xs">
+                <h1 class="font-headline-lg text-primary">Alexandre Dupont</h1>
+                <p class="font-body-lg text-on-primary-container">Marketing • Lead Brand Strategist</p>
+            </div>
+            
+            <!-- Presence Selector -->
+            <div class="inline-flex p-1 bg-surface-container-low rounded-xl border border-outline-variant">
+                <button class="px-4 py-2 rounded-lg bg-white shadow-sm flex items-center gap-2 text-on-secondary-container font-label-md transition-all active:scale-95" id="statusActive" onclick="setStatus('active')">
+                    <span class="w-2 h-2 rounded-full bg-on-secondary-container"></span>
+                    Actif
+                </button>
+                <button class="px-4 py-2 rounded-lg flex items-center gap-2 text-on-surface-variant font-label-md hover:bg-surface-variant/50 transition-all" id="statusBusy" onclick="setStatus('busy')">
+                    <span class="w-2 h-2 rounded-full bg-error"></span>
+                    Occupé
+                </button>
+                <button class="px-4 py-2 rounded-lg flex items-center gap-2 text-on-surface-variant font-label-md hover:bg-surface-variant/50 transition-all" id="statusAway" onclick="setStatus('away')">
+                    <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                    Absent
+                </button>
+            </div>
+        </section>
+
+        <!-- Stats Grid -->
+        <section class="grid grid-cols-2 gap-gutter">
+            <div class="bg-white p-md rounded-xl border border-slate-200 flex flex-col items-center justify-center text-center space-y-xs">
+                <span class="text-on-secondary-container font-headline-md">24</span>
+                <span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Réunions Terminées</span>
+            </div>
+            <div class="bg-white p-md rounded-xl border border-slate-200 flex flex-col items-center justify-center text-center space-y-xs">
+                <span class="text-on-secondary-container font-headline-md">98%</span>
+                <span class="text-label-sm text-on-surface-variant uppercase tracking-wider">Score de Concentration</span>
+            </div>
+        </section>
+
+        <!-- Action Cards -->
+        <section class="space-y-md">
+            <h2 class="font-label-md text-on-surface-variant px-1">PARAMÈTRES DU COMPTE</h2>
+            
+            <!-- Personal Info Card -->
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden divide-y divide-slate-100 shadow-sm">
+                <button class="w-full flex items-center justify-between p-md hover:bg-slate-50 transition-colors group" onclick="openPersonalInfo()">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined" data-icon="person">person</span>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-body-md font-semibold text-primary">Informations Personnelles</p>
+                            <p class="font-label-sm text-on-surface-variant">Mettre à jour vos détails et avatar</p>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400 group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+                </button>
+                <button class="w-full flex items-center justify-between p-md hover:bg-slate-50 transition-colors group" onclick="openSecurity()">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined" data-icon="shield">shield</span>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-body-md font-semibold text-primary">Sécurité & Confidentialité</p>
+                            <p class="font-label-sm text-on-surface-variant">Mot de passe, 2FA, et sessions</p>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400 group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+                </button>
+                <button class="w-full flex items-center justify-between p-md hover:bg-slate-50 transition-colors group" onclick="openStats()">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-body-md font-semibold text-primary">Statistiques d'Activité</p>
+                            <p class="font-label-sm text-on-surface-variant">Métriques de performance et historique</p>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-400 group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+                </button>
+            </div>
+
+            <!-- Utility Section -->
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden divide-y divide-slate-100 shadow-sm">
+                <button class="w-full flex items-center justify-between p-md hover:bg-slate-50 transition-colors group" onclick="logout()">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-error">
+                            <span class="material-symbols-outlined" data-icon="logout">logout</span>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-body-md font-semibold text-error">Déconnexion</p>
+                            <p class="font-label-sm text-on-surface-variant">Se déconnecter en toute sécurité</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 bg-white/95 backdrop-blur-xl border-t border-slate-100 flex justify-around items-center px-2 py-3 pb-safe-offset-2 shadow-[0_-4px_24px_rgba(10,37,64,0.06)]">
+        <a class="flex flex-col items-center justify-center text-slate-400 px-4 py-1.5 hover:text-emerald-500 transition-all active:scale-90 duration-150 ease-out" href="home-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Accueil</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 px-4 py-1.5 hover:text-emerald-500 transition-all active:scale-90 duration-150 ease-out" href="chats-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Messages</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 px-4 py-1.5 hover:text-emerald-500 transition-all active:scale-90 duration-150 ease-out" href="calls-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="call">call</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Appels</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 px-4 py-1.5 hover:text-emerald-500 transition-all active:scale-90 duration-150 ease-out" href="meetings-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Réunions</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-emerald-600 bg-emerald-50 rounded-2xl px-4 py-1.5 active:scale-90 duration-150 ease-out" href="profile-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Profil</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentStatus = 'active';
+
+            // Status management
+            function setStatus(status) {
+                // Reset all status buttons
+                const buttons = {
+                    'active': document.getElementById('statusActive'),
+                    'busy': document.getElementById('statusBusy'),
+                    'away': document.getElementById('statusAway')
+                };
+
+                Object.values(buttons).forEach(button => {
+                    button.classList.remove('bg-white', 'shadow-sm', 'text-on-secondary-container', 'font-label-md');
+                    button.classList.add('text-on-surface-variant', 'font-label-md', 'hover:bg-surface-variant/50', 'transition-all');
+                });
+
+                // Activate selected status
+                const selectedButton = buttons[status];
+                selectedButton.classList.remove('text-on-surface-variant', 'font-label-md', 'hover:bg-surface-variant/50', 'transition-all');
+                selectedButton.classList.add('bg-white', 'shadow-sm', 'text-on-secondary-container', 'font-label-md');
+
+                currentStatus = status;
+                console.log(`Statut changé vers: ${status}`);
+                
+                // Update profile badge
+                updateProfileBadge(status);
+            }
+
+            function updateProfileBadge(status) {
+                const badge = document.querySelector('.bg-on-secondary-container');
+                const innerDot = badge.querySelector('.bg-white');
+                
+                const colors = {
+                    'active': 'bg-secondary',
+                    'busy': 'bg-error',
+                    'away': 'bg-slate-400'
+                };
+
+                innerDot.classList.remove('bg-secondary', 'bg-error', 'bg-slate-400');
+                innerDot.classList.add(colors[status]);
+            }
+
+            // Action handlers
+            function openPersonalInfo() {
+                const personalInfo = {
+                    name: 'Alexandre Dupont',
+                    email: 'alexandre.dupont@opportun.com',
+                    phone: '+33 6 12 34 56 78',
+                    department: 'Marketing',
+                    position: 'Lead Brand Strategist',
+                    location: 'Paris, France'
+                };
+
+                const info = `
+Informations Personnelles
+=================
+Nom: ${personalInfo.name}
+Email: ${personalInfo.email}
+Téléphone: ${personalInfo.phone}
+Département: ${personalInfo.department}
+Poste: ${personalInfo.position}
+Localisation: ${personalInfo.location}
+
+Options:
+1. Modifier le nom
+2. Modifier l'email
+3. Modifier le téléphone
+4. Modifier le département
+5. Modifier le poste
+6. Modifier la localisation
+7. Changer l'avatar
+                `;
+
+                const choice = prompt(info + '\n\nEntrez le numéro de l\'option que vous souhaitez modifier:');
+                
+                if (choice && choice >= '1' && choice <= '7') {
+                    const options = ['nom', 'email', 'téléphone', 'département', 'poste', 'localisation', 'avatar'];
+                    const selectedOption = options[parseInt(choice) - 1];
+                    
+                    const newValue = prompt(`Nouveau ${selectedOption}:`);
+                    if (newValue) {
+                        console.log(`${selectedOption} modifié: ${newValue}`);
+                        alert(`${selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1)} modifié avec succès!`);
+                    }
+                }
+            }
+
+            function openSecurity() {
+                const securityOptions = [
+                    'Changer le mot de passe',
+                    'Activer l\'authentification à deux facteurs',
+                    'Voir les appareils connectés',
+                    'Gérer les sessions actives',
+                    'Configurer les notifications de sécurité',
+                    'Historique des connexions'
+                ];
+
+                const choice = prompt(`Options de Sécurité:\n${securityOptions.map((opt, i) => `${i + 1}. ${opt}`).join('\n')}`);
+                
+                if (choice && choice >= '1' && choice <= securityOptions.length) {
+                    const selectedOption = securityOptions[parseInt(choice) - 1];
+                    console.log(`Option sécurité: ${selectedOption}`);
+                    
+                    if (choice === '1') {
+                        const currentPassword = '********';
+                        const newPassword = prompt(`Mot de passe actuel: ${currentPassword}\nNouveau mot de passe:`);
+                        if (newPassword && newPassword.length >= 8) {
+                            alert('Mot de passe changé avec succès!');
+                        } else {
+                            alert('Le mot de passe doit contenir au moins 8 caractères.');
+                        }
+                    } else if (choice === '2') {
+                        alert('2FA activé! Veuillez scanner le code QR depuis votre application mobile.');
+                    } else {
+                        alert(`${selectedOption} - Fonctionnalité en développement`);
+                    }
+                }
+            }
+
+            function openStats() {
+                const stats = {
+                    meetingsCompleted: 24,
+                    focusScore: 98,
+                    messagesSent: 1247,
+                    filesShared: 89,
+                    callsMade: 156,
+                    screenTime: '342h',
+                    lastLogin: new Date().toLocaleString('fr-FR'),
+                    productivityScore: 92
+                };
+
+                const statsInfo = `
+Statistiques d'Activité
+=================
+Réunions terminées: ${stats.meetingsCompleted}
+Score de concentration: ${stats.focusScore}%
+Messages envoyés: ${stats.messagesSent}
+Fichiers partagés: ${stats.filesShared}
+Appels effectués: ${stats.callsMade}
+Temps d'écran: ${stats.screenTime}
+Dernière connexion: ${stats.lastLogin}
+Score de productivité: ${stats.productivityScore}%
+                `;
+
+                alert(statsInfo);
+            }
+
+            function logout() {
+                if (confirm('Êtes-vous sûr de vouloir vous déconnecter?')) {
+                    console.log('Déconnexion en cours...');
+                    
+                    // Simulate logout process
+                    const logoutOverlay = document.createElement('div');
+                    logoutOverlay.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+                    logoutOverlay.innerHTML = `
+                        <div class="bg-white rounded-xl p-8 max-w-sm mx-auto text-center">
+                            <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="material-symbols-outlined text-red-600 text-2xl" style="font-variation-settings: 'FILL' 1;">logout</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-slate-900 mb-2">Déconnexion...</h3>
+                            <p class="text-slate-600">Veuillez patienter</p>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(logoutOverlay);
+                    
+                    // Simulate logout delay
+                    setTimeout(() => {
+                        logoutOverlay.remove();
+                        alert('Déconnecté avec succès! Redirection vers la page de connexion...');
+                        window.location.href = 'login-tailwind.html';
+                    }, 2000);
+                }
+            }
+
+            function showSearch() {
+                const searchQuery = prompt('Rechercher dans le profil:');
+                if (searchQuery) {
+                    console.log(`Recherche: ${searchQuery}`);
+                    // Implement profile search functionality
+                }
+            }
+
+            // Add hover effects to action cards
+            const actionCards = document.querySelectorAll('.bg-white.rounded-xl');
+            actionCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '';
+                });
+            });
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add ripple effect styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .ripple {
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s ease-out;
+                    pointer-events: none;
+                }
+                
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case '1':
+                        setStatus('active');
+                        break;
+                    case '2':
+                        setStatus('busy');
+                        break;
+                    case '3':
+                        setStatus('away');
+                        break;
+                    case 'p':
+                    case 'P':
+                        openPersonalInfo();
+                        break;
+                    case 's':
+                    case 'S':
+                        openSecurity();
+                        break;
+                    case 't':
+                    case 'T':
+                        openStats();
+                        break;
+                    case 'l':
+                    case 'L':
+                        logout();
+                        break;
+                    case '/':
+                        showSearch();
+                        e.preventDefault();
+                        break;
+                }
+            });
+
+            // Simulate real-time status updates
+            setInterval(() => {
+                const statuses = ['active', 'busy', 'away'];
+                const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                
+                if (Math.random() > 0.8) { // 20% chance to change status
+                    setStatus(randomStatus);
+                }
+            }, 30000); // Check every 30 seconds
+
+            // Simulate stats updates
+            setInterval(() => {
+                // Update meetings completed
+                const meetingsElement = document.querySelector('.font-headline-md.text-on-secondary-container');
+                if (meetingsElement) {
+                    const currentCount = parseInt(meetingsElement.textContent);
+                    const newCount = Math.max(1, currentCount + Math.floor(Math.random() * 3));
+                    meetingsElement.textContent = newCount;
+                }
+
+                // Update focus score
+                const focusElement = meetingsElement.nextElementSibling;
+                if (focusElement) {
+                    const currentScore = parseInt(focusElement.textContent);
+                    const newScore = Math.max(85, Math.min(100, currentScore + Math.floor(Math.random() * 5) - 2));
+                    focusElement.textContent = newScore + '%';
+                }
+            }, 45000); // Update every 45 seconds
+
+            // Add haptic feedback for mobile
+            function vibrate(pattern) {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(pattern);
+                }
+            }
+
+            // Vibrate on button press (mobile)
+            if ('vibrate' in navigator) {
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        vibrate(50);
+                    });
+                }
+            }
+
+            // Initialize with current status
+            setStatus(currentStatus);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Appel Audio - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#215cfdff",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-call-gradient {
+            background: radial-gradient(circle at top, #0a2540 0%, #000f22 100%);
+        }
+        .pulse-ring {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.1); }
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background antialiased overflow-hidden">
+    <!-- Immersive Call Screen -->
+    <main class="relative h-screen w-full bg-call-gradient flex flex-col items-center justify-between py-12 px-margin text-white">
+        <!-- Top Status Bar (Contextual) -->
+        <div class="w-full flex justify-between items-center z-10">
+            <button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm active:scale-95 transition-transform" onclick="minimizeCall()">
+                <span class="material-symbols-outlined text-white" data-icon="expand_more">expand_more</span>
+            </button>
+            <div class="flex items-center gap-2 px-3 py-1 bg-secondary-fixed/20 rounded-full border border-secondary-fixed/30">
+                <div class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></div>
+                <span class="font-label-sm text-secondary-fixed uppercase tracking-widest">Chiffrement de bout en bout</span>
+            </div>
+            <button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm active:scale-95 transition-transform" onclick="showCallOptions()">
+                <span class="material-symbols-outlined text-white" data-icon="more_vert">more_vert</span>
+            </button>
+        </div>
+
+        <!-- Center Identity Content -->
+        <div class="flex flex-col items-center gap-lg relative">
+            <!-- Animated Background Rings -->
+            <div class="absolute inset-0 flex items-center justify-center -z-10">
+                <div class="pulse-ring w-64 h-64 border border-secondary-fixed rounded-full"></div>
+                <div class="pulse-ring w-80 h-80 border border-white/10 rounded-full absolute" style="animation-delay: 1s;"></div>
+            </div>
+
+            <!-- Profile Avatar -->
+            <div class="relative">
+                <div class="w-40 h-40 rounded-full border-4 border-secondary-fixed/50 p-1">
+                    <img alt="Photo de profil" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBd4uPFHcdEVGdO85ZgkWC_WUVHrIMtJMfYT3YHEq9w_6EbUdb5eFmDBVg1BzA_AL5nwh7QBWDsJPqXMZuKCFxS6ZnGr5r-H0-b0XXCk9VRAj7k2XxiVqocMl_SmscnDV3BjZm1utuFLdbGwhipkkiaSdllCiTccKzw9nF_d61VGBRcgE7Qgu9O-X6rarSagdB71WoUNIKNQGc6D9lvwAFQGogQyx6zBMVVhI4P01wTZk2MDKEYOpSFkRratl7PKqDtsntmqx0R0hI"/>
+                </div>
+                <div class="absolute bottom-1 right-1 w-8 h-8 bg-secondary-fixed rounded-full flex items-center justify-center border-4 border-primary">
+                    <span class="material-symbols-outlined text-on-secondary-fixed text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+                </div>
+            </div>
+
+            <!-- Contact Name & Timer -->
+            <div class="text-center">
+                <h1 class="font-headline-lg text-white mb-xs">Marcus Sterling</h1>
+                <p class="font-label-md text-on-primary-container uppercase tracking-tighter">Directeur Général, Opportun</p>
+                <div class="mt-md font-headline-sm text-secondary-fixed tracking-[0.2em]" id="callTimer">
+                    08:42
+                </div>
+            </div>
+        </div>
+
+        <!-- Call Controls Bottom Section -->
+        <div class="w-full max-w-sm flex flex-col gap-xl">
+            <!-- Secondary Actions Grid -->
+            <div class="grid grid-cols-3 gap-lg px-md">
+                <div class="flex flex-col items-center gap-sm">
+                    <button class="w-16 h-16 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center active:bg-white/20 transition-all" id="muteButton" onclick="toggleMute()">
+                        <span class="material-symbols-outlined text-white text-[28px]" data-icon="mic_off">mic_off</span>
+                    </button>
+                    <span class="font-label-sm text-on-primary-container">Muet</span>
+                </div>
+                <div class="flex flex-col items-center gap-sm">
+                    <button class="w-16 h-16 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center active:bg-white/20 transition-all" onclick="showKeypad()">
+                        <span class="material-symbols-outlined text-white text-[28px]" data-icon="grid_view">grid_view</span>
+                    </button>
+                    <span class="font-label-sm text-on-primary-container">Clavier</span>
+                </div>
+                <div class="flex flex-col items-center gap-sm">
+                    <button class="w-16 h-16 rounded-full bg-secondary-fixed flex items-center justify-center active:scale-95 transition-all shadow-lg shadow-secondary-fixed/20" id="speakerButton" onclick="toggleSpeaker()">
+                        <span class="material-symbols-outlined text-on-secondary-fixed text-[28px]" data-icon="volume_up" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+                    </button>
+                    <span class="font-label-sm text-secondary-fixed">Haut-parleur</span>
+                </div>
+            </div>
+
+            <!-- Primary Action (End Call) -->
+            <div class="flex justify-center pb-xl">
+                <button class="w-20 h-20 rounded-full bg-error flex items-center justify-center shadow-2xl shadow-error/40 hover:scale-105 active:scale-90 transition-all" onclick="endCall()">
+                    <span class="material-symbols-outlined text-white text-[40px]" data-icon="call_end" style="font-variation-settings: 'FILL' 1;">call_end</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Indicator (Android style) -->
+    <div class="fixed bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full z-[60]"></div>
+
+    <!-- Hidden Navigation Shell (Suppressed based on focused task rule) -->
+    <!-- Navigation is intentionally omitted to prioritize the immersive call experience as per 'Shell Visibility & Relevance' mandate -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let callStartTime = Date.now();
+            let callTimer = null;
+            let isMuted = false;
+            let isSpeakerOn = true;
+
+            // Start call timer
+            function startCallTimer() {
+                callTimer = setInterval(() => {
+                    const elapsed = Date.now() - callStartTime;
+                    const minutes = Math.floor(elapsed / 60000);
+                    const seconds = Math.floor((elapsed % 60000) / 1000);
+                    
+                    const timerElement = document.getElementById('callTimer');
+                    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            // Mute toggle
+            function toggleMute() {
+                isMuted = !isMuted;
+                const muteButton = document.getElementById('muteButton');
+                const icon = muteButton.querySelector('.material-symbols-outlined');
+                
+                if (isMuted) {
+                    icon.textContent = 'mic_off';
+                    muteButton.classList.add('bg-error/20');
+                    muteButton.classList.remove('bg-white/5');
+                    console.log('Microphone muted');
+                } else {
+                    icon.textContent = 'mic';
+                    muteButton.classList.remove('bg-error/20');
+                    muteButton.classList.add('bg-white/5');
+                    console.log('Microphone unmuted');
+                }
+            }
+
+            // Speaker toggle
+            function toggleSpeaker() {
+                isSpeakerOn = !isSpeakerOn;
+                const speakerButton = document.getElementById('speakerButton');
+                const icon = speakerButton.querySelector('.material-symbols-outlined');
+                
+                if (isSpeakerOn) {
+                    icon.textContent = 'volume_up';
+                    icon.style.fontVariationSettings = "'FILL' 1";
+                    speakerButton.classList.add('bg-secondary-fixed');
+                    speakerButton.classList.remove('bg-white/5', 'border', 'border-white/20');
+                    console.log('Speaker on');
+                } else {
+                    icon.textContent = 'volume_off';
+                    icon.style.fontVariationSettings = "";
+                    speakerButton.classList.remove('bg-secondary-fixed');
+                    speakerButton.classList.add('bg-white/5', 'border', 'border-white/20');
+                    console.log('Speaker off');
+                }
+            }
+
+            // End call
+            function endCall() {
+                clearInterval(callTimer);
+                const duration = document.getElementById('callTimer').textContent;
+                
+                if (confirm(`Terminer l'appel (Durée: ${duration})?`)) {
+                    // Navigate back to calls list
+                    window.location.href = 'calls-tailwind.html';
+                }
+            }
+
+            // Minimize call
+            function minimizeCall() {
+                // In a real app, this would minimize to a floating window
+                alert('Appel minimisé - retour à la liste des appels');
+                window.location.href = 'calls-tailwind.html';
+            }
+
+            // Show call options
+            function showCallOptions() {
+                const options = [
+                    'Enregistrer appel',
+                    'Ajouter participant',
+                    'Transférer appel',
+                    'Notes d\'appel',
+                    'Partager écran'
+                ];
+                
+                const selected = prompt(`Options d'appel:\n${options.map((opt, i) => `${i + 1}. ${opt}`).join('\n')}`);
+                
+                if (selected) {
+                    const index = parseInt(selected) - 1;
+                    if (index >= 0 && index < options.length) {
+                        alert(`Action: ${options[index]}`);
+                    }
+                }
+            }
+
+            // Show keypad
+            function showKeypad() {
+                // Create a simple DTMF keypad overlay
+                const keypadOverlay = document.createElement('div');
+                keypadOverlay.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-50';
+                keypadOverlay.innerHTML = `
+                    <div class="bg-surface-container rounded-2xl p-6 max-w-sm w-full">
+                        <h3 class="text-on-surface font-bold text-center mb-4">Clavier DTMF</h3>
+                        <div class="grid grid-cols-3 gap-2 mb-4">
+                            ${[1,2,3,4,5,6,7,8,9,'*',0,'#'].map(num => 
+                                `<button class="bg-surface-container-low p-4 rounded-lg text-on-surface font-bold hover:bg-surface-container transition-colors" onclick="this.textContent = '${num}'">${num}</button>`
+                            ).join('')}
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="w-full bg-error text-white py-2 rounded-lg">Fermer</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(keypadOverlay);
+                
+                // Auto-remove after 10 seconds of inactivity
+                setTimeout(() => {
+                    if (keypadOverlay.parentElement) {
+                        keypadOverlay.remove();
+                    }
+                }, 10000);
+            }
+
+            // Handle keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'm':
+                    case 'M':
+                        toggleMute();
+                        break;
+                    case 's':
+                    case 'S':
+                        toggleSpeaker();
+                        break;
+                    case 'Escape':
+                        minimizeCall();
+                        break;
+                    case 'End':
+                        endCall();
+                        break;
+                }
+            });
+
+            // Simulate incoming audio
+            function simulateAudio() {
+                // Create audio context for beep sounds
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                function playBeep(frequency = 800, duration = 100) {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = frequency;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + duration / 1000);
+                }
+
+                // Play a beep every 5 seconds to simulate active call
+                setInterval(() => {
+                    if (!isMuted) {
+                        playBeep(800, 50);
+                    }
+                }, 5000);
+            }
+
+            // Initialize call
+            startCallTimer();
+            simulateAudio();
+
+            // Add visual feedback for button presses
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                });
+            });
+
+            // Prevent accidental back navigation during call
+            window.addEventListener('beforeunload', (e) => {
+                e.preventDefault();
+                e.returnValue = 'Un appel est en cours. Êtes-vous sûr de vouloir quitter?';
+            });
+
+            // Handle visibility change (user switches apps)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    console.log('Call continues in background');
+                } else {
+                    console.log('Call returned to foreground');
+                }
+            });
+
+            // Add haptic feedback simulation (for mobile)
+            function vibrate(pattern) {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(pattern);
+                }
+            }
+
+            // Vibrate on button press (mobile)
+            if ('vibrate' in navigator) {
+                document.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        vibrate(50);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
