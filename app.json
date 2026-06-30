@@ -4,13 +4,7 @@
     "slug": "ViraChat",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000f22"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -19,10 +13,6 @@
       "bundleIdentifier": "com.virachat"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#000f22"
-      },
       "package": "com.virachat",
       "permissions": [
         "INTERNET",
@@ -36,18 +26,7 @@
         "WAKE_LOCK"
       ]
     },
-    "web": {
-      "favicon": "./assets/images/favicon.png",
-      "bundler": "metro"
-    },
-    "plugins": [
-      [
-        "expo-router",
-        {
-          "root": "./app"
-        }
-      ]
-    ],
+    "plugins": [],
     "scheme": "virachat"
   }
 }
