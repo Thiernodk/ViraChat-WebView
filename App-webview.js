@@ -3,11 +3,14 @@ import { StatusBar, StyleSheet, View, Text, ActivityIndicator, BackHandler, AppS
 import { WebView } from 'react-native-webview';
 import * as SplashScreen from 'expo-splash-screen';
 import { useNetInfo } from '@react-native-community/netinfo';
+import * as Notifications from 'expo-notifications';
 import StorageService from './services/StorageService';
 import CookieService from './services/CookieManager';
 import MessageStatusService from './services/MessageStatusService';
 import NotificationService from './services/NotificationService';
 import SoundService from './services/SoundService';
+import IncomingCallScreen from './components/IncomingCallScreen';
+import CallScreen from './components/CallScreen';
 
 // Empêcher le splash screen de se cacher automatiquement
 SplashScreen.preventAutoHideAsync();
@@ -20,6 +23,10 @@ export default function App() {
   const webViewRef = useRef(null);
   const netInfo = useNetInfo();
   const appState = useRef(AppState.currentState);
+  
+  // États pour les écrans d'appel
+  const [incomingCall, setIncomingCall] = useState(null);
+  const [activeCall, setActiveCall] = useState(null);
 
   // Initialiser les services au démarrage
   useEffect(() => {
@@ -43,6 +50,9 @@ export default function App() {
         // Marquer l'utilisateur comme en ligne
         await MessageStatusService.setCurrentUserOnline();
         
+        // Configurer les listeners de notifications
+        setupNotificationListeners();
+        
         console.log('All services initialized successfully');
       } catch (error) {
         console.error('Error initializing services:', error);
@@ -51,6 +61,72 @@ export default function App() {
     
     initializeServices();
   }, []);
+
+  // Configurer les listeners de notifications
+  const setupNotificationListeners = () => {
+    // Écouter les réponses aux notifications
+    const responseListener = Notifications.addNotificationResponseReceivedListener(async (response) => {
+      const { notification } = response;
+      const data = notification.request.content.data;
+      
+      console.log('Notification response:', data);
+      
+      switch (data.type) {
+        case 'new_message':
+          // Ouvrir la conversation
+          if (data.conversationId && webViewRef.current) {
+            webViewRef.current.injectJavaScript(`
+              window.location.href = '/conversation/${data.conversationId}';
+            `);
+          }
+          break;
+        case 'incoming_call':
+          // Afficher l'écran d'appel entrant
+          setIncomingCall({
+            callerName: notification.request.content.title.replace(/📹|📞/g, '').trim(),
+            callType: data.callType,
+            callerId: data.callerId,
+            callSessionId: data.callSessionId,
+            profilePhoto: data.profilePhoto,
+          });
+          break;
+        case 'missed_call':
+          // Ouvrir l'historique des appels
+          if (webViewRef.current) {
+            webViewRef.current.injectJavaScript(`
+              window.location.href = '/calls';
+            `);
+          }
+          break;
+      }
+      
+      // Marquer la notification comme traitée
+      Notifications.dismissNotificationAsync(notification.request.identifier);
+    });
+
+    // Écouter les notifications reçues quand l'app est en foreground
+    const foregroundListener = Notifications.addNotificationReceivedListener(async (notification) => {
+      const data = notification.request.content.data;
+      
+      console.log('Foreground notification:', data);
+      
+      if (data.type === 'incoming_call') {
+        // Afficher l'écran d'appel entrant en plein écran
+        setIncomingCall({
+          callerName: notification.request.content.title.replace(/📹|📞/g, '').trim(),
+          callType: data.callType,
+          callerId: data.callerId,
+          callSessionId: data.callSessionId,
+          profilePhoto: data.profilePhoto,
+        });
+      }
+    });
+
+    return () => {
+      responseListener.remove();
+      foregroundListener.remove();
+    };
+  };
 
   // Gérer les changements d'état de l'application (foreground/background)
   useEffect(() => {
@@ -88,12 +164,21 @@ export default function App() {
 
   // Gérer le bouton retour Android
   const handleBackPress = useCallback(() => {
+    if (activeCall) {
+      // Ne pas permettre de quitter pendant un appel actif
+      return true;
+    }
+    if (incomingCall) {
+      // Rejeter l'appel si on appelle sur back
+      handleRejectCall(incomingCall);
+      return true;
+    }
     if (canGoBack && webViewRef.current) {
       webViewRef.current.goBack();
       return true;
     }
     return false;
-  }, [canGoBack]);
+  }, [canGoBack, activeCall, incomingCall]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
@@ -124,6 +209,65 @@ export default function App() {
     console.warn('HTTP error: ', nativeEvent);
     setIsLoading(false);
     SplashScreen.hideAsync();
+  };
+
+  // Gérer les réponses aux appels
+  const handleAnswerCall = (callData) => {
+    console.log('Call answered:', callData);
+    setIncomingCall(null);
+    setActiveCall(callData);
+    
+    // Notifier le WebView que l'appel a été accepté
+    if (webViewRef.current) {
+      webViewRef.current.injectJavaScript(`
+        if (window.dispatchEvent) {
+          window.dispatchEvent(new CustomEvent('callAnswered', { 
+            detail: ${JSON.stringify(callData)} 
+          }));
+        }
+      `);
+    }
+  };
+
+  const handleRejectCall = (callData) => {
+    console.log('Call rejected:', callData);
+    setIncomingCall(null);
+    SoundService.stopAllSounds();
+    
+    // Notifier le WebView que l'appel a été rejeté
+    if (webViewRef.current) {
+      webViewRef.current.injectJavaScript(`
+        if (window.dispatchEvent) {
+          window.dispatchEvent(new CustomEvent('callRejected', { 
+            detail: ${JSON.stringify(callData)} 
+          }));
+        }
+      `);
+    }
+    
+    // Envoyer une notification d'appel manqué
+    NotificationService.notifyMissedCall(
+      callData.callerName,
+      callData.callType,
+      { callerId: callData.callerId }
+    );
+  };
+
+  const handleEndCall = (callData) => {
+    console.log('Call ended:', callData);
+    setActiveCall(null);
+    SoundService.playCallEnded();
+    
+    // Notifier le WebView que l'appel est terminé
+    if (webViewRef.current) {
+      webViewRef.current.injectJavaScript(`
+        if (window.dispatchEvent) {
+          window.dispatchEvent(new CustomEvent('callEnded', { 
+            detail: ${JSON.stringify(callData)} 
+          }));
+        }
+      `);
+    }
   };
 
   // Injecter du code pour améliorer l'expérience offline et la synchronisation
@@ -220,6 +364,16 @@ export default function App() {
           }));
         }
       });
+      
+      // Écouter les événements d'appels depuis l'application web
+      document.addEventListener('incomingCall', (event) => {
+        if (window.ReactNativeWebView) {
+          window.ReactNativeWebView.postMessage(JSON.stringify({
+            type: 'INCOMING_CALL_WEB',
+            data: event.detail
+          }));
+        }
+      });
     })();
     true;
   `;
@@ -257,10 +411,15 @@ export default function App() {
           await SoundService.playMessageReceived();
           await SoundService.vibrateForMessage();
           if (message.data.senderName) {
-            await NotificationService.notifyNewMessage(
+            await NotificationService.notifyNewMessageWithActions(
               message.data.senderName,
               message.data.message || 'Nouveau message',
-              message.data.conversationId
+              message.data.conversationId,
+              {
+                messageId: message.data.messageId,
+                profilePhoto: message.data.profilePhoto,
+                isVoiceMessage: message.data.isVoiceMessage,
+              }
             );
           }
           break;
@@ -274,6 +433,19 @@ export default function App() {
             message.data.conversationId,
             message.data.userId,
             message.data.isTyping
+          );
+          break;
+        case 'INCOMING_CALL_WEB':
+          console.log('Incoming call from web:', message.data);
+          setIncomingCall(message.data);
+          await NotificationService.notifyIncomingCall(
+            message.data.callerName,
+            message.data.callType,
+            {
+              callerId: message.data.callerId,
+              callSessionId: message.data.callSessionId,
+              profilePhoto: message.data.profilePhoto,
+            }
           );
           break;
       }
@@ -311,6 +483,27 @@ export default function App() {
       SoundService.cleanup();
     };
   }, []);
+
+  // Afficher l'écran d'appel entrant
+  if (incomingCall) {
+    return (
+      <IncomingCallScreen
+        callData={incomingCall}
+        onAnswer={handleAnswerCall}
+        onReject={handleRejectCall}
+      />
+    );
+  }
+
+  // Afficher l'écran d'appel actif
+  if (activeCall) {
+    return (
+      <CallScreen
+        callData={activeCall}
+        onEndCall={handleEndCall}
+      />
+    );
+  }
 
   return (
     <View style={styles.container}>
