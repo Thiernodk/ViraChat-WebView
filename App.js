@@ -85,11 +85,6 @@ export default function App() {
     };
     
     initializeApp();
-    
-    // Skip splash screen for testing
-    setTimeout(() => {
-      setShowSplash(false);
-    }, 1000);
   }, []);
 
   const handleSplashFinish = () => {
