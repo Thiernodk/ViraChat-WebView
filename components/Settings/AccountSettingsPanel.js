@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import onboardingService from '../../services/onboardingService';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const AccountItem = ({ label, value, icon }) => (
   <View style={styles.accountItem}>
@@ -25,6 +26,7 @@ AccountItem.propTypes = {
 };
 
 const AccountSettingsPanel = ({ onClose, onShowLanguageSettings, onShowRegionSettings }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -92,9 +94,14 @@ const AccountSettingsPanel = ({ onClose, onShowLanguageSettings, onShowRegionSet
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Compte Limon+ TV</Text>
-          <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
-            <Icon name="close" size={28} color={colors.text} />
-          </TVFocusable>
+          {(() => {
+            const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+            return (
+              <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
+                <Icon name="close" size={28} color={colors.text} />
+              </CloseButton>
+            );
+          })()}
         </View>
         <View style={styles.loadingContainer}>
           <Text style={styles.loadingText}>Chargement...</Text>
@@ -108,9 +115,14 @@ const AccountSettingsPanel = ({ onClose, onShowLanguageSettings, onShowRegionSet
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Compte Limon+ TV</Text>
-          <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
-            <Icon name="close" size={28} color={colors.text} />
-          </TVFocusable>
+          {(() => {
+            const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+            return (
+              <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
+                <Icon name="close" size={28} color={colors.text} />
+              </CloseButton>
+            );
+          })()}
         </View>
         <View style={styles.noDataContainer}>
           <Icon name="account_circle" size={64} color={colors.textTertiary} />
@@ -127,9 +139,14 @@ const AccountSettingsPanel = ({ onClose, onShowLanguageSettings, onShowRegionSet
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Compte Limon+ TV</Text>
-        <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
-          <Icon name="close" size={28} color={colors.text} />
-        </TVFocusable>
+        {(() => {
+          const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+          return (
+            <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
+              <Icon name="close" size={28} color={colors.text} />
+            </CloseButton>
+          );
+        })()}
       </View>
       
       <ScrollView style={styles.content}>
@@ -156,45 +173,61 @@ const AccountSettingsPanel = ({ onClose, onShowLanguageSettings, onShowRegionSet
 
         <Text style={styles.sectionTitle}>Préférences</Text>
         
-        <TVFocusable 
-          style={styles.preferenceItem}
-          onPress={onShowLanguageSettings}
-        >
-          <View style={styles.preferenceLeft}>
-            <Icon name="language" size={20} color={colors.primary} />
-            <View style={styles.preferenceText}>
-              <Text style={styles.preferenceLabel}>Langue</Text>
-              <Text style={styles.preferenceValue}>Français</Text>
-            </View>
-          </View>
-          <Icon name="keyboard_arrow_right" size={20} color={colors.textTertiary} />
-        </TVFocusable>
+        {(() => {
+          const PreferenceButton = isTV ? TVFocusable : TouchableOpacity;
+          return (
+            <>
+              <PreferenceButton 
+                style={styles.preferenceItem}
+                onPress={onShowLanguageSettings}
+                {...(isTV && {})}
+              >
+                <View style={styles.preferenceLeft}>
+                  <Icon name="language" size={20} color={colors.primary} />
+                  <View style={styles.preferenceText}>
+                    <Text style={styles.preferenceLabel}>Langue</Text>
+                    <Text style={styles.preferenceValue}>Français</Text>
+                  </View>
+                </View>
+                <Icon name="keyboard_arrow_right" size={20} color={colors.textTertiary} />
+              </PreferenceButton>
 
-        <TVFocusable 
-          style={styles.preferenceItem}
-          onPress={onShowRegionSettings}
-        >
-          <View style={styles.preferenceLeft}>
-            <Icon name="location_city" size={20} color={colors.primary} />
-            <View style={styles.preferenceText}>
-              <Text style={styles.preferenceLabel}>Région</Text>
-              <Text style={styles.preferenceValue}>Centrafrique</Text>
-            </View>
-          </View>
-          <Icon name="keyboard_arrow_right" size={20} color={colors.textTertiary} />
-        </TVFocusable>
+              <PreferenceButton 
+                style={styles.preferenceItem}
+                onPress={onShowRegionSettings}
+                {...(isTV && {})}
+              >
+                <View style={styles.preferenceLeft}>
+                  <Icon name="location_city" size={20} color={colors.primary} />
+                  <View style={styles.preferenceText}>
+                    <Text style={styles.preferenceLabel}>Région</Text>
+                    <Text style={styles.preferenceValue}>Centrafrique</Text>
+                  </View>
+                </View>
+                <Icon name="keyboard_arrow_right" size={20} color={colors.textTertiary} />
+              </PreferenceButton>
+            </>
+          );
+        })()}
 
         <Text style={styles.sectionTitle}>Actions</Text>
         
-        <TVFocusable style={styles.actionButton} onPress={handleChangeAccount}>
-          <Icon name="swap_horiz" size={18} color={colors.text} />
-          <Text style={styles.actionButtonText}>Changer de compte</Text>
-        </TVFocusable>
+        {(() => {
+          const ActionButton = isTV ? TVFocusable : TouchableOpacity;
+          return (
+            <>
+              <ActionButton style={styles.actionButton} onPress={handleChangeAccount} {...(isTV && {})}>
+                <Icon name="swap_horiz" size={18} color={colors.text} />
+                <Text style={styles.actionButtonText}>Changer de compte</Text>
+              </ActionButton>
 
-        <TVFocusable style={[styles.actionButton, styles.logoutButton]} onPress={handleLogout}>
-          <Icon name="logout" size={18} color="#ff4444" />
-          <Text style={[styles.actionButtonText, styles.logoutButtonText]}>Déconnecter</Text>
-        </TVFocusable>
+              <ActionButton style={[styles.actionButton, styles.logoutButton]} onPress={handleLogout} {...(isTV && {})}>
+                <Icon name="logout" size={18} color="#ff4444" />
+                <Text style={[styles.actionButtonText, styles.logoutButtonText]}>Déconnecter</Text>
+              </ActionButton>
+            </>
+          );
+        })()}
       </ScrollView>
     </View>
   );

@@ -5,8 +5,11 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
+import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const DeviceInfoPanel = ({ onClose }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [deviceInfo, setDeviceInfo] = useState({
     model: '',
     resolution: '',
@@ -56,9 +59,14 @@ const DeviceInfoPanel = ({ onClose }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Informations Appareil</Text>
-        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-          <Icon name="close" size={28} color={colors.text} />
-        </TouchableOpacity>
+        {(() => {
+          const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+          return (
+            <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
+              <Icon name="close" size={28} color={colors.text} />
+            </CloseButton>
+          );
+        })()}
       </View>
       
       <ScrollView style={styles.content}>

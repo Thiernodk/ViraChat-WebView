@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import subscriptionService from '../../services/subscriptionService';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const ChannelOverlay = ({ channel, currentTime, currentProgram, nextProgram, progress, onMenuPress, activeMenu }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   if (!channel) return null;
 
   const [daysUntilExpiration, setDaysUntilExpiration] = useState(null);
@@ -87,29 +89,42 @@ const ChannelOverlay = ({ channel, currentTime, currentProgram, nextProgram, pro
 
       {/* Icônes de contrôle */}
       <View style={styles.iconContainer}>
-        <TVFocusable 
-          style={[styles.iconButton, activeMenu === 'program' && styles.activeButton]}
-          onPress={() => onMenuPress && onMenuPress('program')}
-          nextFocusRight={1}
-          hasTVPreferredFocus={true}
-        >
-          <Icon name="tv" size={32} color={activeMenu === 'program' ? '#000' : colors.textSecondary} />
-        </TVFocusable>
-        <TVFocusable 
-          style={[styles.iconButton, activeMenu === 'list' && styles.activeButton]}
-          onPress={() => onMenuPress && onMenuPress('list')}
-          nextFocusLeft={0}
-          nextFocusRight={2}
-        >
-          <Icon name="list" size={32} color={activeMenu === 'list' ? '#000' : colors.textSecondary} />
-        </TVFocusable>
-        <TVFocusable 
-          style={[styles.iconButton, activeMenu === 'settings' && styles.activeButton]}
-          onPress={() => onMenuPress && onMenuPress('settings')}
-          nextFocusLeft={1}
-        >
-          <Icon name="settings" size={32} color={activeMenu === 'settings' ? '#000' : colors.textSecondary} />
-        </TVFocusable>
+        {(() => {
+          const IconButton = isTV ? TVFocusable : TouchableOpacity;
+          return (
+            <>
+              <IconButton 
+                style={[styles.iconButton, activeMenu === 'program' && styles.activeButton]}
+                onPress={() => onMenuPress && onMenuPress('program')}
+                {...(isTV && {
+                  nextFocusRight: 1,
+                  hasTVPreferredFocus: true,
+                })}
+              >
+                <Icon name="tv" size={32} color={activeMenu === 'program' ? '#000' : colors.textSecondary} />
+              </IconButton>
+              <IconButton 
+                style={[styles.iconButton, activeMenu === 'list' && styles.activeButton]}
+                onPress={() => onMenuPress && onMenuPress('list')}
+                {...(isTV && {
+                  nextFocusLeft: 0,
+                  nextFocusRight: 2,
+                })}
+              >
+                <Icon name="list" size={32} color={activeMenu === 'list' ? '#000' : colors.textSecondary} />
+              </IconButton>
+              <IconButton 
+                style={[styles.iconButton, activeMenu === 'settings' && styles.activeButton]}
+                onPress={() => onMenuPress && onMenuPress('settings')}
+                {...(isTV && {
+                  nextFocusLeft: 1,
+                })}
+              >
+                <Icon name="settings" size={32} color={activeMenu === 'settings' ? '#000' : colors.textSecondary} />
+              </IconButton>
+            </>
+          );
+        })()}
       </View>
     </View>
   );
