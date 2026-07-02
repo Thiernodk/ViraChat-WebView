@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Groupes - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #F8FAFC;
+        }
+        .bg-dashed {
+            background: transparent;
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-5 h-16 w-full">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-secondary">
+                <img alt="Profil" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhycCNnuVjSewBgMn7Q0vm1NDK8F-f-UE3sKZyK-y73rgejLpkveIgC0kVyotSl61Ke95kq2rgTjwqdofINqWIZxQ3zo63e_F3ZW0EY48xNSDcVAFg7J8l8Bg_YsK-4OVsWjM17mMC8UHfAxH49R4MpK7DP2Xd7OmQMP640TPrbtunsDqufrNvovuLrbRXFPpKD3mlgGVACJLXTk6d5dUoiLwQ0v77RqVyU40S4MZ8_NvV270yi7G-K3klA6W8nR8saMc1nojrYpY"/>
+            </div>
+            <span class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tighter">Opportun</span>
+        </div>
+        <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 transition-transform duration-200">
+            <span class="material-symbols-outlined text-slate-500" data-icon="search">search</span>
+        </button>
+    </header>
+
+    <main class="pt-20 pb-32 px-margin">
+        <!-- Search & Filter Section -->
+        <div class="mb-lg">
+            <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+                </div>
+                <input class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-primary transition-all text-body-md font-body-md" 
+                       placeholder="Rechercher des départements ou équipes..." 
+                       type="text"
+                       id="searchInput"/>
+            </div>
+            
+            <!-- Sub-navigation Toggle -->
+            <div class="flex mt-md bg-surface-container-low p-1 rounded-xl">
+                <button class="flex-1 py-2 text-label-md font-label-md rounded-lg text-on-surface-variant hover:bg-white/50 transition-all" 
+                        id="directMessagesBtn">Messages directs</button>
+                <button class="flex-1 py-2 text-label-md font-label-md rounded-lg bg-surface-container-lowest text-on-surface shadow-sm transition-all border border-slate-100" 
+                        id="departmentsBtn">Départements</button>
+            </div>
+        </div>
+
+        <!-- Groups Grid (Asymmetric Bento-inspired layout) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter" id="groupsGrid">
+            <!-- Technique Group - Large Feature -->
+            <div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md transition-all hover:border-secondary shadow-sm group-item cursor-pointer" 
+                 data-id="technique">
+                <div class="flex justify-between items-start">
+                    <div class="flex items-center gap-md">
+                        <div class="w-14 h-14 bg-primary-container rounded-xl flex items-center justify-center text-secondary">
+                            <span class="material-symbols-outlined text-[32px]" data-icon="terminal">terminal</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface">Technique</h3>
+                            <p class="text-label-sm font-label-sm text-on-surface-variant">Infrastructure principale & Produit</p>
+                        </div>
+                    </div>
+                    <div class="bg-secondary-container/20 text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-label-sm flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]" data-icon="groups">groups</span>
+                        42 Membres
+                    </div>
+                </div>
+                <div class="h-px bg-outline-variant/20 w-full"></div>
+                <div class="flex flex-col gap-sm">
+                    <span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Activité récente</span>
+                    <div class="flex items-center gap-md bg-surface-bright p-md rounded-lg">
+                        <div class="w-2 h-2 rounded-full bg-secondary"></div>
+                        <p class="text-body-md font-body-md text-on-surface flex-1">Migration serveur terminée pour Projet Aurora.</p>
+                        <span class="text-label-sm font-label-sm text-outline">il y a 2m</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Group -->
+            <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md hover:border-secondary transition-all shadow-sm group-item cursor-pointer" 
+                 data-id="marketing">
+                <div class="flex items-center gap-md">
+                    <div class="w-12 h-12 bg-surface-container-high rounded-xl flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[24px]" data-icon="campaign">campaign</span>
+                    </div>
+                    <div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">Marketing</h3>
+                        <div class="flex items-center gap-1 mt-0.5">
+                            <span class="material-symbols-outlined text-[14px] text-outline" data-icon="group">group</span>
+                            <span class="text-label-sm font-label-sm text-outline">18 Membres</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-unit">
+                    <span class="bg-secondary-fixed/30 text-on-secondary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter">Événement en direct</span>
+                    <span class="text-label-sm text-outline">Actif maintenant</span>
+                </div>
+            </div>
+
+            <!-- RH Group -->
+            <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md hover:border-secondary transition-all shadow-sm group-item cursor-pointer" 
+                 data-id="rh">
+                <div class="flex items-center gap-md">
+                    <div class="w-12 h-12 bg-surface-container-high rounded-xl flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[24px]" data-icon="diversity_3">diversity_3</span>
+                    </div>
+                    <div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">RH</h3>
+                        <div class="flex items-center gap-1 mt-0.5">
+                            <span class="material-symbols-outlined text-[14px] text-outline" data-icon="group">group</span>
+                            <span class="text-label-sm font-label-sm text-outline">6 Membres</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-unit">
+                    <span class="text-body-md font-body-md text-on-surface-variant truncate">3 nouveaux CV en attente de review</span>
+                    <span class="text-label-sm text-outline">il y a 1h</span>
+                </div>
+            </div>
+
+            <!-- Direction Group -->
+            <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-lg flex flex-col gap-md hover:border-secondary transition-all shadow-sm group-item cursor-pointer" 
+                 data-id="direction">
+                <div class="flex items-center gap-md">
+                    <div class="w-12 h-12 bg-primary-container rounded-xl flex items-center justify-center text-white">
+                        <span class="material-symbols-outlined text-[24px]" data-icon="auto_graph">auto_graph</span>
+                    </div>
+                    <div>
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">Direction</h3>
+                        <div class="flex items-center gap-1 mt-0.5">
+                            <span class="material-symbols-outlined text-[14px] text-outline" data-icon="group">group</span>
+                            <span class="text-label-sm font-label-sm text-outline">4 Membres</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-xs">
+                    <div class="flex -space-x-2">
+                        <img alt="Utilisateur" class="w-8 h-8 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuA5STj_PW-PjxuuwgpS3fF58AURpxukULG3rtVYCX7AAJ-BcjEwMuHRbkDWhYTL9A6XmwqVDC5wLbzZISeEiL_0RXo3CzzyKxpHRY7IJmdO0LJhFB2e38MEjY328h7cv_b-bctuqeq2HeJmTo03BhBXsn-oM6kHuI8jqxqrMXfjIuRwYIXfrs0I3xQAFWeLHEPyhiPHTG2W9OqrxyRy49rJSv77lORDqwTksIqtA8isaGFP8kmMyYMiCsT-X_lSoNsRp3OElRuqE"/>
+                        <img alt="Utilisateur" class="w-8 h-8 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKNj-DIugJS-5Md9Ufg3-3HbYOcPxPhb4wzULxwPhvuOYklStmerJ-ZeFEg_FvY97ixXCSqwkZjwTqh2lkjioxAxf0IcQ6Em5ghQgY2raYC2hMBEw4XJO_i8TCY50N9FzfJUzb52ftf10tma5xvTOUMoJWDis1WMkry6a5GZZbW_S3gMRAHNXBCY0mRelT0YeAZsu6Su0a1_Xigt0oTfO7Ek7ctWjoTxHVSGATPBDXlRZvCTZiCHDXzcLi9bj8dXLNtCCu2yrSMbk"/>
+                        <div class="w-8 h-8 rounded-full bg-surface-container-high border-2 border-white flex items-center justify-center text-[10px] font-bold">+2</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Group Placeholder / Action -->
+            <button class="bg-dashed border-2 border-dashed border-outline-variant/40 rounded-xl p-lg flex flex-col items-center justify-center gap-sm text-outline hover:border-secondary hover:text-secondary transition-all group min-h-[140px]" 
+                    id="createNewGroup">
+                <span class="material-symbols-outlined text-[32px] group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
+                <span class="font-label-md text-label-md">Créer une nouvelle unité</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe-offset-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_24px_rgba(10,37,64,0.06)]">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="home-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="home">home</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Accueil</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl px-4 py-1.5 transition-all active:scale-90 duration-150 ease-out" href="chats-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Messages</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="calls-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="call">call</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Appels</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="meetings-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Réunions</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="profile-tailwind.html">
+            <span class="material-symbols-outlined" data-icon="person">person</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Profil</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const directMessagesBtn = document.getElementById('directMessagesBtn');
+            const departmentsBtn = document.getElementById('departmentsBtn');
+            const groupItems = document.querySelectorAll('.group-item');
+            const createNewGroupBtn = document.getElementById('createNewGroup');
+
+            // Search functionality
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                groupItems.forEach(item => {
+                    const title = item.querySelector('h3').textContent.toLowerCase();
+                    const description = item.querySelector('p')?.textContent.toLowerCase() || '';
+                    
+                    if (title.includes(query) || description.includes(query)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            // Toggle between Direct Messages and Departments
+            directMessagesBtn.addEventListener('click', () => {
+                directMessagesBtn.classList.remove('text-on-surface-variant', 'hover:bg-white/50');
+                directMessagesBtn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm', 'border', 'border-slate-100');
+                
+                departmentsBtn.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm', 'border', 'border-slate-100');
+                departmentsBtn.classList.add('text-on-surface-variant', 'hover:bg-white/50');
+
+                // Filter groups for direct messages
+                filterGroups('direct');
+            });
+
+            departmentsBtn.addEventListener('click', () => {
+                departmentsBtn.classList.remove('text-on-surface-variant', 'hover:bg-white/50');
+                departmentsBtn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm', 'border', 'border-slate-100');
+                
+                directMessagesBtn.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm', 'border', 'border-slate-100');
+                directMessagesBtn.classList.add('text-on-surface-variant', 'hover:bg-white/50');
+
+                // Show all departments
+                filterGroups('departments');
+            });
+
+            // Filter groups function
+            function filterGroups(type) {
+                if (type === 'departments') {
+                    groupItems.forEach(item => {
+                        item.style.display = 'flex';
+                    });
+                } else {
+                    // For direct messages, show only individual contacts
+                    // For demo, we'll hide the department groups
+                    groupItems.forEach(item => {
+                        const id = item.dataset.id;
+                        if (['technique', 'marketing', 'rh', 'direction'].includes(id)) {
+                            item.style.display = 'none';
+                        } else {
+                            item.style.display = 'flex';
+                        }
+                    });
+                }
+            }
+
+            // Group item clicks
+            groupItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const groupId = item.dataset.id;
+                    const groupName = item.querySelector('h3').textContent;
+                    
+                    // Navigate to group conversation
+                    window.location.href = `conversation-tailwind.html?group=${groupId}&name=${encodeURIComponent(groupName)}`;
+                });
+
+                // Add hover effects
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateY(-2px)';
+                    item.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateY(0)';
+                    item.style.boxShadow = '';
+                });
+            });
+
+            // Create new group button
+            createNewGroupBtn.addEventListener('click', () => {
+                const groupName = prompt('Nom du nouveau groupe:');
+                if (groupName) {
+                    alert(`Groupe "${groupName}" créé avec succès!`);
+                    // In a real app, this would create a new group and refresh the list
+                }
+            });
+
+            // Header search button
+            document.querySelector('[data-icon="search"]').parentElement.addEventListener('click', () => {
+                searchInput.focus();
+            });
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('button, .cursor-pointer');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Simulate real-time updates
+            setInterval(() => {
+                const activityElements = document.querySelectorAll('.text-outline');
+                activityElements.forEach(element => {
+                    if (element.textContent.includes('il y a')) {
+                        // Update time stamps
+                        const currentText = element.textContent;
+                        if (currentText.includes('2m')) {
+                            element.textContent = 'il y a 3m';
+                        } else if (currentText.includes('3m')) {
+                            element.textContent = 'il y a 5m';
+                        }
+                    }
+                });
+            }, 120000); // Update every 2 minutes
+
+            // Add animation to new group button
+            createNewGroupBtn.addEventListener('mouseenter', () => {
+                const icon = createNewGroupBtn.querySelector('.material-symbols-outlined');
+                icon.style.transform = 'rotate(90deg)';
+            });
+            
+            createNewGroupBtn.addEventListener('mouseleave', () => {
+                const icon = createNewGroupBtn.querySelector('.material-symbols-outlined');
+                icon.style.transform = 'rotate(0deg)';
+            });
+        });
+
+        // Add ripple effect styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.6);
+                transform: scale(0);
+                animation: ripple-animation 0.6s ease-out;
+                pointer-events: none;
+            }
+            
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

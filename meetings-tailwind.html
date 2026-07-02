@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Réunions - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8f9ff; 
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pb-safe-offset-2 { 
+            padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem); 
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 flex items-center justify-between px-5 h-16 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-secondary-fixed">
+                <img alt="Profil" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTLkTLtX1Zh2eJmVCzBeQPt1yyFmk38Sv267ta4rlwAy25yKz2wCZACIJtCVMRAnNmAL70bmCqP_bwfvzgq9PSIS0IVWByYWzTlagM0p6D6lSLchh67KOaugNijckILEbmXSTlYX-q3aQOBnIsftr3_xYxxL1QG8FxYYQ6QRzTQIjZ834qN33ZhkDHgD3aTWEggKlbYw3KtFbUDL0amqH0H4mnXP9-W5avKLTMXDgaNUt4uZwAVc_7A1aMw0SyyHU3LR39rNEt9Y0"/>
+            </div>
+            <h1 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tighter">Opportun</h1>
+        </div>
+        <button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-slate-200/50 transition-colors active:scale-95 duration-200" onclick="showSearch()">
+            <span class="material-symbols-outlined text-slate-500">search</span>
+        </button>
+    </header>
+
+    <main class="pt-20 pb-24 px-margin max-w-2xl mx-auto">
+        <!-- Calendar Integration View -->
+        <section class="mb-lg">
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-sm">
+                <div class="flex items-center justify-between mb-md">
+                    <h2 class="font-headline-sm text-headline-sm text-on-surface">Semaine à venir</h2>
+                    <div class="flex gap-2">
+                        <button class="p-xs text-on-surface-variant hover:bg-surface-container transition-colors rounded-lg" onclick="previousWeek()">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <button class="p-xs text-on-surface-variant hover:bg-surface-container transition-colors rounded-lg" onclick="nextWeek()">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-7 gap-2">
+                    <div class="flex flex-col items-center py-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer" onclick="selectDate('mon')">
+                        <span class="font-label-sm text-on-surface-variant">LUN</span>
+                        <span class="font-headline-sm text-headline-sm text-on-surface">12</span>
+                    </div>
+                    <div class="flex flex-col items-center py-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer" onclick="selectDate('tue')">
+                        <span class="font-label-sm text-on-surface-variant">MAR</span>
+                        <span class="font-headline-sm text-headline-sm text-on-surface">13</span>
+                    </div>
+                    <div class="flex flex-col items-center py-sm rounded-lg bg-primary-container text-on-primary-container ring-1 ring-primary cursor-pointer" onclick="selectDate('wed')">
+                        <span class="font-label-sm">MER</span>
+                        <span class="font-headline-sm text-headline-sm">14</span>
+                    </div>
+                    <div class="flex flex-col items-center py-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer" onclick="selectDate('thu')">
+                        <span class="font-label-sm text-on-surface-variant">JEU</span>
+                        <span class="font-headline-sm text-headline-sm text-on-surface">15</span>
+                    </div>
+                    <div class="flex flex-col items-center py-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer" onclick="selectDate('fri')">
+                        <span class="font-label-sm text-on-surface-variant">VEN</span>
+                        <span class="font-headline-sm text-headline-sm text-on-surface">16</span>
+                    </div>
+                    <div class="flex flex-col items-center py-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer" onclick="selectDate('sat')">
+                        <span class="font-label-sm text-on-surface-variant text-opacity-40">SAM</span>
+                        <span class="font-headline-sm text-headline-sm text-on-surface text-opacity-40">17</span>
+                    </div>
+                    <div class="flex flex-col items-center py-sm rounded-lg hover:bg-surface-container transition-colors cursor-pointer" onclick="selectDate('sun')">
+                        <span class="font-label-sm text-on-surface-variant text-opacity-40">DIM</span>
+                        <span class="font-headline-sm text-headline-sm text-on-surface text-opacity-40">18</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Meeting List Header -->
+        <div class="flex items-center justify-between mb-md">
+            <h3 class="font-headline-sm text-headline-sm text-on-surface">Emploi du temps Mercredi</h3>
+            <span class="font-label-md text-secondary bg-secondary-container px-3 py-1 rounded-full">3 EN DIRECT</span>
+        </div>
+
+        <!-- Meeting Cards -->
+        <div class="space-y-md">
+            <!-- Active/Upcoming Premium Card -->
+            <div class="bg-surface-container-lowest border-l-4 border-secondary rounded-xl border border-outline-variant p-md relative overflow-hidden group meeting-card" data-status="upcoming">
+                <div class="flex justify-between items-start mb-sm">
+                    <div>
+                        <span class="font-label-md text-secondary uppercase mb-xs block">Dans 5 minutes</span>
+                        <h4 class="font-headline-sm text-headline-sm text-on-surface">Alignement Stratégique Trimestriel</h4>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <img class="w-8 h-8 rounded-full border-2 border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_pGutaui_N53_QbKKL4VC8lRjAmvX8cyGSBDOwVWR707Cc5R5poxu6ry0o2iFMUvGe20rp6jdnv4IfXCbiAJTH3RPKXff1BfdMOBD-NYvjV_0jiT3UeB0FVIJoE5Au76h-goyQNLN-xCGwOCNFtJ0EnEex-JIsQBo5k_6v98_3sP1PmwuwGaZ2iWzKTGyFT9R5ivp4lB96XJmgnPz_Yn38ldZAMru5S1XmwqmwXgDObAUvp5ED9YVDh6S0_LOmoUEHF7vp8NZ0qI"/>
+                        <img class="w-8 h-8 rounded-full border-2 border-surface" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuCOBK0TM_cHjfrPCWSSufZNXNejnjz0fG6EK2DuZLkxRmuB33_bfkAKOWrsBXDq5bbOKDa13vmMGN7Q5LE0YKwF5beAWaW82qoiwQeqWb5sfCpZqz3RCTOMlbu9qru1LKVCTzYwA4qj7olXbBMYsLVPSFiwGTu6Smp07cc5LxfF7fiLknOT2kXXnbeVwBxCn9qeicQ0TUEwV_Sn2Tn5m48bWzjtCyYhvlPUhXqMD6xqfpvlbKXrEoyOj2h74hpIW1KV8iYxMtYT3XM"/>
+                        <div class="w-8 h-8 rounded-full bg-surface-container-high border-2 border-surface flex items-center justify-center font-label-sm text-on-surface-variant">+8</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-md text-on-surface-variant font-body-md mb-md">
+                    <div class="flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">schedule</span>
+                        <span>10:30 — 11:30</span>
+                    </div>
+                    <div class="flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
+                        <span>60min</span>
+                    </div>
+                </div>
+                <button class="w-full h-[48px] bg-secondary text-on-secondary font-headline-sm rounded-lg flex items-center justify-center gap-sm active:scale-95 transition-transform duration-150" onclick="joinMeeting('strategy')">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">videocam</span>
+                    Rejoindre la réunion
+                </button>
+            </div>
+
+            <!-- Standard Card -->
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md hover:bg-surface-container-low transition-colors group meeting-card" data-status="upcoming">
+                <div class="flex justify-between items-start mb-sm">
+                    <div>
+                        <span class="font-label-md text-on-surface-variant uppercase mb-xs block">À venir</span>
+                        <h4 class="font-headline-sm text-headline-sm text-on-surface">Revue Roadmap Produit</h4>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <img class="w-8 h-8 rounded-full border-2 border-surface" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuCjpv5CddD4nLZkz7xvI0QZaRxXzkNjGYG7DShLsjEsJgZosXQuoyxGjFCERKtWLVKonYtP0yQRaALRRwlx2Gz2irvtNg9CodLCY47MANLflvHXIUIobirJ-F7TPXR8r6EfuN6qoZIJqyRKqiPRq_8z2HpJFP5KulVLtI95F_qIzT1IovvXmXf4uk1g8B8zwEwcN9jCvZsSVe_TvSz0kVTJtE4JDI_R94n3TG7knTvTKnUXSZSN_TGDSbvSjVKN2bu2DKgtyLt2lD4"/>
+                        <div class="w-8 h-8 rounded-full bg-surface-container-high border-2 border-surface flex items-center justify-center font-label-sm text-on-surface-variant">+2</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-md text-on-surface-variant font-body-md mb-md">
+                    <div class="flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">schedule</span>
+                        <span>13:00 — 14:00</span>
+                    </div>
+                    <div class="flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
+                        <span>45min</span>
+                    </div>
+                </div>
+                <button class="w-full h-[48px] bg-white border border-secondary text-secondary font-headline-sm rounded-lg flex items-center justify-center gap-sm active:scale-95 transition-transform duration-150" onclick="viewDetails('roadmap')">
+                    <span class="material-symbols-outlined">link</span>
+                    Voir les détails
+                </button>
+            </div>
+
+            <!-- Focus Mode Bento Card -->
+            <div class="grid grid-cols-2 gap-md">
+                <div class="bg-primary-container p-md rounded-xl text-on-primary-container col-span-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="font-label-sm uppercase tracking-widest text-on-primary-container opacity-70">Focus Insight</span>
+                            <span class="font-headline-md mt-xs">Bloc Travail Profond</span>
+                            <p class="font-body-md opacity-80 mt-xs">Aucune réunion prévue entre 14:00 et 16:30.</p>
+                        </div>
+                        <span class="material-symbols-outlined text-[48px] opacity-20">verified_user</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standard Card 2 -->
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md hover:bg-surface-container-low transition-colors group meeting-card" data-status="upcoming">
+                <div class="flex justify-between items-start mb-sm">
+                    <div>
+                        <span class="font-label-md text-on-surface-variant uppercase mb-xs block">Plus tard</span>
+                        <h4 class="font-headline-sm text-headline-sm text-on-surface">Préparation Pitch Investisseurs</h4>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <img class="w-8 h-8 rounded-full border-2 border-surface" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuCVDG4It1mblYqMAEzae8zlkL7_vh9ekg3y5YhVa25AaC1qdgNGrB8-3dDeRgejT1Tqirahb-Smzjyz9s9t7v-fuf5RYwEWR4TiOzEUk_-jIWDoplhbSnU-47ViKdchpWCeogkevNjDGpyESQjeyndya9N5ybZMm-6zDzE6fm0WFiW7l9hHZXMDtE8vMroMsgSJ_rohoetnpkmYOmAPGn17CKRWL3QmoWX8RbIG6-vDOKho563rYrkQt96RxKVJbMrS4JOi4853aDo"/>
+                        <img class="w-8 h-8 rounded-full border-2 border-surface" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuDmgmtDcur7mA5eVUtXV8ocn-BwkTSVMm-pouKBVm95BsIr_voKFdTjvfsop48dxLYzfyuG9n24vOFuH-_eQ4LlRaTVmf3yL152FYKlxNnOc3wIvL1kwVUSr-0aPuUMWkKfYwrAU9vF5q8kgEc8oKHkAQnK9rwfZqzhA7g2fdphqMrOroUhMIsXat9XnKZipU6QJJamJWQBwoyi_dXyUQwl0ouh96MwXmu9Or0x-lxZLXYmB7c944Xqe1NGzCnfxA0VKi_oagrLl30"/>
+                    </div>
+                </div>
+                <div class="flex items-center gap-md text-on-surface-variant font-body-md mb-md">
+                    <div class="flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">schedule</span>
+                        <span>16:30 — 17:00</span>
+                    </div>
+                    <div class="flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
+                        <span>30min</span>
+                    </div>
+                </div>
+                <button class="w-full h-[48px] bg-white border border-secondary text-secondary font-headline-sm rounded-lg flex items-center justify-center gap-sm active:scale-95 transition-transform duration-150" onclick="viewDetails('pitch')">
+                    <span class="material-symbols-outlined">link</span>
+                    Voir les détails
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button class="fixed right-6 bottom-24 w-14 h-14 bg-secondary text-on-secondary rounded-2xl shadow-xl flex items-center justify-center active:scale-90 transition-transform z-40" onclick="createNewMeeting()">
+        <span class="material-symbols-outlined text-[32px]">add</span>
+    </button>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe-offset-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_24px_rgba(10,37,64,0.06)]">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 transition-all active:scale-90 duration-150 ease-out" href="home-tailwind.html">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Accueil</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 transition-all active:scale-90 duration-150 ease-out" href="chats-tailwind.html">
+            <span class="material-symbols-outlined">chat_bubble</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Messages</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 transition-all active:scale-90 duration-150 ease-out" href="calls-tailwind.html">
+            <span class="material-symbols-outlined">call</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Appels</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl px-4 py-1.5 active:scale-90 duration-150 ease-out" href="meetings-tailwind.html">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">videocam</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Réunions</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 transition-all active:scale-90 duration-150 ease-out" href="profile-tailwind.html">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Profil</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentWeek = 0;
+            let selectedDate = 'wed';
+
+            // Calendar navigation
+            function previousWeek() {
+                currentWeek--;
+                updateCalendar();
+                console.log('Navigation vers semaine précédente');
+            }
+
+            function nextWeek() {
+                currentWeek++;
+                updateCalendar();
+                console.log('Navigation vers semaine suivante');
+            }
+
+            function updateCalendar() {
+                // In a real app, this would update the calendar dates
+                console.log(`Semaine ${currentWeek} sélectionnée`);
+            }
+
+            function selectDate(date) {
+                selectedDate = date;
+                const days = document.querySelectorAll('.grid.grid-cols-7 > div');
+                days.forEach(day => {
+                    day.classList.remove('bg-primary-container', 'text-on-primary-container', 'ring-1', 'ring-primary');
+                    day.classList.add('hover:bg-surface-container', 'transition-colors', 'cursor-pointer');
+                });
+                
+                // Add active state to selected day
+                event.currentTarget.classList.remove('hover:bg-surface-container', 'transition-colors', 'cursor-pointer');
+                event.currentTarget.classList.add('bg-primary-container', 'text-on-primary-container', 'ring-1', 'ring-primary');
+                
+                console.log(`Date sélectionnée: ${date}`);
+                updateMeetingsForDate(date);
+            }
+
+            function updateMeetingsForDate(date) {
+                // Simulate loading meetings for selected date
+                const meetingCards = document.querySelectorAll('.meeting-card');
+                meetingCards.forEach(card => {
+                    card.style.opacity = '0.5';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                    }, 300);
+                });
+            }
+
+            // Meeting actions
+            function joinMeeting(meetingId) {
+                console.log(`Rejoindre la réunion: ${meetingId}`);
+                window.location.href = 'meeting-room.html';
+            }
+
+            function viewDetails(meetingId) {
+                console.log(`Voir détails de la réunion: ${meetingId}`);
+                
+                // Show meeting details modal
+                const details = {
+                    'roadmap': {
+                        title: 'Revue Roadmap Produit',
+                        description: 'Discussion sur la feuille de route produit pour le trimestre prochain',
+                        participants: ['John Doe', 'Jane Smith', '+2'],
+                        duration: '45min',
+                        location: 'Salle de conférence A'
+                    },
+                    'pitch': {
+                        title: 'Préparation Pitch Investisseurs',
+                        description: 'Session de préparation pour le pitch auprès des investisseurs',
+                        participants: ['Alice Johnson', 'Bob Wilson'],
+                        duration: '30min',
+                        location: 'Salle de réunion B'
+                    }
+                };
+
+                const meeting = details[meetingId];
+                if (meeting) {
+                    alert(`
+${meeting.title}
+${meeting.description}
+Participants: ${meeting.participants.join(', ')}
+Durée: ${meeting.duration}
+Lieu: ${meeting.location}
+                    `.trim());
+                }
+            }
+
+            function createNewMeeting() {
+                const title = prompt('Titre de la réunion:');
+                if (!title) return;
+
+                const date = prompt('Date (JJ/MM):');
+                const time = prompt('Heure (HH:MM):');
+                const duration = prompt('Durée (minutes):');
+
+                if (date && time && duration) {
+                    console.log(`Nouvelle réunion créée: ${title} le ${date} à ${time} pour ${duration} minutes`);
+                    
+                    // Add new meeting card (simulation)
+                    const meetingCards = document.querySelector('.space-y-md');
+                    const newCard = document.createElement('div');
+                    newCard.className = 'bg-surface-container-lowest rounded-xl border border-outline-variant p-md hover:bg-surface-container-low transition-colors group meeting-card fade-in';
+                    newCard.innerHTML = `
+                        <div class="flex justify-between items-start mb-sm">
+                            <div>
+                                <span class="font-label-md text-on-surface-variant uppercase mb-xs block">Nouveau</span>
+                                <h4 class="font-headline-sm text-headline-sm text-on-surface">${title}</h4>
+                            </div>
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 rounded-full bg-surface-container-high border-2 border-surface flex items-center justify-center font-label-sm text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">person_add</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-md text-on-surface-variant font-body-md mb-md">
+                            <div class="flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                <span>${date} à ${time}</span>
+                            </div>
+                            <div class="flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
+                                <span>${duration}min</span>
+                            </div>
+                        </div>
+                        <button class="w-full h-[48px] bg-white border border-secondary text-secondary font-headline-sm rounded-lg flex items-center justify-center gap-sm active:scale-95 transition-transform duration-150" onclick="viewDetails('new')">
+                            <span class="material-symbols-outlined">link</span>
+                            Voir les détails
+                        </button>
+                    `;
+                    
+                    meetingCards.insertBefore(newCard, meetingCards.firstChild);
+                    
+                    // Add fade-in animation
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .fade-in {
+                            animation: fadeIn 0.5s ease-out;
+                        }
+                        @keyframes fadeIn {
+                            from { opacity: 0; transform: translateY(-10px); }
+                            to { opacity: 1; transform: translateY(0); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+
+            function showSearch() {
+                const query = prompt('Rechercher une réunion:');
+                if (query) {
+                    console.log(`Recherche: ${query}`);
+                    // Filter meetings based on search query
+                    const meetingCards = document.querySelectorAll('.meeting-card');
+                    meetingCards.forEach(card => {
+                        const title = card.querySelector('h4').textContent.toLowerCase();
+                        if (title.includes(query.toLowerCase())) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            }
+
+            // Add hover effects to meeting cards
+            const meetingCards = document.querySelectorAll('.meeting-card');
+            meetingCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '';
+                });
+            });
+
+            // Simulate real-time updates
+            setInterval(() => {
+                const statusBadge = document.querySelector('.bg-secondary-container');
+                if (statusBadge) {
+                    const currentCount = parseInt(statusBadge.textContent);
+                    const newCount = Math.max(1, Math.min(5, currentCount + Math.floor(Math.random() * 3) - 1));
+                    statusBadge.textContent = `${newCount} EN DIRECT`;
+                }
+            }, 30000); // Update every 30 seconds
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add ripple effect styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .ripple {
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s ease-out;
+                    pointer-events: none;
+                }
+                
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'n':
+                    case 'N':
+                        createNewMeeting();
+                        break;
+                    case 's':
+                    case 'S':
+                        showSearch();
+                        break;
+                    case '/':
+                        showSearch();
+                        e.preventDefault();
+                        break;
+                }
+            });
+
+            // Simulate meeting reminders
+            setTimeout(() => {
+                const upcomingMeeting = document.querySelector('[data-status="upcoming"]');
+                if (upcomingMeeting) {
+                    upcomingMeeting.classList.add('animate-pulse');
+                    setTimeout(() => {
+                        upcomingMeeting.classList.remove('animate-pulse');
+                    }, 3000);
+                }
+            }, 5000); // Pulse first meeting after 5 seconds
+        });
+    </script>
+</body>
+</html>

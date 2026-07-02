@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Appel Vidéo - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-video-overlay {
+            background: linear-gradient(to top, rgba(0, 15, 34, 0.8) 0%, rgba(0, 15, 34, 0) 40%, rgba(0, 15, 34, 0) 60%, rgba(0, 15, 34, 0.6) 100%);
+        }
+        .group-active {
+            transform: scale(0.90);
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen w-screen selection:bg-secondary-fixed">
+    <!-- Participant Video (Sarah Henderson) -->
+    <div class="fixed inset-0 z-0 bg-primary">
+        <img alt="Vidéo Sarah Henderson" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjXdo3XR4mHwk1W9lUEt2S1gxjW5lr33S755LIR-cwfxJCPys0FMA8Cr6Y2Kxk6uZFwmTDTvT6qwwNsvA9qS410UFwi5LQR915mK3Haax60EFotW2hcOzs8wbtvrYdVlwlb6M-NkOVgZ5fIdP56M_w6A4a_-v2ZXRoGQ1Hli7uxNzPpjRC4o79Id-gtqqyjXDplIYBEe0qD3HEYEIfdya6VnxMJkF9dNezHlFtVqyEtgTW04fdAZf0V496_MJ1f1mzdNU5ZkUMxGs"/>
+        <div class="absolute inset-0 bg-video-overlay pointer-events-none"></div>
+    </div>
+
+    <!-- Header Overlay -->
+    <div class="fixed top-0 left-0 w-full z-20 flex items-center justify-between px-margin py-lg pt-12">
+        <div class="flex flex-col">
+            <h1 class="text-white font-headline-sm tracking-tight">Sarah Henderson</h1>
+            <div class="flex items-center gap-xs mt-1">
+                <span class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></span>
+                <span class="text-white/80 font-label-md">12:45</span>
+            </div>
+        </div>
+        <button class="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20 active:scale-95 transition-transform duration-200" onclick="showCallOptions()">
+            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+        </button>
+    </div>
+
+    <!-- Self-View (Picture-in-Picture) -->
+    <div class="fixed top-margin right-margin mt-12 z-20 w-32 h-48 sm:w-40 sm:h-56 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl" id="selfView">
+        <img alt="Vue personnelle" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6GhdxdAuN13m3alpza3mD_LLclOOuBM-aQxeEYdu-Jf-yzwjy0iJcaemVFAQ1w8K3V0Bbc7SurT10YwsKbBDGROE2LLv2meu8gA5Ic65VEgpqRWdMGjKCbDpvGa34G6coccsEkuTA4L8Nf7aTRkdoW7Uo7BWKYziPgTfnCsugmqRHrOMacPSaPPYRK7OoaI6pqjKyJbLuGmF1XAKONd2e6MNgaUJmgc_24DQMyKb1_2gFyKw7jNb4k7Lv0y5J6exadStbMjkic-k"/>
+        <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/40 backdrop-blur-sm">
+            <span class="text-white font-label-sm">Vous</span>
+        </div>
+    </div>
+
+    <!-- Floating Call Controls -->
+    <div class="fixed bottom-0 left-0 w-full z-30 flex justify-center pb-xl">
+        <div class="flex items-center gap-md bg-white/10 backdrop-blur-2xl border border-white/20 rounded-[32px] px-lg py-md shadow-2xl">
+            <!-- Mute Toggle -->
+            <button class="flex flex-col items-center gap-unit group" onclick="toggleMute()">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-white/10 text-white group-active:scale-90 transition-all duration-200 hover:bg-white/20 border border-white/10" id="muteButton">
+                    <span class="material-symbols-outlined" data-icon="mic">mic</span>
+                </div>
+                <span class="text-white/70 font-label-sm uppercase tracking-tighter">Muet</span>
+            </button>
+
+            <!-- Video Toggle -->
+            <button class="flex flex-col items-center gap-unit group" onclick="toggleVideo()">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-white/10 text-white group-active:scale-90 transition-all duration-200 hover:bg-white/20 border border-white/10" id="videoButton">
+                    <span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+                </div>
+                <span class="text-white/70 font-label-sm uppercase tracking-tighter">Vidéo</span>
+            </button>
+
+            <!-- Switch Camera -->
+            <button class="flex flex-col items-center gap-unit group" onclick="switchCamera()">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-white/10 text-white group-active:scale-90 transition-all duration-200 hover:bg-white/20 border border-white/10">
+                    <span class="material-symbols-outlined" data-icon="flip_camera_ios">flip_camera_ios</span>
+                </div>
+                <span class="text-white/70 font-label-sm uppercase tracking-tighter">Changer</span>
+            </button>
+
+            <!-- Share Screen -->
+            <button class="flex flex-col items-center gap-unit group" onclick="shareScreen()">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-white/10 text-white group-active:scale-90 transition-all duration-200 hover:bg-white/20 border border-white/10">
+                    <span class="material-symbols-outlined" data-icon="present_to_all">present_to_all</span>
+                </div>
+                <span class="text-white/70 font-label-sm uppercase tracking-tighter">Partager</span>
+            </button>
+
+            <!-- Divider -->
+            <div class="w-px h-10 bg-white/20 mx-xs"></div>
+
+            <!-- End Call -->
+            <button class="flex flex-col items-center gap-unit group" onclick="endCall()">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-error text-white group-active:scale-90 transition-all duration-200 shadow-lg shadow-error/30 hover:brightness-110">
+                    <span class="material-sports-outlined" data-icon="call_end" style="font-variation-settings: 'FILL' 1;">call_end</span>
+                </div>
+                <span class="text-error font-label-sm uppercase tracking-tighter">Terminer</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Active Participants Indicators (Bottom Left) -->
+    <div class="fixed bottom-xl left-margin z-20 flex items-center gap-sm">
+        <div class="flex -space-x-3">
+            <div class="w-8 h-8 rounded-full border-2 border-primary-container overflow-hidden">
+                <img alt="Utilisateur" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9oaU8-qWnyjQ1VRtzFHvM5imbdmj8dWBabCM4wKt360AxrkBPqPVKmN1p9EgMZfa2UvEYMknQBc44Kayuq1pM1gRNAAo0XqPCaKs_zMOIaGoSmtLePrP0nUunLVx9F6JNnZ4GHSEJ7zEofkMnGfneUSudugBDlM5XU9lIWukIzCLorI6ovYJVd_80T4mlDBsJf8FeR7wTg-FEGhfjRkyUEiGt8mB7DnbjXjxD5XmAQXHvydxpFanmEciHunGmOuYFBpAXznnKTVQ"/>
+            </div>
+            <div class="w-8 h-8 rounded-full border-2 border-primary-container bg-surface-container-highest flex items-center justify-center">
+                <span class="text-[10px] font-bold text-on-surface">+3</span>
+            </div>
+        </div>
+        <div class="px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm border border-white/10">
+            <span class="text-white font-label-sm">Synchronisation Projet Interne</span>
+        </div>
+    </div>
+
+    <!-- Call Signal Strength (Top Left) -->
+    <div class="fixed top-margin left-margin z-20 flex items-center gap-xs">
+        <span class="material-symbols-outlined text-secondary-fixed text-sm" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+        <span class="text-white/60 font-label-sm">Haute Qualité</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let callStartTime = Date.now();
+            let callTimer = null;
+            let isMuted = false;
+            let isVideoOn = true;
+            let isScreenSharing = false;
+            let currentCamera = 'user';
+
+            // Start call timer
+            function startCallTimer() {
+                callTimer = setInterval(() => {
+                    const elapsed = Date.now() - callStartTime;
+                    const minutes = Math.floor(elapsed / 60000);
+                    const seconds = Math.floor((elapsed % 60000) / 1000);
+                    
+                    const timeElement = document.querySelector('.text-white/80.font-label-md');
+                    if (timeElement) {
+                        timeElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }
+                }, 1000);
+            }
+
+            // Mute toggle
+            function toggleMute() {
+                isMuted = !isMuted;
+                const muteButton = document.getElementById('muteButton');
+                const icon = muteButton.querySelector('.material-symbols-outlined');
+                
+                if (isMuted) {
+                    icon.textContent = 'mic_off';
+                    muteButton.classList.add('bg-error/20');
+                    muteButton.classList.remove('bg-white/10');
+                    console.log('Microphone muet');
+                } else {
+                    icon.textContent = 'mic';
+                    muteButton.classList.remove('bg-error/20');
+                    muteButton.classList.add('bg-white/10');
+                    console.log('Microphone activé');
+                }
+            }
+
+            // Video toggle
+            function toggleVideo() {
+                isVideoOn = !isVideoOn;
+                const videoButton = document.getElementById('videoButton');
+                const icon = videoButton.querySelector('.material-symbols-outlined');
+                
+                if (isVideoOn) {
+                    icon.textContent = 'videocam';
+                    videoButton.classList.add('bg-white/10');
+                    videoButton.classList.remove('bg-error/20');
+                    console.log('Vidéo activé');
+                } else {
+                    icon.textContent = 'videocam_off';
+                    videoButton.classList.add('bg-error/20');
+                    videoButton.classList.remove('bg-white/10');
+                    console.log('Vidéo désactivé');
+                }
+            }
+
+            // Switch camera
+            function switchCamera() {
+                const selfView = document.getElementById('selfView');
+                const img = selfView.querySelector('img');
+                
+                // Simulate camera switch
+                if (currentCamera === 'user') {
+                    // Switch to back camera (simulated)
+                    img.src = 'https://picsum.photos/seed/backcamera/320/240.jpg';
+                    currentCamera = 'back';
+                    console.log('Caméra arrière activée');
+                } else {
+                    // Switch back to user camera
+                    img.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6GhdxdAuN13m3alpza3mD_LLclOOuBM-aQxeEYdu-Jf-yzwjy0iJcaemVFAQ1w8K3V0Bbc7SurT10YwsKbBDGROE2LLv2meu8gA5Ic65VEgpqRWdMGjKCbDpvGa34G6coccsEkuTA4L8Nf7aTRkdoW7Uo7BWKYziPgTfnCsugmqRHrOMacPSaPPYRK7OoaI6pqjKyJbLuGmF1XAKONd2e6MNgaUJmgc_24DQMyKb1_2gFyKw7jNb4k7Lv0y5J6exadStbMjkic-k';
+                    currentCamera = 'user';
+                    console.log('Caméra avant activée');
+                }
+                
+                // Add animation
+                selfView.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    selfView.style.transform = 'scale(1)';
+                }, 200);
+            }
+
+            // Share screen
+            function shareScreen() {
+                isScreenSharing = !isScreenSharing;
+                
+                if (isScreenSharing) {
+                    // Stop screen sharing
+                    console.log('Partage d\'écran arrêté');
+                    // In a real app, this would stop the screen capture
+                } else {
+                    // Start screen sharing
+                    console.log('Partage d\'écran démarré');
+                    // In a real app, this would use getDisplayMedia API
+                    if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+                        navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+                            .then(stream => {
+                                console.log('Screen sharing started');
+                                // Handle the stream
+                            })
+                            .catch(err => {
+                                console.error('Error accessing screen:', err);
+                                alert('Le partage d\'écran n\'est pas supporté sur cet appareil');
+                            });
+                    } else {
+                        alert('Le partage d\'écran n\'est pas supporté sur cet appareil');
+                    }
+                }
+                
+                // Update button state
+                const shareButton = event.target.closest('.group').querySelector('.material-symbols-outlined');
+                if (shareButton) {
+                    shareButton.textContent = isScreenSharing ? 'stop_screen_share' : 'present_to_all';
+                }
+            }
+
+            // End call
+            function endCall() {
+                clearInterval(callTimer);
+                const duration = document.querySelector('.text-white/80.font-label-md').textContent;
+                
+                if (confirm(`Terminer l'appel vidéo (Durée: ${duration})?`)) {
+                    // Navigate back to calls list
+                    window.location.href = 'calls-tailwind.html';
+                }
+            }
+
+            // Show call options
+            function showCallOptions() {
+                const options = [
+                    'Enregistrer appel vidéo',
+                    'Ajouter participant',
+                    'Transférer appel',
+                    'Notes d\'appel',
+                    'Qualité vidéo',
+                    'Arrière-plan virtuel',
+                    'Tableau blanc',
+                    'Effets visuels'
+                ];
+                
+                const selected = prompt(`Options d'appel vidéo:\n${options.map((opt, i) => `${i + 1}. ${opt}`).join('\n')}`);
+                
+                if (selected) {
+                    const index = parseInt(selected) - 1;
+                    if (index >= 0 && index < options.length) {
+                        alert(`Action: ${options[index]}`);
+                        
+                        // Handle specific options
+                        if (index === 5) { // Video quality
+                            changeVideoQuality();
+                        } else if (index === 6) { // Virtual background
+                            toggleVirtualBackground();
+                        }
+                    }
+                }
+            }
+
+            // Change video quality
+            function changeVideoQuality() {
+                const qualities = ['HD (1080p)', 'SD (480p)', 'Low (240p)'];
+                const selected = prompt(`Qualité vidéo:\n${qualities.map((q, i) => `${i + 1}. ${q}`).join('\n')}`);
+                
+                if (selected) {
+                    const index = parseInt(selected) - 1;
+                    if (index >= 0 && index < qualities.length) {
+                        console.log(`Qualité vidéo changée vers: ${qualities[index]}`);
+                        // In a real app, this would adjust the video resolution
+                    }
+                }
+            }
+
+            // Toggle virtual background
+            function toggleVirtualBackground() {
+                const backgrounds = ['Bureau', 'Flou', 'Abstract', 'Logo Opportun'];
+                const selected = prompt(`Arrière-plan virtuel:\n${backgrounds.map((bg, i) => `${i + 1}. ${bg}`).join('\n')}`);
+                
+                if (selected) {
+                    const index = parseInt(selected) - 1;
+                    if (index >= 0 && index < backgrounds.length) {
+                        console.log(`Arrière-plan changé vers: ${backgrounds[index]}`);
+                        // In a real app, this would apply a virtual background
+                    }
+                }
+            }
+
+            // Simulate participant join/leave
+            function simulateParticipantActivity() {
+                // Random participant events
+                const events = [
+                    'Marie a rejoint l\'appel',
+                    'Thomas a quitté l\'appel',
+                    'Sophie a activé son audio',
+                    'Paul a désactivé son vidéo'
+                ];
+                
+                setInterval(() => {
+                    const randomEvent = events[Math.floor(Math.random() * events.length)];
+                    console.log(randomEvent);
+                    
+                    // Update participant count
+                    const participantCount = document.querySelector('.text-on-surface');
+                    if (participantCount && participantCount.textContent === '+3') {
+                        // Randomly change between +2, +3, +4
+                        const counts = ['+2', '+3', '+4'];
+                        participantCount.textContent = counts[Math.floor(Math.random() * counts.length)];
+                    }
+                }, 15000); // Every 15 seconds
+            }
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'm':
+                    case 'M':
+                        toggleMute();
+                        break;
+                    case 'v':
+                    case 'V':
+                        toggleVideo();
+                        break;
+                    case 'c':
+                    case 'C':
+                        switchCamera();
+                        break;
+                    case 's':
+                    case 'S':
+                        shareScreen();
+                        break;
+                    case 'Escape':
+                        showCallOptions();
+                        break;
+                    case 'End':
+                        endCall();
+                        break;
+                }
+            });
+
+            // Handle visibility change
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    console.log('Appel vidéo continue en arrière-plan');
+                    // In a real app, this would pause video processing
+                } else {
+                    console.log('Appel vidéo revenu au premier plan');
+                    // In a real app, this would resume video processing
+                }
+            });
+
+            // Prevent accidental navigation
+            window.addEventListener('beforeunload', (e) => {
+                e.preventDefault();
+                e.returnValue = 'Un appel vidéo est en cours. Êtes-vous sûr de vouloir quitter?';
+            });
+
+            // Add visual feedback for button presses
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('group-active');
+                    setTimeout(() => {
+                        this.classList.remove('group-active');
+                    }, 200);
+                });
+            });
+
+            // Initialize call
+            startCallTimer();
+            simulateParticipantActivity();
+
+            // Add ripple effect to buttons
+            const style = document.createElement('style');
+            style.textContent = `
+                .group-active {
+                    transform: scale(0.90);
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Simulate connection quality changes
+            setInterval(() => {
+                const signalElement = document.querySelector('.text-white/60.font-label-sm');
+                if (signalElement) {
+                    const qualities = ['Haute Qualité', 'Qualité Moyenne', 'Faible Qualité'];
+                    const randomQuality = qualities[Math.floor(Math.random() * qualities.length)];
+                    signalElement.textContent = randomQuality;
+                    
+                    // Update signal icon color based on quality
+                    const iconElement = document.querySelector('[data-icon="signal_cellular_alt"]');
+                    if (iconElement) {
+                        if (randomQuality === 'Haute Qualité') {
+                            iconElement.style.color = '#48bb78';
+                        } else if (randomQuality === 'Qualité Moyenne') {
+                            iconElement.style.color = '#f59e0b';
+                        } else {
+                            iconElement.style.color = '#ef4444';
+                        }
+                    }
+                }
+            }, 10000); // Every 10 seconds
+
+            // Add haptic feedback for mobile
+            function vibrate(pattern) {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(pattern);
+                }
+            }
+
+            // Vibrate on button press (mobile)
+            if ('vibrate' in navigator) {
+                document.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        vibrate(50);
+                    });
+                });
+            }
+
+            // Simulate video stream quality changes
+            function updateVideoQuality() {
+                const video = document.querySelector('img[alt="Vidéo Sarah Henderson"]');
+                if (video) {
+                    // In a real app, this would adjust the actual video stream quality
+                    // For demo, we'll simulate with opacity changes
+                    const qualities = [1.0, 0.8, 0.6];
+                    const randomQuality = qualities[Math.floor(Math.random() * qualities.length)];
+                    video.style.opacity = randomQuality;
+                }
+            }
+
+            // Simulate network latency
+            function simulateLatency() {
+                setInterval(() => {
+                    const latency = Math.random() * 200 + 50; // 50-250ms
+                    console.log(`Latence: ${Math.round(latency)}ms`);
+                    // In a real app, this would affect WebRTC performance
+                }, 5000);
+            }
+
+            // Initialize simulations
+            updateVideoQuality();
+            simulateLatency();
+        });
+    </script>
+</body>
+</html>

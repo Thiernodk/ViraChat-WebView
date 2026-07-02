@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Fichiers - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        .no-scrollbar::-webkit-scrollbar { 
+            display: none; 
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-5 h-16">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-secondary">
+                <img alt="Photo de profil" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuBZ_eFOtx1mr2JAoxAdb5EhPSQT47c4PMl1FwAikf2JpDgh9IH5gpxQ_eSHJnfEfesG6mACED1HrZb5Ae5pqbzOdLG_HtB-a56fBipyKJjeuRq_6blP1cZv2DCCBbUGr5Temxj79igJPIC7aiOswHaiF-apQXZ6G1BIQXwq0dGzQaiCKzJ9Hk--Nt5WaRzvCCXn-J90gWbGqwUZ8DDUFI37tAdHP1ter2dD5XFZfZ80xgThBRTtmnC_UV7yFywggsKomJrLJom6k_o"/>
+            </div>
+            <h1 class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tighter">Opportun</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95" onclick="showSearch()">
+                <span class="material-symbols-outlined text-slate-500 dark:text-slate-400">search</span>
+            </button>
+            <button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95" onclick="showMoreOptions()">
+                <span class="material-symbols-outlined text-slate-500 dark:text-slate-400">more_vert</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="pt-20 px-margin space-y-lg max-w-4xl mx-auto">
+        <!-- Search and Filter Bar -->
+        <section class="flex gap-sm">
+            <div class="flex-1 relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-body-lg">search</span>
+                <input class="w-full pl-10 pr-4 py-3 bg-surface-container-low border-none rounded-xl text-body-md focus:ring-2 focus:ring-primary-container placeholder:text-on-surface-variant/50 transition-all" 
+                       placeholder="Rechercher des fichiers partagés..." 
+                       type="text" 
+                       id="searchInput"/>
+            </div>
+            <button class="bg-surface-container-low p-3 rounded-xl hover:bg-surface-container transition-colors" onclick="showFilters()">
+                <span class="material-symbols-outlined text-on-surface-variant">filter_list</span>
+            </button>
+        </section>
+
+        <!-- Folder Structure Horizontal Scroll -->
+        <section class="space-y-sm">
+            <h2 class="font-headline-sm text-headline-sm px-1">Dossiers Principaux</h2>
+            <div class="flex gap-md overflow-x-auto no-scrollbar pb-2">
+                <div class="min-w-[140px] p-md bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col gap-sm cursor-pointer hover:bg-surface-container transition-colors" onclick="openFolder('legal')">
+                    <span class="material-symbols-outlined text-4xl text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">folder</span>
+                    <div>
+                        <p class="font-label-md text-label-md text-on-surface">Département Juridique</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">42 Fichiers</p>
+                    </div>
+                </div>
+                <div class="min-w-[140px] p-md bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col gap-sm cursor-pointer hover:bg-surface-container transition-colors" onclick="openFolder('finances')">
+                    <span class="material-symbols-outlined text-4xl text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">folder</span>
+                    <div>
+                        <p class="font-label-md text-label-md text-on-surface">Finances</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">128 Fichiers</p>
+                    </div>
+                </div>
+                <div class="min-w-[140px] p-md bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col gap-sm cursor-pointer hover:bg-surface-container transition-colors" onclick="openFolder('projects')">
+                    <span class="material-symbols-outlined text-4xl text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">folder</span>
+                    <div>
+                        <p class="font-label-md text-label-md text-on-surface">Projets 2026</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">315 Fichiers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabbed Navigation -->
+        <section>
+            <div class="flex border-b border-outline-variant/30 mb-md">
+                <button class="flex-1 py-3 font-label-md text-label-md text-secondary border-b-2 border-secondary" id="documentsTab" onclick="switchTab('documents')">Documents</button>
+                <button class="flex-1 py-3 font-label-md text-label-md text-on-surface-variant/60 hover:text-on-surface transition-colors" id="imagesTab" onclick="switchTab('images')">Images</button>
+                <button class="flex-1 py-3 font-label-md text-label-md text-on-surface-variant/60 hover:text-on-surface transition-colors" id="videosTab" onclick="switchTab('videos')">Vidéos</button>
+            </div>
+
+            <!-- High-Density File List -->
+            <div class="space-y-sm" id="fileList">
+                <!-- File Item 1 -->
+                <div class="flex items-center gap-md p-md bg-surface-container-lowest border border-outline-variant/40 rounded-xl hover:border-secondary/30 transition-all group file-item" data-type="pdf">
+                    <div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">description</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-label-md text-body-md text-on-surface truncate">Revue_Stratégique_Q3_v2.pdf</h3>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">2.4 MB • 12 Oct 2025</p>
+                    </div>
+                    <button class="p-2 rounded-full bg-secondary-container/10 text-on-secondary-container hover:bg-secondary-container/30 transition-colors" onclick="downloadFile('Q3_Strategic_Review_v2.pdf')">
+                        <span class="material-symbols-outlined">download</span>
+                    </button>
+                </div>
+
+                <!-- File Item 2 (Image Thumbnail Style) -->
+                <div class="flex items-center gap-md p-md bg-surface-container-lowest border border-outline-variant/40 rounded-xl hover:border-secondary/30 transition-all group file-item" data-type="image">
+                    <div class="w-12 h-12 rounded-lg overflow-hidden relative">
+                        <img alt="Miniature" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuD1aS52XfozqtETvRBPgtiWkkoKbtlBD43gw47RjDVhOgtHfYQIHoc4RCxLpkOthwiyPf-zleG7uSfdYKZJ_LIbWCyTKNNoxNb9rXvaLoMpsfACPwFvkxcqrNsOwTIKHHuqfsdBR_PrPuY19_86ZYI95xX7ENZ5QoWWkyiLSIBda8pGlelPGOKy3-7xJQU01Su9p85Yf0hDhRt2Ms7B3MhRhWeRpNZ65KY1O5UecpW6F8lRq5E8kaQnxJ14xghVFQJFUD5Oi-ZCryE"/>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-label-md text-body-md text-on-surface truncate">Plan_Expansion_Bureau.jpg</h3>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">8.1 MB • 10 Oct 2025</p>
+                    </div>
+                    <button class="p-2 rounded-full bg-secondary-container/10 text-on-secondary-container hover:bg-secondary-container/30 transition-colors" onclick="downloadFile('Office_Expansion_Blueprint.jpg')">
+                        <span class="material-symbols-outlined">download</span>
+                    </button>
+                </div>
+
+                <!-- File Item 3 -->
+                <div class="flex items-center gap-md p-md bg-surface-container-lowest border border-outline-variant/40 rounded-xl hover:border-secondary/30 transition-all group file-item" data-type="excel">
+                    <div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">table_chart</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-label-md text-body-md text-on-surface truncate">Projection_Revenu_Annuel.xlsx</h3>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">512 KB • 8 Oct 2025</p>
+                    </div>
+                    <button class="p-2 rounded-full bg-secondary-container/10 text-on-secondary-container hover:bg-secondary-container/30 transition-colors" onclick="downloadFile('Annual_Revenue_Projection.xlsx')">
+                        <span class="material-symbols-outlined">download</span>
+                    </button>
+                </div>
+
+                <!-- File Item 4 -->
+                <div class="flex items-center gap-md p-md bg-surface-container-lowest border border-outline-variant/40 rounded-xl hover:border-secondary/30 transition-all group file-item" data-type="ppt">
+                    <div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">slideshow</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-label-md text-body-md text-on-surface truncate">Présentation_Board_Oct.pptx</h3>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">15.4 MB • 5 Oct 2025</p>
+                    </div>
+                    <button class="p-2 rounded-full bg-secondary-container/10 text-on-secondary-container hover:bg-secondary-container/30 transition-colors" onclick="downloadFile('Board_Meeting_Deck_Oct.pptx')">
+                        <span class="material-symbols-outlined">download</span>
+                    </button>
+                </div>
+
+                <!-- File Item 5 -->
+                <div class="flex items-center gap-md p-md bg-surface-container-lowest border border-outline-variant/40 rounded-xl hover:border-secondary/30 transition-all group file-item" data-type="pdf">
+                    <div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">description</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-label-md text-body-md text-on-surface truncate">Contrat_Renouvellement_Signé.pdf</h3>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">1.1 MB • 29 Sep 2025</p>
+                    </div>
+                    <button class="p-2 rounded-full bg-secondary-container/10 text-on-secondary-container hover:bg-secondary-container/30 transition-colors" onclick="downloadFile('Contract_Renewal_Signed.pdf')">
+                        <span class="material-symbols-outlined">download</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Chip Section -->
+        <section class="flex flex-wrap gap-sm pt-md">
+            <div class="px-3 py-1.5 rounded-full bg-secondary/15 text-secondary flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                <span class="font-label-sm text-label-sm">Projet Actif</span>
+            </div>
+            <div class="px-3 py-1.5 rounded-full bg-primary/5 text-primary-container flex items-center gap-1.5 border border-outline-variant/20">
+                <span class="font-label-sm text-label-sm">Total: 4.2 GB utilisés</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- FAB for Upload -->
+    <button class="fixed bottom-24 right-6 w-14 h-14 bg-secondary text-on-secondary rounded-2xl shadow-xl flex items-center justify-center z-40 active:scale-90 transition-transform" onclick="uploadFile()">
+        <span class="material-symbols-outlined text-3xl">add</span>
+    </button>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe-offset-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_24px_rgba(10,37,64,0.06)]">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="home-tailwind.html">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Accueil</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="chats-tailwind.html">
+            <span class="material-symbols-outlined">chat_bubble</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Messages</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl px-4 py-1.5 active:scale-90 duration-150 ease-out" href="files-tailwind.html">
+            <span class="material-symbols-outlined">folder</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Fichiers</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="calls-tailwind.html">
+            <span class="material-symbols-outlined">call</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Appels</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" href="profile-tailwind.html">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest font-inter mt-1">Profil</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const fileList = document.getElementById('fileList');
+            const fileItems = document.querySelectorAll('.file-item');
+
+            // Search functionality
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                fileItems.forEach(item => {
+                    const fileName = item.querySelector('h3').textContent.toLowerCase();
+                    const fileType = item.querySelector('p').textContent.toLowerCase();
+                    
+                    if (fileName.includes(query) || fileType.includes(query)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            // Tab switching
+            function switchTab(tabName) {
+                // Reset all tabs
+                document.getElementById('documentsTab').classList.remove('text-secondary', 'border-b-2', 'border-secondary');
+                document.getElementById('documentsTab').classList.add('text-on-surface-variant/60', 'hover:text-on-surface', 'transition-colors');
+                
+                document.getElementById('imagesTab').classList.remove('text-secondary', 'border-b-2', 'border-secondary');
+                document.getElementById('imagesTab').classList.add('text-on-surface-variant/60', 'hover:text-on-surface', 'transition-colors');
+                
+                document.getElementById('videosTab').classList.remove('text-secondary', 'border-b-2', 'border-secondary');
+                document.getElementById('videosTab').classList.add('text-on-surface-variant/60', 'hover:text-on-surface', 'transition-colors');
+
+                // Activate selected tab
+                const selectedTab = document.getElementById(tabName + 'Tab');
+                selectedTab.classList.remove('text-on-surface-variant/60', 'hover:text-on-surface', 'transition-colors');
+                selectedTab.classList.add('text-secondary', 'border-b-2', 'border-secondary');
+
+                // Filter files based on tab
+                filterFilesByType(tabName);
+            }
+
+            function filterFilesByType(type) {
+                fileItems.forEach(item => {
+                    const itemType = item.dataset.type;
+                    
+                    switch(type) {
+                        case 'documents':
+                            if (['pdf', 'excel', 'ppt'].includes(itemType)) {
+                                item.style.display = 'flex';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                            break;
+                        case 'images':
+                            if (itemType === 'image') {
+                                item.style.display = 'flex';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                            break;
+                        case 'videos':
+                            if (itemType === 'video') {
+                                item.style.display = 'flex';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                            break;
+                    }
+                });
+            }
+
+            // File operations
+            function downloadFile(fileName) {
+                console.log(`Téléchargement du fichier: ${fileName}`);
+                
+                // Simulate download
+                const progressBar = document.createElement('div');
+                progressBar.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-white border border-slate-200 rounded-lg p-4 shadow-xl z-50';
+                progressBar.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white text-sm">download</span>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-sm">Téléchargement en cours...</p>
+                            <p class="text-xs text-slate-500">${fileName}</p>
+                        </div>
+                    </div>
+                    <div class="mt-2 bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div class="bg-secondary h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                `;
+                
+                document.body.appendChild(progressBar);
+                
+                // Animate progress
+                const progressFill = progressBar.querySelector('.bg-secondary');
+                setTimeout(() => {
+                    progressFill.style.width = '100%';
+                }, 100);
+                
+                // Remove after completion
+                setTimeout(() => {
+                    progressBar.remove();
+                    alert(`Fichier ${fileName} téléchargé avec succès!`);
+                }, 2000);
+            }
+
+            function uploadFile() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.multiple = true;
+                input.accept = '*/*';
+                
+                input.addEventListener('change', (e) => {
+                    const files = Array.from(e.target.files);
+                    
+                    if (files.length === 0) return;
+                    
+                    files.forEach((file, index) => {
+                        const newFileItem = document.createElement('div');
+                        newFileItem.className = 'flex items-center gap-md p-md bg-surface-container-lowest border border-outline-variant/40 rounded-xl hover:border-secondary/30 transition-all group file-item fade-in';
+                        newFileItem.dataset.type = getFileType(file.name);
+                        
+                        const icon = getFileIcon(file.name);
+                        
+                        newFileItem.innerHTML = `
+                            <div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary">${icon}</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-label-md text-body-md text-on-surface truncate">${file.name}</h3>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">${formatFileSize(file.size)} • ${new Date().toLocaleDateString('fr-FR')}</p>
+                            </div>
+                            <button class="p-2 rounded-full bg-secondary-container/10 text-on-secondary-container hover:bg-secondary-container/30 transition-colors" onclick="downloadFile('${file.name}')">
+                                <span class="material-symbols-outlined">download</span>
+                            </button>
+                        `;
+                        
+                        fileList.insertBefore(newFileItem, fileList.firstChild);
+                        
+                        // Add fade-in animation
+                        setTimeout(() => {
+                            newFileItem.style.opacity = '1';
+                        }, index * 100);
+                    });
+                    
+                    // Update stats
+                    updateFileStats();
+                });
+                
+                input.click();
+            }
+
+            function getFileType(fileName) {
+                const extension = fileName.split('.').pop().toLowerCase();
+                const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'];
+                const videoTypes = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm'];
+                const documentTypes = ['pdf', 'doc', 'docx', 'txt'];
+                const spreadsheetTypes = ['xls', 'xlsx', 'csv'];
+                const presentationTypes = ['ppt', 'pptx'];
+                
+                if (imageTypes.includes(extension)) return 'image';
+                if (videoTypes.includes(extension)) return 'video';
+                if (documentTypes.includes(extension)) return 'pdf';
+                if (spreadsheetTypes.includes(extension)) return 'excel';
+                if (presentationTypes.includes(extension)) return 'ppt';
+                return 'unknown';
+            }
+
+            function getFileIcon(fileName) {
+                const type = getFileType(fileName);
+                const icons = {
+                    'image': 'image',
+                    'video': 'videocam',
+                    'pdf': 'description',
+                    'excel': 'table_chart',
+                    'ppt': 'slideshow',
+                    'unknown': 'insert_drive_file'
+                };
+                return icons[type] || 'insert_drive_file';
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+            }
+
+            function updateFileStats() {
+                // Update file count and storage usage
+                const totalFiles = document.querySelectorAll('.file-item').length;
+                const totalSize = totalFiles * 1024 * 1024; // Simulate 1MB per file
+                
+                const statsContainer = document.querySelector('.flex.flex-wrap.gap-sm');
+                if (statsContainer) {
+                    // Update or create stats chips
+                    let projectChip = statsContainer.querySelector('.bg-secondary\\/15');
+                    let storageChip = statsContainer.querySelector('.bg-primary\\/5');
+                    
+                    if (!projectChip) {
+                        projectChip = document.createElement('div');
+                        projectChip.className = 'px-3 py-1.5 rounded-full bg-secondary/15 text-secondary flex items-center gap-1.5';
+                        projectChip.innerHTML = `
+                            <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                            <span class="font-label-sm text-label-sm">Projet Actif</span>
+                        `;
+                        statsContainer.appendChild(projectChip);
+                    }
+                    
+                    if (!storageChip) {
+                        storageChip = document.createElement('div');
+                        storageChip.className = 'px-3 py-1.5 rounded-full bg-primary/5 text-primary-container flex items-center gap-1.5 border border-outline-variant/20';
+                        storageChip.innerHTML = `
+                            <span class="font-label-sm text-label-sm">Total: ${formatFileSize(totalSize)} utilisés</span>
+                        `;
+                        statsContainer.appendChild(storageChip);
+                    }
+                }
+            }
+
+            function openFolder(folderName) {
+                console.log(`Ouverture du dossier: ${folderName}`);
+                alert(`Dossier "${folderName}" ouvert avec ${Math.floor(Math.random() * 50) + 10} fichiers`);
+            }
+
+            function showSearch() {
+                searchInput.focus();
+            }
+
+            function showFilters() {
+                const filters = ['Tous les fichiers', 'Documents', 'Images', 'Vidéos', 'Récents', 'Partagés avec moi'];
+                const selected = prompt(`Filtres:\n${filters.map((f, i) => `${i + 1}. ${f}`).join('\n')}`);
+                
+                if (selected) {
+                    const index = parseInt(selected) - 1;
+                    if (index >= 0 && index < filters.length) {
+                        console.log(`Filtre appliqué: ${filters[index]}`);
+                        searchInput.value = filters[index] === 'Tous les fichiers' ? '' : filters[index];
+                        searchInput.dispatchEvent(new Event('input'));
+                    }
+                }
+            }
+
+            function showMoreOptions() {
+                const options = [
+                    'Trier par nom',
+                    'Trier par date',
+                    'Trier par taille',
+                    'Afficher la grille',
+                    'Afficher la liste',
+                    'Voir les détails'
+                ];
+                
+                const selected = prompt(`Options:\n${options.map((o, i) => `${i + 1}. ${o}`).join('\n')}`);
+                
+                if (selected) {
+                    const index = parseInt(selected) - 1;
+                    if (index >= 0 && index < options.length) {
+                        console.log(`Option sélectionnée: ${options[index]}`);
+                        alert(`Action: ${options[index]}`);
+                    }
+                }
+            }
+
+            // Add hover effects to file items
+            fileItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateY(-2px)';
+                    item.style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)';
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateY(0)';
+                    item.style.boxShadow = '';
+                });
+            });
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add ripple effect styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .ripple {
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s ease-out;
+                    pointer-events: none;
+                }
+                
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+                
+                .fade-in {
+                    animation: fadeIn 0.3s ease-out;
+                    opacity: 0;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'f':
+                    case 'F':
+                        if (e.ctrlKey || e.metaKey) {
+                            e.preventDefault();
+                            showSearch();
+                        }
+                        break;
+                    case 'u':
+                    case 'U':
+                        if (e.ctrlKey || e.metaKey) {
+                            e.preventDefault();
+                            uploadFile();
+                        }
+                        break;
+                    case '/':
+                        showSearch();
+                        e.preventDefault();
+                        break;
+                }
+            });
+
+            // Simulate real-time file updates
+            setInterval(() => {
+                const randomFile = fileItems[Math.floor(Math.random() * fileItems.length)];
+                if (randomFile) {
+                    randomFile.classList.add('animate-pulse');
+                    setTimeout(() => {
+                        randomFile.classList.remove('animate-pulse');
+                    }, 2000);
+                }
+            }, 10000); // Pulse random file every 10 seconds
+
+            // Initialize stats
+            updateFileStats();
+        });
+    </script>
+</body>
+</html>

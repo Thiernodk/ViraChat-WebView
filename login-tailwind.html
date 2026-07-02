@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<title>Opportun Messenger - Connexion</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex flex-col items-center justify-center p-margin">
+    <!-- Top Navigation Hidden for Transactional Login Flow as per UX Goal -->
+    <main class="w-full max-w-[440px] flex flex-col gap-lg">
+        <!-- Brand Header -->
+        <header class="flex flex-col items-center text-center gap-xs">
+            <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mb-md shadow-sm">
+                <span class="material-symbols-outlined text-white text-[28px]" data-icon="token">chat</span>
+            </div>
+            <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tighter">Opportun Messenger</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-[280px]">Accès sécurisé à votre espace de communication d'entreprise</p>
+        </header>
+        
+        <!-- Login Card -->
+        <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-xl shadow-[0_4px_24px_rgba(10,37,64,0.04)]">
+            <form class="flex flex-col gap-md" id="loginForm">
+                <!-- Email Field -->
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-md text-label-md text-on-surface-variant ml-unit" for="email">Email professionnel</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-md flex items-center pointer-events-none text-outline">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+                        </div>
+                        <input class="w-full h-[48px] pl-[48px] pr-md bg-surface-container-low border-transparent focus:border-primary-container focus:ring-0 rounded-lg font-body-md text-body-md text-on-surface transition-all placeholder:text-outline/50" 
+                               id="email" 
+                               name="email" 
+                               placeholder="nom@entreprise.com" 
+                               type="email"
+                               required>
+                    </div>
+                </div>
+                
+                <!-- Password Field -->
+                <div class="flex flex-col gap-xs">
+                    <div class="flex justify-between items-center ml-unit">
+                        <label class="font-label-md text-label-md text-on-surface-variant" for="password">Mot de passe</label>
+                        <a class="font-label-sm text-label-sm text-on-secondary-container hover:underline" href="#">Mot de passe oublié?</a>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-md flex items-center pointer-events-none text-outline">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span>
+                        </div>
+                        <input class="w-full h-[48px] pl-[48px] pr-[48px] bg-surface-container-low border-transparent focus:border-primary-container focus:ring-0 rounded-lg font-body-md text-body-md text-on-surface transition-all placeholder:text-outline/50" 
+                               id="password" 
+                               name="password" 
+                               placeholder="••••••••" 
+                               type="password"
+                               required>
+                        <button class="absolute inset-y-0 right-md flex items-center text-outline hover:text-on-surface transition-colors" 
+                                type="button"
+                                id="togglePassword">
+                            <span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Remember Me Toggle -->
+                <div class="flex items-center gap-sm mt-xs">
+                    <input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary-container/50" 
+                           id="remember" 
+                           name="remember" 
+                           type="checkbox">
+                    <label class="font-body-md text-body-md text-on-surface-variant select-none" for="remember">Se souvenir de cet appareil</label>
+                </div>
+                
+                <!-- Primary Action -->
+                <button class="w-full h-[48px] mt-sm bg-primary text-on-primary font-headline-sm text-headline-sm rounded-lg hover:bg-primary-container active:scale-[0.98] transition-all flex items-center justify-center gap-sm shadow-sm" 
+                        type="submit">
+                    Se connecter
+                    <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+                </button>
+            </form>
+            
+            <!-- SSO Dividers -->
+            <div class="relative my-xl">
+                <div aria-hidden="true" class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-outline-variant/30"></div>
+                </div>
+                <div class="relative flex justify-center">
+                    <span class="bg-surface-container-lowest px-md font-label-sm text-label-sm text-outline uppercase tracking-widest">SSO Entreprise</span>
+                </div>
+            </div>
+            
+            <!-- Social/SSO Buttons -->
+            <div class="flex flex-col gap-md">
+                <button class="w-full h-[48px] border border-outline-variant/50 rounded-lg flex items-center justify-center gap-md font-body-md text-body-md text-on-surface hover:bg-surface-container-low transition-colors group" 
+                        type="button"
+                        id="microsoftLogin">
+                    <img alt="Microsoft" 
+                         class="w-5 h-5" 
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP3siI4vDME3RUL3IowOU9WnqfhrxDxb1O2ebRCln4oMA2ik3s3AdPavWj0Iu8iwnKdmmjpi7dtftlCw5Ioe566Q4NbT-oKsw7KYjH0L36N3XP0ankh5PCR0k9y1iPOGRryP9PVK3NZJz-SNLOn_C0UzuC-PtDhFXf4h5E9wh8Djsnh-FVMfY6LIu_-Rly_s6cHJpkrOYhxnMpxKpQTjlT7OAUB1WWGRMkZ--8H2dwQIQ0TEmpnTDKukIYnmG1rCLUUpetAqqxEEw"/>
+                    <span>Continuer avec Microsoft</span>
+                </button>
+                <button class="w-full h-[48px] border border-outline-variant/50 rounded-lg flex items-center justify-center gap-md font-body-md text-body-md text-on-surface hover:bg-surface-container-low transition-colors group" 
+                        type="button"
+                        id="googleLogin">
+                    <img alt="Google" 
+                         class="w-5 h-5" 
+                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_ErK-kj-XtDm9R0wsfNZEp8xGUaEmfHeCfEt43hTrrRk4B9q-10VCagA1ZBLyB3cRHlkM2nN7tMANCnTPPEEPtLsJXSuMiI6eX21nz27_i8g9EfpN2WJUckRhtgCf1kqNiCn0tbsrkJA8ZuoMAS8zhVuy-RbY9gRl1L-Xwtq6aZof20FPJkGQMsQc6HC1B9Tzl-7Db1ZfYWXhb8omEGXG25vnSKRCcZg_X9pyAjUr6aiCFv7wK10WmUrFGk8URBcXQOFy4rBZCdU"/>
+                    <span>Continuer avec Google Workspace</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Footer Help -->
+        <footer class="flex justify-center gap-lg">
+            <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Politique de confidentialité</a>
+            <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Support technique</a>
+        </footer>
+    </main>
+    
+    <!-- Contextual Decorative Elements -->
+    <div class="fixed bottom-0 left-0 w-full h-1/2 -z-10 pointer-events-none opacity-40">
+        <div class="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-surface-container-high to-transparent"></div>
+    </div>
+    
+    <!-- Visual Anchor Image (Hidden on small screens) -->
+    <div class="hidden lg:block fixed right-xl top-1/2 -translate-y-1/2 w-1/3 max-w-[400px]">
+        <div class="relative aspect-square rounded-full border-[32px] border-surface-container overflow-hidden p-md">
+            <img alt="Architecture moderne" 
+                 class="w-full h-full object-cover rounded-full grayscale mix-blend-multiply opacity-20" 
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRlNIoh8kyB52U8oDoq1fp_IGcK5YO00dUSNVik-YvvzAr99V4rxvpB-ib0Ur2YNrrT8u7FyOl_kC6TDdBYrQEGuoNrjoCUQFxUF71ubMJzOPSdi4QC1kltXUeIqlp3fy7hYolAoWxXOFs83riPHHQo3PzXEyg7Cjvc_5PFeh6zIgrqi4HWX4jpBKunIjkHytsMeBtItz1b5xpwWSXXhJYMcuu2x5PyAmJZOF8FIde1dkD5EsCgOVnNHbF4AXiN2cpXdNlLuvePAc"/>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const microsoftLogin = document.getElementById('microsoftLogin');
+            const googleLogin = document.getElementById('googleLogin');
+
+            // Toggle password visibility
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.type === 'password' ? 'text' : 'password';
+                passwordInput.type = type;
+                
+                const icon = togglePassword.querySelector('.material-symbols-outlined');
+                icon.textContent = type === 'password' ? 'visibility' : 'visibility_off';
+            });
+
+            // Handle form submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+
+                // Validation
+                if (!email || !password) {
+                    alert('Veuillez remplir tous les champs');
+                    return;
+                }
+
+                // Show loading state
+                const submitButton = loginForm.querySelector('button[type="submit"]');
+                submitButton.textContent = 'Connexion...';
+                submitButton.disabled = true;
+
+                // Simulate authentication
+                setTimeout(() => {
+                    // Redirect to OTP page
+                    window.location.href = 'otp.html';
+                }, 1500);
+            });
+
+            // Handle SSO logins
+            microsoftLogin.addEventListener('click', () => {
+                console.log('Microsoft SSO login');
+                alert('Connexion via Microsoft SSO');
+            });
+
+            googleLogin.addEventListener('click', () => {
+                console.log('Google SSO login');
+                alert('Connexion via Google Workspace SSO');
+            });
+
+            // Add input animations
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('scale-[1.02]');
+                });
+                
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('scale-[1.02]');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

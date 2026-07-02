@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Salle de Visioconférence - Opportun Messenger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777e",
+                        "on-secondary-container": "#00743a",
+                        "on-surface": "#0b1c30",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c37",
+                        "outline-variant": "#c4c6ce",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#000f22",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#768dad",
+                        "inverse-primary": "#b0c8eb",
+                        "tertiary-container": "#212527",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-primary-fixed-variant": "#314865",
+                        "primary-container": "#0a2540",
+                        "on-surface-variant": "#43474d",
+                        "on-tertiary-container": "#898c8e",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4ae183",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#0c1011",
+                        "secondary": "#006d37",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "primary-fixed": "#d2e4ff",
+                        "secondary-fixed": "#6bfe9c",
+                        "surface-tint": "#49607e",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-fixed-dim": "#c4c7c9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin": "20px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-speaker {
+            box-shadow: 0 0 0 4px #4ae183;
+        }
+        .immersive-dark {
+            background-color: #000f22;
+        }
+        .aspect-video {
+            aspect-ratio: 16/9;
+        }
+        .aspect-square {
+            aspect-ratio: 1/1;
+        }
+        .participant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+        }
+        .participant-grid.md {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .participant-grid.lg {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .active-speaker {
+            box-shadow: 0 0 20px rgba(74, 187, 120, 0.4);
+            border: 2px solid #4ae183;
+        }
+        .recording-indicator {
+            animation: recording 2s ease-in-out infinite;
+        }
+        @keyframes recording {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .sidebar-chat {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-chat.hidden {
+            transform: translateX(100%);
+        }
+        .sidebar-chat.hidden-md {
+            transform: translateX(0);
+        }
+        .chat-input {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #ffffff;
+        }
+        .chat-input:focus {
+            outline: none;
+            border-color: #4ae183;
+        }
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .message-bubble {
+            background: rgba(30, 41, 42, 0.9);
+            border-radius: 1rem;
+            padding: 0.75rem;
+            color: #ffffff;
+            word-wrap: break-word;
+        }
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #4ae183;
+            border-radius: 50%;
+            animation: typing 1.4s ease-in-out infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+        .control-button {
+            transition: all 0.2s ease-out;
+        }
+        .control-button:hover {
+            transform: translateY(-2px);
+        }
+        .control-button:active {
+            transform: scale(0.95);
+        }
+        .control-button.active {
+            background: #4ae183;
+            color: #ffffff;
+        }
+        .control-button.active:hover {
+            background: #48bb78;
+        }
+        .control-button.danger {
+            background: #ef4444;
+            color: #ffffff;
+        }
+        .control-button.danger:hover {
+            background: #dc2626;
+        }
+        .h-safe-offset-2 {
+            height: env(safe-area-inset-bottom, 0px);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #314865;
+            border-radius: 10px;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background m-0 p-0 overflow-hidden">
+    <!-- Top Navigation Anchor -->
+    <header class="fixed top-0 w-full z-50 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-5 h-16 w-full">
+        <div class="flex items-center gap-3">
+            <span class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tighter">Opportun</span>
+            <div class="h-4 w-[1px] bg-outline-variant mx-2"></div>
+            <span class="font-inter text-lg font-bold tracking-tight text-emerald-500 dark:text-emerald-400">Revue Stratégique Trimestrielle</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex -space-x-2">
+                <img class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeQKu4IIMSWu1rBQi2RkWTo7kWzy2xx498p3--etTO3wS6eNQhFKibUZ4JtQPR74WHemfmvwJr0hu7PMSo0s4i2DIBGHHNXovPJdhRvDFvlM46vteABUZTv1PX1Tb0l_FgVQtxBeNnS2GbjfkyUF2OuoSbfcbl7PDjCv36ZdgrZlpcb_-GEnmy73N6LpEsqDOOehS2svAnRcc2hjJIdBaWCn3CBUlYAsYW4yv5zZXGhQWp2GYvidgwsnt6Iwvi4IScWWk5YP4iqnY"/>
+                <img class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" src="https://lh3.googleusercontent.com/IDA-public/AB6AXuAU-0BfiX6caFH58D9O_wCCUuM7AV634StVY6vz6XWaOo4cFGzUMWv73BD6KkdVnvyKeubuwUN9jEH79g5-a2Ma4FHGEN5f526c9JG92bJwcrUTc6sD_8Ue0GzmN8EHSKt7kvxinXgkZe9cafhhchbMGcRLEDyVGtUbT-fgVrhDZZFmBygxch6lmCpl5TRIsPIhhY8Y4shm3YVEvPBXGTSLlpjyiqLBoEYCxJ-hRFbiM_nUmwAHyKShcldU1CsCDLH_GzaAgno08Cw"/>
+                <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center text-[10px] font-bold border-2 border-surface-container-lowest">+12</div>
+            </div>
+            <button class="material-symbols-outlined text-slate-500 hover:bg-slate-200/50 p-2 rounded-full transition-colors">search</button>
+        </div>
+    </header>
+
+    <!-- Main Immersive Meeting Canvas -->
+    <main class="h-screen w-full pt-16 pb-24 immersive-dark flex">
+        <!-- Video Grid Container -->
+        <div class="flex-1 p-md grid grid-cols-2 md:grid-cols-3 gap-md h-full content-start">
+            <!-- Participant 1: Active Speaker -->
+            <div class="relative rounded-xl overflow-hidden active-speaker group bg-tertiary-container aspect-video">
+                <img class="w-full h-full object-cover opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-BeU8Kf4E0J4PR2TbL3s43nOtBcgiTQER2i6Yqnms7-t4oX-l1RmlfXy7TuSH_UONFQJW1gyy-XsiFREdXaR6biJ7ziGZ4qbLhOLBtL96k2CR1A_jVjdSeaC0Irj1GS2ybDRwVb4F6r3AuUiDT8Kv4SGulCvvMCA4CKM2KnSA69MM2QGc0nwb04kaeEWXaab0uiCYYAJl33_clJiN02YsQqI5mLR2GjnId5rWTqcgG88oSIgTs05n6fhV-wqPhCXjDlwgP3GEidA"/>
+                <div class="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
+                    <span class="material-symbols-outlined text-secondary-fixed-dim text-sm" style="font-ation-settings: 'FILL' 1;">mic</span>
+                    <span class="font-headline-sm text-white text-sm">Marcus Chen (PDG)</span>
+                </div>
+                <div class="absolute top-4 right-4 bg-secondary-fixed-dim text-on-secondary-fixed font-label-sm px-2 py-0.5 rounded uppercase tracking-tighter">En cours de parole</div>
+            </div>
+
+            <!-- Participant 2 -->
+            <div class="relative rounded-xl overflow-hidden bg-tertiary-container aspect-video">
+                <img class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaJ9SLkxa9QWsEVe25sXlgh4qL3NmTCge4Vdrm02FnBPxIF3tQTSeyk310T4Njbv_bN_QKN8W-XdwEYC_L5AAF9SusAs_XwmYusDBNCGGxXpyHaxqznXyM5uXNQ4f5Tj-IreGW4k6XOE6lonZrr0gzXsuP7PFnidOjvKmM633lWpIN4hzB6Cu4RC8f3c7Q9TKGTxiPHtcfDYWrGR_SaeYBTYh2831UFnMzVzScwgb_uaXjJqtPcP3iHZPcqmeDGrkumMDQA1L7XTs"/>
+                <div class="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
+                    <span class="material-symbols-outlined text-white text-sm" style="font-ation-settings: 'FILL' 1;">mic</span>
+                    <span class="font-headline-sm text-white text-sm">Elena Rodriguez</span>
+                </div>
+            </div>
+
+            <!-- Participant 3 -->
+            <div class="relative rounded-xl overflow-hidden bg-tertiary-container aspect-video">
+                <img class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkIS1NFe9V8hMRoxU25gbf6wAi2e3jqRg048nI3gyHbVnryYwdD0o93VgvGbtucZsx5I3qTSGTX52eWx4GXST_8NuIUbhIPt_uql2BhYj1y0tPyPQNHgpFfKtRMy_ruphR0LuIUKc-Xvd5CQq3zR5K7KjP33YGCiLuiuQVoMkLtJmbAlFVQnZUMuIy0zbhRG0mnPBNaoNoFhVCwg00mrWeLPpTrXTZ6QVCUPBXxs8Kd7YzF05Oqv9Ppw6bFd1u0vrOwmRpAaTDNhs"/>
+                <div class="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
+                    <span class="material-symbols-outlined text-error text-sm" style="font-variation-settings: 'FILL' 1;">mic_off</span>
+                    <span class="font-headline-sm text-white text-sm">Jordan Smith</span>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/10 backdrop-blur-md p-1.5 rounded-full border border-white/10">
+                    <span class="material-symbols-outlined text-white text-lg">back_hand</span>
+                </div>
+            </div>
+
+            <!-- Participant 4 (Screen Share) -->
+            <div class="relative rounded-xl overflow-hidden bg-tertiary-container aspect-video md:col-span-2 md:row-span-2">
+                <div class="w-full h-full bg-slate-900 p-8 flex flex flex-col items-center justify-center border-2 border-emerald-500/30">
+                    <div class="w-full h-full rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700 relative">
+                        <img class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpwEi2BOB5Y2P1N-oc5seqk7lnAemAdizZ8J4CqBNF85jIQTKu4D2FepVteo-RN9jghqOHP5ayDTQZ0XI--0pMNdN9psB0PHWfgxizSKZRPfSdpknrd1XxcYflM3vEGEfikfv3uzkRXAhKhT-VkRItjGhaLL_12fe6MehXSXYK5MeExL3rPi20YRNrUJoZNp10n7oOijQmUAG7iJLC4WuQ56URQOAC2CYrEq1r5JNZInvhPiACkvCx_jlBiSwxV4eYoYpbOVcA_YI"/>
+                        <div class="absolute top-6 left-6 flex items-center gap-3 bg-emerald-500 px-4 py-2 rounded-full shadow-lg">
+                            <span class="material-symbols-outlined text-white text-sm">present_to_all</span>
+                            <span class="font-label-md text-white">Elena présente les projections Q3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Participant 5 -->
+            <div class="relative rounded-xl overflow-hidden bg-tertiary-container aspect-video">
+                <img class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCl50gVGEqviHxbCUzHPfFaj5Th9kLSttOZptmhnUCvvOErDkMz5SBGUx4Km6ocdFBuxqGHnH89up4OZDA9RKcnCqcOqJM9kVHkdC4afUL8MjVSEx87axtipnyVwXDN5KphjSaL86AX7cpX3DIXzl0k1uz06Dg3y3uBt1lfbRGlLayY4Vbvz67EUm692k_UMbKAgj-ZH3Pl-sKh3O-DK7i1z5NGL_QoHWtNb_M5FDC2Yi4NCOELtPDaJejxRa4Tsg375hfDIb5e7wM"/>
+                <div class="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
+                    <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">mic</span>
+                    <span class="font-headline-sm text-white text-sm">Sarah Jenkins</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Chat Overlay -->
+        <aside class="w-80 h-full border-l border-slate-800 bg-slate-950/50 backdrop-blur-xl flex flex-col" id="sidebarChat">
+            <div class="p-md flex items-center justify-between border-b border-slate-800">
+                <span class="font-headline-sm text-white text-base">Messages de l'appel</span>
+                <span class="material-symbols-outlined text-slate-500 cursor-pointer" onclick="toggleSidebar()">close</span>
+            </div>
+            <div class="flex-1 overflow-y-auto p-md space-y-md" id="chatMessages">
+                <!-- Message 1 -->
+                <div class="space-y-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="font-label-md text-emerald-400">Marcus Chen</span>
+                        <span class="text-[10px] text-slate-500 uppercase">10:42</span>
+                    </div>
+                    <div class="bg-slate-800/50 p-sm rounded-xl rounded-tl-none text-slate-300 text-body-md border border-slate-700">
+                        Tout le monde a-t-il revu les rapports d'efficience Q3?
+                    </div>
+                </div>
+
+                <!-- Message 2 -->
+                <div class="space-y-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="font-label-md text-emerald-400">Jordan Smith</span>
+                        <span class="text-[10px] text-slate-500 uppercase">10:44</span>
+                    </div>
+                    <div class="bg-slate-800/50 p-sm rounded-xl rounded-tl-none text-slate-300 text-body-md border border-slate-700">
+                        Oui, Marcus. J'ai quelques préoccupations concernant la surcharge logistique en EMEA.
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="flex items-center gap-2 py-2">
+                    <div class="w-2 h-2 bg-secondary-fixed-dim rounded-full animate-pulse"></div>
+                    <span class="text-xs text-slate-500 font-label-sm italic">Elena est en train d'écrire...</span>
+                </div>
+
+                <!-- Message Input -->
+                <div class="p-md border-t border-slate-800">
+                    <div class="flex items-center gap-2 bg-slate-900 rounded-xl px-3 py-2 border border-slate-700 focus-within:border-emerald-500 transition-colors">
+                        <input class="bg-transparent border-none focus:ring-0 text-white text-body-md flex-1" placeholder="Envoyer un message..." type="text" id="chatInput"/>
+                        <button class="material-symbols-outlined text-emerald-400" onclick="sendMessage()">send</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Bottom Controls Shell -->
+        <nav class="fixed bottom-0 left-0 w-full z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-[0_-4px_24px_rgba(10,37,64,0.06)] border-t border-slate-100 dark:border-slate-800 h-20 flex items-center justify-between px-margin pb-safe-offset-2">
+            <!-- Left: Status Info -->
+            <div class="hidden md:flex flex-col">
+                <span class="text-on-surface font-headline-sm text-sm">ID Réunion: STR-2026-EMEA</span>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                    <span class="text-slate-500 font-label-sm uppercase tracking-widest">ENREG 00:45:12</span>
+                </div>
+            </div>
+
+            <!-- Center: Main Controls -->
+            <div class="flex items-center gap-4 flex-1 justify-center">
+                <!-- Mic Control -->
+                <button class="flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl px-6 py-2 active:scale-90 duration-150 ease-out" onclick="toggleMute()">
+                    <span class="material-symbols-outlined mb-1">mic</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Muet</span>
+                </button>
+
+                <!-- Video Control -->
+                <button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" onclick="toggleVideo()">
+                    <span class="material-symbols-outlined mb-1">videocam</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Caméra</span>
+                </button>
+
+                <!-- Share Control -->
+                <button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" onclick="toggleScreenShare()">
+                    <span class="material-symbols-outlined mb-1">present_to_all</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Partager</span>
+                </button>
+
+                <!-- Hand Control -->
+                <button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-emerald-500 dark:hover:text-emerald-300 transition-all active:scale-90 duration-150 ease-out" onclick="toggleHandRaise()">
+                    <span class="space-x-1">
+                        <span class="material-symbols-outlined">back_hand</span>
+                    </span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Lever la main</span>
+                </button>
+
+                <!-- End Call -->
+                <button class="flex flex-col items-center justify-center text-white bg-red-600 rounded-2xl px-8 py-2 active:scale-90 duration-150 ease-out shadow-lg shadow-red-500/20" onclick="endCall()">
+                    <span class="material-symbols-outlined mb-1">call_end</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest font-inter">Quitter</span>
+                </button>
+            </div>
+
+            <!-- Right: Layout/Settings -->
+            <div class="hidden md:flex items-center gap-2">
+                <button class="p-2 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                    <span class="material-symbols-outlined">grid_view</span>
+                </button>
+                <button class="p-2 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                    <span class="material-symbols-outlined">settings</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- FAB Overlay for Mobile Chat (When sidebar might be hidden) -->
+        <button class="fixed bottom-24 right-6 md:hidden bg-emerald-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl z-50" onclick="toggleSidebar()">
+            <span class="material-symbols-outlined">chat_bubble</span>
+        </button>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let callStartTime = Date.now();
+            let callTimer = null;
+            let isMuted = false;
+            let isVideoOn = true;
+            isScreenSharing = false;
+            let isHandRaised = false;
+            let sidebarOpen = true;
+
+            // Start call timer
+            function startCallTimer() {
+                callTimer = setInterval(() => {
+                    const elapsed = Date.now() - callStartTime;
+                    const minutes = Math.floor(elapsed / 60000);
+                    const seconds = Math.floor((elapsed % 60000) / 1000);
+                    
+                    const timeElement = document.querySelector('.text-slate-500.font-label-sm');
+                    if (timeElement) {
+                        timeElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }
+                }, 1000);
+            }
+
+            // Mute toggle
+            function toggleMute() {
+                isMuted = !isMuted;
+                const muteButton = document.querySelector('.flex.flex-col.items-center.justify-center button:first-child');
+                const icon = muteButton.querySelector('.material-symbols-outlined');
+                
+                if (isMuted) {
+                    icon.textContent = 'mic_off';
+                    muteButton.classList.add('bg-error/20');
+                    muteButton.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/30');
+                    console.log('Microphone muet');
+                } else {
+                    icon.textContent = 'mic';
+                    muteButton.classList.remove('bg-error/20');
+                    muteButton.classList.add('bg-emerald-50', 'dark:bg-emerald-900/30');
+                    console.log('Microphone activé');
+                }
+            }
+
+            // Video toggle
+            function toggleVideo() {
+                isVideoOn = !isVideoOn;
+                const videoButton = document.querySelectorAll('.flex.flex.items-center.justify-center button')[1];
+                const icon = videoButton.querySelector('.material-symbols-outlined');
+                
+                if (isVideoOn) {
+                    icon.textContent = 'videocam';
+                    videoButton.classList.remove('bg-slate-400', 'dark:text-slate-500');
+                    videoButton.classList.add('text-emerald-500', 'dark:text-emerald-400');
+                    console.log('Vidéo activé');
+                } else {
+                    icon.textContent = 'videocam_off';
+                    videoButton.classList.add('bg-slate-400', 'dark:text-slate-500');
+                    videoButton.classList.remove('text-emerald-500', 'dark:text-emerald-400');
+                    console.log('Vidéo désactivé');
+                }
+            }
+
+            // Screen share toggle
+            function toggleScreenShare() {
+                isScreenSharing = !isScreenSharing;
+                const shareButton = document.querySelectorAll('.flex.flex.items-center.justify-center button')[2];
+                const icon = shareButton.querySelector('.material-symbols-outlined');
+                
+                if (isScreenSharing) {
+                    icon.textContent = 'stop_screen_share';
+                    console.log('Partage d\'écran arrêté');
+                } else {
+                    icon.textContent = 'present_to_all';
+                    console.log('Partage d\'écran démarré');
+                    
+                    // Start screen sharing
+                    if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+                        navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+                            .then(stream => {
+                                console.log('Partage d\'écran démarré avec succès');
+                            // Handle the stream
+                            })
+                            .catch(err => {
+                                console.error('Erreur lors du partage d\'écran:', err);
+                                alert('Le partage d\'écran n\'est pas supporté sur cet appareil');
+                            });
+                    } else {
+                        alert('Le partage d\'écran n\'est pas supporté sur cet appareil');
+                    }
+                }
+                
+                // Update button state
+                shareButton.classList.toggle('bg-emerald-500', 'dark:bg-emerald-900/30');
+            }
+
+            // Hand raise toggle
+            function toggleHandRaise() {
+                isHandRaised = !isHandRaised;
+                const handButton = document.querySelectorAll('.flex.flex.items-center.justify-center button')[3];
+                const icon = handButton.querySelector('.material-symbols-outlined');
+                
+                if (isHandRaised) {
+                    icon.textContent = 'back_hand';
+                    handButton.classList.add('bg-emerald-500', 'dark:bg-emerald-900/30');
+                    console.log('Main levé');
+                } else {
+                    icon.textContent = 'back_hand';
+                    handButton.classList.remove('bg-emerald-500', 'dark:bg-emerald-900/30');
+                    console.log('Main baissé');
+                }
+            }
+
+            // End call
+            function endCall() {
+                clearInterval(callTimer);
+                const duration = document.querySelector('.text-slate-500.font-label-sm').textContent;
+                
+                if (confirm(`Terminer l'appel vidéo (Durée: ${duration})?`)) {
+                    clearInterval(callTimer);
+                    window.location.href = 'calls-tailwind.html';
+                }
+            }
+
+            // Toggle sidebar
+            function toggleSidebar() {
+                sidebarOpen = !sidebarOpen;
+                const sidebar = document.getElementById('sidebarChat');
+                const sidebarChat = document.querySelector('.sidebar-chat');
+                
+                if (sidebarOpen) {
+                    sidebarChat.classList.remove('hidden');
+                    sidebarChat.classList.remove('hidden-md');
+                } else {
+                    sidebarChat.classList.add('hidden');
+                    sidebarChat.classList.add('hidden-md');
+                }
+            }
+
+            // Send message
+            function sendMessage() {
+                const input = document.getElementById('chatInput');
+                const message = input.value.trim();
+                
+                if (message) {
+                    // Add message to chat
+                    const messagesContainer = document.getElementById('chatMessages');
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'space-y-sm';
+                    messageElement.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <span class="font-label-md text-emerald-400">Vous</span>
+                            <span class="text-[10px] text-slate-500 uppercase">${getCurrentTime()}</span>
+                        </div>
+                        <div class="bg-slate-800/50 p-sm rounded-xl rounded-tl-none text-slate-300 text-body-md border border-slate-700">
+                            ${message}
+                        </div>
+                    `;
+                    
+                    messagesContainer.appendChild(messageElement);
+                    
+                    // Clear input
+                    input.value = '';
+                    
+                    // Scroll to bottom
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    
+                    // Simulate response
+                    setTimeout(() => {
+                        simulateResponse();
+                    }, 2000);
+                }
+            }
+
+            // Simulate response
+            function simulateResponse() {
+                const responses = [
+                    "Excellent présentation! Les chiffres sont très prometteurs.",
+                    "Je vais analyser les données et vous revenir avec mes conclusions.",
+                    "Merci pour cette présentation, Marcus!",
+                    "Les projections Q3 sont alignées avec nos objectifs stratégiques."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                
+                const messagesContainer = document.getElementById('chatMessages');
+                const messageElement = document.createElement('div');
+                messageElement.className = 'space-y-sm';
+                messageElement.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="font-label-md text-emerald-400">Marcus Chen</span>
+                        <span class="text-[10px] text-slate-500 uppercase">${getCurrentTime()}</span>
+                    </div>
+                    <div class="bg-slate-800/50 p-sm rounded-xl rounded-tl-none text-slate-300 text-body-md border border-slate-700">
+                        ${randomResponse}
+                    </div>
+                `;
+                
+                messagesContainer.appendChild(messageElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            // Get current time
+            function getCurrentTime() {
+                const now = new Date();
+                return now.getHours().toString().padStart(2, '0') + ':' + 
+                       now.getMinutes().toString().padStart(2, '0');
+            }
+
+            // Add visual feedback
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('group-active');
+                    setTimeout(() => {
+                        this.classList.remove('group-active');
+                    }, 200);
+                });
+            });
+
+            // Initialize
+            startCallTimer();
+            
+            // Add typing indicator simulation
+            setInterval(() => {
+                const typingIndicator = document.querySelector('.typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.style.display = 'flex';
+                    setTimeout(() => {
+                        typingIndicator.style.display = 'none';
+                    }, 3000);
+                }
+            }, 8000);
+
+            // Prevent accidental navigation
+            window.addEventListener('beforeunload', (e) => {
+                e.preventDefault();
+                e.returnValue = 'Une réunion est en cours. Êtes-vous sûr de vouloir quitter?';
+            });
+
+            // Handle visibility change
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    console.log('Réunion continue en arrière-plan');
+                } else {
+                    console.log('Réunion revenu au premier plan');
+                }
+            });
+
+            // Add haptic feedback for mobile
+            function vibrate(pattern) {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(pattern);
+                }
+            }
+
+            // Vibrate on button press (mobile)
+            if ('vibrate' in navigator) {
+                document.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        vibrate(50);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
