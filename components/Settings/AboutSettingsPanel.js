@@ -177,13 +177,13 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   appName: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     color: colors.text,
     marginBottom: 8,
   },
   appVersion: {
-    fontSize: 14,
+    fontSize: 12,
     color: colors.textSecondary,
   },
   sectionTitle: {

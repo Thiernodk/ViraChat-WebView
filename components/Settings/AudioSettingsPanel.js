@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 254, 102, 0.1)',
   },
   optionText: {
-    fontSize: 14,
+    fontSize: 12,
     color: colors.text,
   },
   optionTextSelected: {
@@ -247,13 +247,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   toggleLabel: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: colors.text,
     marginBottom: 4,
   },
   toggleDescription: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
   },
   toggleSwitch: {

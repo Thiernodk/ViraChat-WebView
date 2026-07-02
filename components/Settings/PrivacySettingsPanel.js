@@ -202,20 +202,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   policyTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: colors.text,
     marginBottom: 2,
   },
   policySubtitle: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
   },
   policyContent: {
     padding: 16,
   },
   policyText: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
     lineHeight: 18,
   },
@@ -242,13 +242,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   toggleLabel: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: colors.text,
     marginBottom: 4,
   },
   toggleDescription: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
   },
   toggleSwitch: {
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   customPolicyLabel: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
     marginBottom: 12,
   },
@@ -289,8 +289,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     color: colors.text,
-    fontSize: 12,
-    lineHeight: 18,
+    fontSize: 10,
+    lineHeight: 16,
     borderWidth: 1,
     borderColor: colors.border,
     textAlignVertical: 'top',

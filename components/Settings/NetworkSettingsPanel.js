@@ -230,12 +230,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoLabel: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
     marginBottom: 2,
   },
   infoValue: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: colors.text,
   },
@@ -253,21 +253,21 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   multicastTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     color: colors.text,
     marginLeft: 12,
   },
   multicastStatus: {
-    fontSize: 14,
+    fontSize: 12,
     color: colors.primary,
     fontWeight: 'bold',
     marginBottom: 8,
   },
   multicastDescription: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
-    lineHeight: 18,
+    lineHeight: 16,
   },
   refreshButton: {
     flexDirection: 'row',

@@ -169,12 +169,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   signalLabel: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
     marginBottom: 4,
   },
   signalValue: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     color: colors.text,
   },
@@ -209,18 +209,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
     marginBottom: 4,
   },
   statValue: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: 'bold',
     color: colors.text,
     marginBottom: 4,
   },
   statDescription: {
-    fontSize: 11,
+    fontSize: 9,
     color: colors.textTertiary,
   },
   updateCard: {

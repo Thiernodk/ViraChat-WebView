@@ -135,13 +135,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sectionLabel: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: colors.text,
     marginBottom: 2,
   },
   sectionDescription: {
-    fontSize: 12,
+    fontSize: 10,
     color: colors.textSecondary,
   },
 });
