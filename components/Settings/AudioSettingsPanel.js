@@ -8,7 +8,7 @@ import TVFocusable from '../TVFocusable/TVFocusable';
 const getOutputIcon = (output) => {
   switch (output) {
     case 'HDMI': return 'cast';
-    case 'Optique': return 'cable';
+    case 'Optique': return 'settings_input_hdmi';
     case 'Bluetooth': return 'bluetooth';
     case 'TV': return 'tv';
     default: return 'volume_up';

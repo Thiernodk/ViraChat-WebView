@@ -1,15 +1,24 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video, AVPlaybackStatus, Audio } from 'expo-av';
 
 const VideoPlayer = ({ source, onReady, onError, onProgress, onEnd }) => {
   const videoRef = useRef(null);
   const [status, setStatus] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const retryCountRef = useRef(0);
+  const maxRetries = 3;
 
   useEffect(() => {
     console.log('[VideoPlayer] Component mounted, source:', source?.uri);
+    
+    // Set audio mode for TV
+    Audio.setAudioModeAsync({
+      staysActiveInBackground: false,
+      playsInSilentModeIOS: true,
+      allowsRecordingIOS: false,
+    }).catch(console.error);
     
     return () => {
       console.log('[VideoPlayer] Component unmounting');
@@ -18,6 +27,33 @@ const VideoPlayer = ({ source, onReady, onError, onProgress, onEnd }) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const loadVideo = async () => {
+      if (!videoRef.current || !source?.uri) return;
+      
+      try {
+        console.log('[VideoPlayer] Loading video:', source.uri);
+        await videoRef.current.loadAsync(source, {}, false);
+        await videoRef.current.playAsync();
+        retryCountRef.current = 0;
+      } catch (error) {
+        console.error('[VideoPlayer] Load error:', error);
+        retryCountRef.current++;
+        
+        if (retryCountRef.current <= maxRetries) {
+          console.log(`[VideoPlayer] Retrying (${retryCountRef.current}/${maxRetries})...`);
+          setTimeout(() => loadVideo(), 2000);
+        } else {
+          if (onError) {
+            onError(error);
+          }
+        }
+      }
+    };
+
+    loadVideo();
+  }, [source?.uri]);
 
   const handlePlaybackStatusUpdate = (playbackStatus) => {
     setStatus(playbackStatus);
@@ -73,14 +109,16 @@ const VideoPlayer = ({ source, onReady, onError, onProgress, onEnd }) => {
         onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
         onLoad={handleLoad}
         onReadyForDisplay={handleReadyForDisplay}
-        progressUpdateInterval={1000}
-        positionUpdateInterval={1000}
+        progressUpdateInterval={500}
+        positionUpdateInterval={500}
         isMuted={false}
         volume={1.0}
         playInBackground={false}
         playWhenInactive={false}
         preventsDisplaySleepDuringVideoPlayback={true}
         posterSource={null}
+        rate={1.0}
+        shouldCorrectPitch={true}
       />
     </View>
   );

@@ -86,7 +86,7 @@ const NetworkSettingsPanel = ({ onClose }) => {
         <NetworkInfoItem label="Adresse IP" value={networkInfo.ipAddress} icon="language" />
         <NetworkInfoItem label="Masque de sous-réseau" value={networkInfo.subnet} icon="settings_ethernet" />
         <NetworkInfoItem label="Passerelle" value={networkInfo.gateway} icon="router" />
-        <NetworkInfoItem label="DNS" value={networkInfo.dns} icon="public" />
+        <NetworkInfoItem label="DNS" value={networkInfo.dns} icon="dns" />
 
         <Text style={styles.sectionTitle}>Multicast</Text>
         

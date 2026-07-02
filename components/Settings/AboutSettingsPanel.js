@@ -74,9 +74,9 @@ const AboutSettingsPanel = ({ onClose }) => {
         <Text style={styles.sectionTitle}>Informations</Text>
         
         <AboutItem label="Version" value={appInfo.version} icon="info" />
-        <AboutItem label="Build" value={appInfo.build} icon="construction" />
+        <AboutItem label="Build" value={appInfo.build} icon="build" />
         <AboutItem label="Développeur" value={appInfo.developer} icon="person" />
-        <AboutItem label="Licence" value={appInfo.license} icon="verified" />
+        <AboutItem label="Licence" value={appInfo.license} icon="verified_user" />
 
         <Text style={styles.sectionTitle}>Fonctionnalités</Text>
         
