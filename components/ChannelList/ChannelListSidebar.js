@@ -55,8 +55,10 @@ const ChannelListSidebar = ({
         style={[styles.channelItem, currentChannel?.id === item.id && styles.selectedChannel]}
         onPress={() => onChannelSelect(item)}
         {...(isTV && {
-          nextFocusUp: index > 0 ? index - 1 : 0,
-          nextFocusDown: index < filteredChannels.length - 1 ? index + 1 : filteredChannels.length - 1,
+          nextFocusUp: index > 0 ? index - 1 : null,
+          nextFocusDown: index < filteredChannels.length - 1 ? index + 1 : null,
+          nextFocusLeft: null,
+          nextFocusRight: null,
           hasTVPreferredFocus: index === 0,
         })}
       >
@@ -69,6 +71,8 @@ const ChannelListSidebar = ({
           onPress={() => onToggleFavorite(item.id)}
           style={styles.favoriteButton}
           {...(isTV && {
+            nextFocusUp: index > 0 ? index - 1 : null,
+            nextFocusDown: index < filteredChannels.length - 1 ? index + 1 : null,
             nextFocusLeft: index,
             nextFocusRight: null,
           })}

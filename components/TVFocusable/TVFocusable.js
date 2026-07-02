@@ -20,24 +20,31 @@ const TVFocusable = ({
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
   const borderAnim = React.useRef(new Animated.Value(0)).current;
   const shadowAnim = React.useRef(new Animated.Value(0)).current;
+  const elevationAnim = React.useRef(new Animated.Value(0)).current;
 
   const handleFocus = () => {
     if (!isTV) return; // Pas d'animation de focus sur mobile
     
     Animated.parallel([
-      Animated.timing(scaleAnim, {
-        toValue: 1.05,
-        duration: 200,
+      Animated.spring(scaleAnim, {
+        toValue: 1.08,
+        friction: 7,
+        tension: 40,
         useNativeDriver: true,
       }),
       Animated.timing(borderAnim, {
         toValue: 1,
-        duration: 200,
+        duration: 150,
         useNativeDriver: false,
       }),
       Animated.timing(shadowAnim, {
         toValue: 1,
-        duration: 200,
+        duration: 150,
+        useNativeDriver: false,
+      }),
+      Animated.timing(elevationAnim, {
+        toValue: 1,
+        duration: 150,
         useNativeDriver: false,
       }),
     ]).start();
@@ -47,19 +54,25 @@ const TVFocusable = ({
     if (!isTV) return; // Pas d'animation de focus sur mobile
     
     Animated.parallel([
-      Animated.timing(scaleAnim, {
+      Animated.spring(scaleAnim, {
         toValue: 1,
-        duration: 200,
+        friction: 7,
+        tension: 40,
         useNativeDriver: true,
       }),
       Animated.timing(borderAnim, {
         toValue: 0,
-        duration: 200,
+        duration: 150,
         useNativeDriver: false,
       }),
       Animated.timing(shadowAnim, {
         toValue: 0,
-        duration: 200,
+        duration: 150,
+        useNativeDriver: false,
+      }),
+      Animated.timing(elevationAnim, {
+        toValue: 0,
+        duration: 150,
         useNativeDriver: false,
       }),
     ]).start();
@@ -68,9 +81,10 @@ const TVFocusable = ({
   const handlePressIn = () => {
     if (isTV) {
       // Animation de press sur TV
-      Animated.timing(scaleAnim, {
-        toValue: 0.95,
-        duration: 100,
+      Animated.spring(scaleAnim, {
+        toValue: 0.96,
+        friction: 7,
+        tension: 40,
         useNativeDriver: true,
       }).start();
     }
@@ -79,9 +93,10 @@ const TVFocusable = ({
 
   const handlePressOut = () => {
     if (isTV) {
-      Animated.timing(scaleAnim, {
-        toValue: 1.05,
-        duration: 100,
+      Animated.spring(scaleAnim, {
+        toValue: 1.08,
+        friction: 7,
+        tension: 40,
         useNativeDriver: true,
       }).start();
     }
@@ -99,17 +114,27 @@ const TVFocusable = ({
 
   const borderColor = borderAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['transparent', '#00ff00'],
+    outputRange: ['transparent', '#00FE66'],
+  });
+
+  const borderWidth = borderAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 3],
   });
 
   const shadowOpacity = shadowAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 0.8],
+    outputRange: [0, 0.9],
   });
 
   const shadowRadius = shadowAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 10],
+    outputRange: [0, 16],
+  });
+
+  const elevation = elevationAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 8],
   });
 
   // Sur mobile, utiliser un simple TouchableOpacity/Pressable sans animations TV
@@ -133,10 +158,12 @@ const TVFocusable = ({
         {
           transform: [{ scale: scaleAnim }],
           borderColor,
-          shadowColor: '#00ff00',
+          borderWidth,
+          shadowColor: '#00FE66',
           shadowOpacity,
           shadowRadius,
-          shadowOffset: { width: 0, height: 5 },
+          shadowOffset: { width: 0, height: 6 },
+          elevation,
         },
         style,
       ]}

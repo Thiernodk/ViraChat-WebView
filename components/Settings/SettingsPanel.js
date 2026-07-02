@@ -51,8 +51,10 @@ const SettingsPanel = ({ onClose, onShowNetworkSettings, onShowSignalSettings, o
             style={styles.sectionItem}
             onPress={() => handleSectionPress(section.id)}
             {...(isTV && {
-              nextFocusUp: index > 0 ? index - 1 : 0,
-              nextFocusDown: index < sections.length - 1 ? index + 1 : sections.length - 1,
+              nextFocusUp: index > 0 ? index - 1 : null,
+              nextFocusDown: index < sections.length - 1 ? index + 1 : null,
+              nextFocusLeft: null,
+              nextFocusRight: null,
               hasTVPreferredFocus: index === 0,
             })}
           >
