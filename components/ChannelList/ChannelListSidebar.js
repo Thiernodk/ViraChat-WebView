@@ -6,11 +6,13 @@ import {
   StyleSheet,
   FlatList,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const ChannelListSidebar = ({ 
   channels, 
@@ -21,6 +23,7 @@ const ChannelListSidebar = ({
   showFavoritesOnly, 
   onToggleShowFavorites 
 }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [searchQuery, setSearchQuery] = useState('');
   const flatListRef = useRef(null);
 
@@ -44,49 +47,70 @@ const ChannelListSidebar = ({
     return matchesSearch && matchesFavorites;
   });
 
-  const renderChannel = ({ item, index }) => (
-    <TVFocusable
-      style={[styles.channelItem, currentChannel?.id === item.id && styles.selectedChannel]}
-      onPress={() => onChannelSelect(item)}
-      nextFocusUp={index > 0 ? index - 1 : 0}
-      nextFocusDown={index < filteredChannels.length - 1 ? index + 1 : filteredChannels.length - 1}
-      hasTVPreferredFocus={index === 0}
-    >
-      <View style={styles.channelInfoRow}>
-        <Text style={styles.channelNumber}>{item.number}</Text>
-        <Image source={{ uri: item.logo }} style={styles.channelLogo} />
-        <Text style={styles.channelName} numberOfLines={1}>{item.name}</Text>
-      </View>
-      <TVFocusable
-        onPress={() => onToggleFavorite(item.id)}
-        style={styles.favoriteButton}
-        nextFocusLeft={index}
-        nextFocusRight={null}
+  const renderChannel = ({ item, index }) => {
+    const ChannelButton = isTV ? TVFocusable : TouchableOpacity;
+    
+    return (
+      <ChannelButton
+        style={[styles.channelItem, currentChannel?.id === item.id && styles.selectedChannel]}
+        onPress={() => onChannelSelect(item)}
+        {...(isTV && {
+          nextFocusUp: index > 0 ? index - 1 : 0,
+          nextFocusDown: index < filteredChannels.length - 1 ? index + 1 : filteredChannels.length - 1,
+          hasTVPreferredFocus: index === 0,
+        })}
       >
-        <Icon 
-          name={favorites.includes(item.id) ? 'favorite' : 'star_border'} 
-          size={20} 
-          color={favorites.includes(item.id) ? colors.primary : 'rgba(255, 255, 255, 0.5)'}
-        />
-      </TVFocusable>
-    </TVFocusable>
-  );
+        <View style={styles.channelInfoRow}>
+          <Text style={styles.channelNumber}>{item.number}</Text>
+          <Image source={{ uri: item.logo }} style={styles.channelLogo} />
+          <Text style={styles.channelName} numberOfLines={1}>{item.name}</Text>
+        </View>
+        <ChannelButton
+          onPress={() => onToggleFavorite(item.id)}
+          style={styles.favoriteButton}
+          {...(isTV && {
+            nextFocusLeft: index,
+            nextFocusRight: null,
+          })}
+        >
+          <Icon 
+            name={favorites.includes(item.id) ? 'favorite' : 'star_border'} 
+            size={20} 
+            color={favorites.includes(item.id) ? colors.primary : 'rgba(255, 255, 255, 0.5)'}
+          />
+        </ChannelButton>
+      </ChannelButton>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Chaînes</Text>
-        <TVFocusable
-          style={[styles.headerFilterButton, showFavoritesOnly && styles.filterButtonActive]}
-          onPress={onToggleShowFavorites}
-          hasTVPreferredFocus={true}
-        >
-          <Icon 
-            name={showFavoritesOnly ? 'favorite' : 'star_border'} 
-            size={18} 
-            color={showFavoritesOnly ? colors.primary : 'rgba(255, 255, 255, 0.5)'}
-          />
-        </TVFocusable>
+        {isTV ? (
+          <TVFocusable
+            style={[styles.headerFilterButton, showFavoritesOnly && styles.filterButtonActive]}
+            onPress={onToggleShowFavorites}
+            hasTVPreferredFocus={true}
+          >
+            <Icon 
+              name={showFavoritesOnly ? 'favorite' : 'star_border'} 
+              size={18} 
+              color={showFavoritesOnly ? colors.primary : 'rgba(255, 255, 255, 0.5)'}
+            />
+          </TVFocusable>
+        ) : (
+          <TouchableOpacity
+            style={[styles.headerFilterButton, showFavoritesOnly && styles.filterButtonActive]}
+            onPress={onToggleShowFavorites}
+          >
+            <Icon 
+              name={showFavoritesOnly ? 'favorite' : 'star_border'} 
+              size={18} 
+              color={showFavoritesOnly ? colors.primary : 'rgba(255, 255, 255, 0.5)'}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       
       <FlatList

@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const SettingsPanel = ({ onClose, onShowNetworkSettings, onShowSignalSettings, onShowAudioSettings, onShowAboutSettings, onShowPrivacySettings, onShowAccountSettings }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const sections = [
     { id: 'account', label: 'Compte', description: 'Gestion du compte', icon: 'person' },
     { id: 'network', label: 'Réseau', description: 'Connexion LAN', icon: 'wifi' },
@@ -31,24 +33,28 @@ const SettingsPanel = ({ onClose, onShowNetworkSettings, onShowSignalSettings, o
     }
   };
 
+  const SectionButton = isTV ? TVFocusable : TouchableOpacity;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Paramètres</Text>
-        <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
+        <SectionButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
           <Icon name="close" size={28} color={colors.text} />
-        </TVFocusable>
+        </SectionButton>
       </View>
       
       <ScrollView style={styles.content}>
         {sections.map((section, index) => (
-          <TVFocusable
+          <SectionButton
             key={section.id}
             style={styles.sectionItem}
             onPress={() => handleSectionPress(section.id)}
-            nextFocusUp={index > 0 ? index - 1 : 0}
-            nextFocusDown={index < sections.length - 1 ? index + 1 : sections.length - 1}
-            hasTVPreferredFocus={index === 0}
+            {...(isTV && {
+              nextFocusUp: index > 0 ? index - 1 : 0,
+              nextFocusDown: index < sections.length - 1 ? index + 1 : sections.length - 1,
+              hasTVPreferredFocus: index === 0,
+            })}
           >
             <View style={styles.iconContainer}>
               <Icon name={section.icon} size={28} color={colors.primary} />
@@ -58,7 +64,7 @@ const SettingsPanel = ({ onClose, onShowNetworkSettings, onShowSignalSettings, o
               <Text style={styles.sectionDescription}>{section.description}</Text>
             </View>
             <Icon name="keyboard_arrow_right" size={24} color={colors.textTertiary} />
-          </TVFocusable>
+          </SectionButton>
         ))}
       </ScrollView>
     </View>

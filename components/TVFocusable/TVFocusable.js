@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Animated, View, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const TVFocusable = ({
   children,
@@ -15,11 +16,14 @@ const TVFocusable = ({
   isTVSelectable,
   ...props
 }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
   const borderAnim = React.useRef(new Animated.Value(0)).current;
   const shadowAnim = React.useRef(new Animated.Value(0)).current;
 
   const handleFocus = () => {
+    if (!isTV) return; // Pas d'animation de focus sur mobile
+    
     Animated.parallel([
       Animated.timing(scaleAnim, {
         toValue: 1.05,
@@ -40,6 +44,8 @@ const TVFocusable = ({
   };
 
   const handleBlur = () => {
+    if (!isTV) return; // Pas d'animation de focus sur mobile
+    
     Animated.parallel([
       Animated.timing(scaleAnim, {
         toValue: 1,
@@ -60,22 +66,30 @@ const TVFocusable = ({
   };
 
   const handlePressIn = () => {
-    Animated.timing(scaleAnim, {
-      toValue: 0.95,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
+    if (isTV) {
+      // Animation de press sur TV
+      Animated.timing(scaleAnim, {
+        toValue: 0.95,
+        duration: 100,
+        useNativeDriver: true,
+      }).start();
+    }
+    // Sur mobile, comportement tactile par défaut de Pressable
   };
 
   const handlePressOut = () => {
-    Animated.timing(scaleAnim, {
-      toValue: 1.05,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
+    if (isTV) {
+      Animated.timing(scaleAnim, {
+        toValue: 1.05,
+        duration: 100,
+        useNativeDriver: true,
+      }).start();
+    }
   };
 
   const handleKeyDown = (e) => {
+    if (!isTV) return; // Pas de gestion de clavier sur mobile
+    
     if (e.nativeEvent.key === 'Enter' || e.nativeEvent.key === 'OK' || e.nativeEvent.keyCode === 23) {
       if (onPress) {
         onPress();
@@ -98,6 +112,20 @@ const TVFocusable = ({
     outputRange: [0, 10],
   });
 
+  // Sur mobile, utiliser un simple TouchableOpacity/Pressable sans animations TV
+  if (!isTV) {
+    return (
+      <Pressable
+        onPress={onPress}
+        style={style}
+        {...props}
+      >
+        {children}
+      </Pressable>
+    );
+  }
+
+  // Sur TV, utiliser le composant complet avec animations de focus
   return (
     <Animated.View
       style={[

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, StatusBar, BackHandler, TVEventHandler, Text } from 'react-native';
+import { View, StyleSheet, StatusBar, BackHandler, TVEventHandler, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import VideoPlayer from '../components/Player/VideoPlayer';
 import ChannelOverlay from '../components/Overlay/ChannelOverlay';
@@ -14,8 +14,10 @@ import AboutSettingsPanel from '../components/Settings/AboutSettingsPanel';
 import PrivacySettingsPanel from '../components/Settings/PrivacySettingsPanel';
 import AccountSettingsPanel from '../components/Settings/AccountSettingsPanel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import platformDetectionService from '../services/platformDetectionService';
 
 const PlayerScreen = ({ channels, epgData }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [currentChannel, setCurrentChannel] = useState(channels[0] || null);
   const [activeMenu, setActiveMenu] = useState(null);
   const [currentTime, setCurrentTime] = useState('');
@@ -104,8 +106,10 @@ const PlayerScreen = ({ channels, epgData }) => {
     saveLastChannel();
   }, [currentChannel]);
 
-  // TV Remote Control Handler
+  // TV Remote Control Handler (Android TV only)
   useEffect(() => {
+    if (!isTV) return; // Skip TV event handling on mobile
+    
     // Check if TVEventHandler is available (Android TV only)
     if (typeof TVEventHandler !== 'undefined') {
       tvEventHandler.current = new TVEventHandler();
@@ -324,10 +328,12 @@ const PlayerScreen = ({ channels, epgData }) => {
         }
       };
     }
-  }, [showOverlay, activeMenu, currentChannel, channels, showChannelInput, channelNumberInput]);
+  }, [isTV, showOverlay, activeMenu, currentChannel, channels, showChannelInput, channelNumberInput]);
 
-  // Auto-hide overlay after 5 seconds
+  // Auto-hide overlay after 5 seconds (TV only)
   useEffect(() => {
+    if (!isTV) return; // Skip auto-hide on mobile
+    
     if (showOverlay && !activeMenu) {
       if (overlayTimeoutRef.current) {
         clearTimeout(overlayTimeoutRef.current);
@@ -342,7 +348,7 @@ const PlayerScreen = ({ channels, epgData }) => {
         clearTimeout(overlayTimeoutRef.current);
       }
     };
-  }, [showOverlay, activeMenu]);
+  }, [isTV, showOverlay, activeMenu]);
 
   // Handle EXIT button (BackHandler)
   useEffect(() => {
@@ -503,6 +509,31 @@ const PlayerScreen = ({ channels, epgData }) => {
       )}
       
       {renderActivePanel()}
+      
+      {/* Mobile controls - only shown on mobile */}
+      {!isTV && (
+        <View style={styles.mobileControls}>
+          <TouchableOpacity style={styles.mobileButton} onPress={() => setShowOverlay(!showOverlay)}>
+            <Text style={styles.mobileButtonText}>☰</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.mobileButton} onPress={() => handleMenuPress('list')}>
+            <Text style={styles.mobileButtonText}>📺</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.mobileButton} onPress={() => handleMenuPress('settings')}>
+            <Text style={styles.mobileButtonText}>⚙️</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.mobileButton} 
+            onPress={() => {
+              const currentIndex = channels.findIndex(ch => ch.id === currentChannel?.id);
+              const nextIndex = currentIndex < channels.length - 1 ? currentIndex + 1 : 0;
+              setCurrentChannel(channels[nextIndex]);
+            }}
+          >
+            <Text style={styles.mobileButtonText}>▶</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -534,6 +565,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     minWidth: 40,
     textAlign: 'center',
+  },
+  mobileControls: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    zIndex: 1000,
+  },
+  mobileButton: {
+    backgroundColor: 'rgba(0, 254, 102, 0.2)',
+    marginHorizontal: 8,
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 254, 102, 0.5)',
+  },
+  mobileButtonText: {
+    color: '#00FE66',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
