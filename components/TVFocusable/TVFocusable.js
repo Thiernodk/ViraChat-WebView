@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Animated, View } from 'react-native';
+import { Pressable, StyleSheet, Animated, View, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 
 const TVFocusable = ({
@@ -75,6 +75,14 @@ const TVFocusable = ({
     }).start();
   };
 
+  const handleKeyDown = (e) => {
+    if (e.nativeEvent.key === 'Enter' || e.nativeEvent.key === 'OK' || e.nativeEvent.keyCode === 23) {
+      if (onPress) {
+        onPress();
+      }
+    }
+  };
+
   const borderColor = borderAnim.interpolate({
     inputRange: [0, 1],
     outputRange: ['transparent', '#00ff00'],
@@ -111,6 +119,7 @@ const TVFocusable = ({
         onPressOut={handlePressOut}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
         nextFocusUp={nextFocusUp}
         nextFocusDown={nextFocusDown}
         nextFocusLeft={nextFocusLeft}

@@ -21,7 +21,6 @@ export default function App() {
   const [showActivationScreen, setShowActivationScreen] = useState(false);
   const [channels, setChannels] = useState([]);
   const [epg, setEpg] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -38,8 +37,6 @@ export default function App() {
         if (subscriptionService.isExpoGo()) {
           // Generate/get username for Expo Go
           await userService.getUsername();
-          // Direct to player screen
-          setIsLoading(false);
           return;
         }
 
@@ -80,8 +77,6 @@ export default function App() {
           }
         }
       }
-      
-      setIsLoading(false);
     };
     
     initializeApp();
@@ -111,16 +106,6 @@ export default function App() {
     // If cancelled, show expired screen
     setShowExpiredScreen(true);
   };
-
-  if (isLoading) {
-    return (
-      <ResponsiveWrapper>
-        <View style={styles.container}>
-          <SplashScreen onFinish={handleSplashFinish} />
-        </View>
-      </ResponsiveWrapper>
-    );
-  }
 
   return (
     <ResponsiveWrapper>
