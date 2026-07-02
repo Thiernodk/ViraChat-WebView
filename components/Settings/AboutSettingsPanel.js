@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Linking, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import Constants from 'expo-constants';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const AboutItem = ({ label, value, icon }) => (
   <View style={styles.aboutItem}>
@@ -35,6 +36,7 @@ TechBadge.propTypes = {
 };
 
 const AboutSettingsPanel = ({ onClose }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const appInfo = {
     name: 'Limon+ TV Box',
     version: Constants.manifest?.version || '1.0.0',
@@ -53,13 +55,16 @@ const AboutSettingsPanel = ({ onClose }) => {
     'Recherche de chaînes',
   ];
 
+  const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+  const ActionButton = isTV ? TVFocusable : TouchableOpacity;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>À propos</Text>
-        <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
+        <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
           <Icon name="close" size={28} color={colors.text} />
-        </TVFocusable>
+        </CloseButton>
       </View>
       
       <ScrollView style={styles.content}>
@@ -97,13 +102,13 @@ const AboutSettingsPanel = ({ onClose }) => {
           <TechBadge label="HLS" />
         </View>
 
-        <TVFocusable 
+        <ActionButton 
           style={styles.websiteButton}
           onPress={() => Linking.openURL(appInfo.website)}
         >
           <Icon name="language" size={20} color={colors.text} />
           <Text style={styles.websiteButtonText}>Visiter le site web</Text>
-        </TVFocusable>
+        </ActionButton>
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>

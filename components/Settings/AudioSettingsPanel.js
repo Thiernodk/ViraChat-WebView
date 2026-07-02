@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const getOutputIcon = (output) => {
   switch (output) {
@@ -15,26 +16,32 @@ const getOutputIcon = (output) => {
   }
 };
 
-const ToggleOption = ({ label, description, value, onToggle }) => (
-  <TVFocusable style={styles.toggleItem} onPress={onToggle}>
-    <View style={styles.toggleTextContainer}>
-      <Text style={styles.toggleLabel}>{label}</Text>
-      <Text style={styles.toggleDescription}>{description}</Text>
-    </View>
-    <View style={[styles.toggleSwitch, value && styles.toggleSwitchActive]}>
-      <View style={[styles.toggleKnob, value && styles.toggleKnobActive]} />
-    </View>
-  </TVFocusable>
-);
+const ToggleOption = ({ label, description, value, onToggle, isTV }) => {
+  const ToggleButton = isTV ? TVFocusable : TouchableOpacity;
+  
+  return (
+    <ToggleButton style={styles.toggleItem} onPress={onToggle} {...(isTV && {})}>
+      <View style={styles.toggleTextContainer}>
+        <Text style={styles.toggleLabel}>{label}</Text>
+        <Text style={styles.toggleDescription}>{description}</Text>
+      </View>
+      <View style={[styles.toggleSwitch, value && styles.toggleSwitchActive]}>
+        <View style={[styles.toggleKnob, value && styles.toggleKnobActive]} />
+      </View>
+    </ToggleButton>
+  );
+};
 
 ToggleOption.propTypes = {
   label: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   value: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
+  isTV: PropTypes.bool,
 };
 
 const AudioSettingsPanel = ({ onClose }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [audioSettings, setAudioSettings] = useState({
     language: 'Français',
     audioTrack: 'Auto',
@@ -48,13 +55,16 @@ const AudioSettingsPanel = ({ onClose }) => {
   const audioTracks = ['Auto', 'Piste 1', 'Piste 2', 'Piste originale'];
   const outputs = ['HDMI', 'Optique', 'Bluetooth', 'TV'];
 
+  const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+  const OptionButton = isTV ? TVFocusable : TouchableOpacity;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Audio</Text>
-        <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
+        <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
           <Icon name="close" size={28} color={colors.text} />
-        </TVFocusable>
+        </CloseButton>
       </View>
       
       <ScrollView style={styles.content}>
@@ -62,13 +72,15 @@ const AudioSettingsPanel = ({ onClose }) => {
         
         <View style={styles.optionsContainer}>
           {languages.map((lang, index) => (
-            <TVFocusable
+            <OptionButton
               key={lang}
               style={[styles.optionItem, audioSettings.language === lang && styles.optionItemSelected]}
               onPress={() => setAudioSettings({ ...audioSettings, language: lang })}
-              nextFocusUp={index > 0 ? index - 1 : 0}
-              nextFocusDown={index < languages.length - 1 ? index + 1 : languages.length - 1}
-              hasTVPreferredFocus={index === 0}
+              {...(isTV && {
+                nextFocusUp: index > 0 ? index - 1 : null,
+                nextFocusDown: index < languages.length - 1 ? index + 1 : null,
+                hasTVPreferredFocus: index === 0,
+              })}
             >
               <Text style={[styles.optionText, audioSettings.language === lang && styles.optionTextSelected]}>
                 {lang}
@@ -76,7 +88,7 @@ const AudioSettingsPanel = ({ onClose }) => {
               {audioSettings.language === lang && (
                 <Icon name="check" size={20} color={colors.primary} />
               )}
-            </TVFocusable>
+            </OptionButton>
           ))}
         </View>
 
@@ -84,12 +96,14 @@ const AudioSettingsPanel = ({ onClose }) => {
         
         <View style={styles.optionsContainer}>
           {audioTracks.map((track, index) => (
-            <TVFocusable
+            <OptionButton
               key={track}
               style={[styles.optionItem, audioSettings.audioTrack === track && styles.optionItemSelected]}
               onPress={() => setAudioSettings({ ...audioSettings, audioTrack: track })}
-              nextFocusUp={index > 0 ? index - 1 : 0}
-              nextFocusDown={index < audioTracks.length - 1 ? index + 1 : audioTracks.length - 1}
+              {...(isTV && {
+                nextFocusUp: index > 0 ? index - 1 : null,
+                nextFocusDown: index < audioTracks.length - 1 ? index + 1 : null,
+              })}
             >
               <Text style={[styles.optionText, audioSettings.audioTrack === track && styles.optionTextSelected]}>
                 {track}
@@ -97,7 +111,7 @@ const AudioSettingsPanel = ({ onClose }) => {
               {audioSettings.audioTrack === track && (
                 <Icon name="check" size={20} color={colors.primary} />
               )}
-            </TVFocusable>
+            </OptionButton>
           ))}
         </View>
 
@@ -105,12 +119,14 @@ const AudioSettingsPanel = ({ onClose }) => {
         
         <View style={styles.optionsContainer}>
           {outputs.map((output, index) => (
-            <TVFocusable
+            <OptionButton
               key={output}
               style={[styles.optionItem, audioSettings.output === output && styles.optionItemSelected]}
               onPress={() => setAudioSettings({ ...audioSettings, output })}
-              nextFocusUp={index > 0 ? index - 1 : 0}
-              nextFocusDown={index < outputs.length - 1 ? index + 1 : outputs.length - 1}
+              {...(isTV && {
+                nextFocusUp: index > 0 ? index - 1 : null,
+                nextFocusDown: index < outputs.length - 1 ? index + 1 : null,
+              })}
             >
               <Icon name={getOutputIcon(output)} size={20} color={audioSettings.output === output ? colors.primary : colors.textSecondary} style={{ marginRight: 8 }} />
               <Text style={[styles.optionText, audioSettings.output === output && styles.optionTextSelected]}>
@@ -119,7 +135,7 @@ const AudioSettingsPanel = ({ onClose }) => {
               {audioSettings.output === output && (
                 <Icon name="check" size={20} color={colors.primary} />
               )}
-            </TVFocusable>
+            </OptionButton>
           ))}
         </View>
 
@@ -130,6 +146,7 @@ const AudioSettingsPanel = ({ onClose }) => {
           description="Activer le son multi-canaux"
           value={audioSettings.surround}
           onToggle={() => setAudioSettings({ ...audioSettings, surround: !audioSettings.surround })}
+          isTV={isTV}
         />
         
         <ToggleOption
@@ -137,6 +154,7 @@ const AudioSettingsPanel = ({ onClose }) => {
           description="Activer l'audio description pour malvoyants"
           value={audioSettings.audioDescription}
           onToggle={() => setAudioSettings({ ...audioSettings, audioDescription: !audioSettings.audioDescription })}
+          isTV={isTV}
         />
       </ScrollView>
     </View>

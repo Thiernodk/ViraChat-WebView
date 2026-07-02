@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Platform, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const NetworkInfoItem = ({ label, value, icon }) => (
   <View style={styles.infoItem}>
@@ -24,6 +25,7 @@ NetworkInfoItem.propTypes = {
 };
 
 const NetworkSettingsPanel = ({ onClose }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [networkInfo, setNetworkInfo] = useState({
     ipAddress: '192.168.1.24',
     subnet: '255.255.255.0',
@@ -51,13 +53,16 @@ const NetworkSettingsPanel = ({ onClose }) => {
     detectNetwork();
   }, []);
 
+  const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+  const ActionButton = isTV ? TVFocusable : TouchableOpacity;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Réseau</Text>
-        <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
+        <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
           <Icon name="close" size={28} color={colors.text} />
-        </TVFocusable>
+        </CloseButton>
       </View>
       
       <ScrollView style={styles.content}>
@@ -101,10 +106,10 @@ const NetworkSettingsPanel = ({ onClose }) => {
           </Text>
         </View>
 
-        <TVFocusable style={styles.refreshButton}>
+        <ActionButton style={styles.refreshButton}>
           <Icon name="refresh" size={20} color={colors.text} />
           <Text style={styles.refreshButtonText}>Actualiser le réseau</Text>
-        </TVFocusable>
+        </ActionButton>
       </ScrollView>
     </View>
   );

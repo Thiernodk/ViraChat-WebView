@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
-const ToggleOption = ({ label, description, value, onToggle }) => (
-  <TVFocusable style={styles.toggleItem} onPress={onToggle}>
-    <View style={styles.toggleTextContainer}>
-      <Text style={styles.toggleLabel}>{label}</Text>
-      <Text style={styles.toggleDescription}>{description}</Text>
-    </View>
-    <View style={[styles.toggleSwitch, value && styles.toggleSwitchActive]}>
-      <View style={[styles.toggleKnob, value && styles.toggleKnobActive]} />
-    </View>
-  </TVFocusable>
-);
+const ToggleOption = ({ label, description, value, onToggle, isTV }) => {
+  const ToggleButton = isTV ? TVFocusable : TouchableOpacity;
+  
+  return (
+    <ToggleButton style={styles.toggleItem} onPress={onToggle} {...(isTV && {})}>
+      <View style={styles.toggleTextContainer}>
+        <Text style={styles.toggleLabel}>{label}</Text>
+        <Text style={styles.toggleDescription}>{description}</Text>
+      </View>
+      <View style={[styles.toggleSwitch, value && styles.toggleSwitchActive]}>
+        <View style={[styles.toggleKnob, value && styles.toggleKnobActive]} />
+      </View>
+    </ToggleButton>
+  );
+};
 
 ToggleOption.propTypes = {
   label: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   value: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
+  isTV: PropTypes.bool,
 };
 
 const PrivacySettingsPanel = ({ onClose }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [privacySettings, setPrivacySettings] = useState({
     lanChannelsDefault: true,
     shareAnalytics: false,
@@ -53,13 +60,16 @@ Par défaut, Limon+ TV Box traite toutes les chaînes détectées sur le réseau
 
 Vous pouvez modifier cette politique ci-dessous pour personnaliser le traitement de vos chaînes locales.`;
 
+  const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+  const ActionButton = isTV ? TVFocusable : TouchableOpacity;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Politique Confidentialité</Text>
-        <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
+        <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
           <Icon name="close" size={28} color={colors.text} />
-        </TVFocusable>
+        </CloseButton>
       </View>
       
       <ScrollView style={styles.content}>
@@ -84,6 +94,7 @@ Vous pouvez modifier cette politique ci-dessous pour personnaliser le traitement
           description="Traiter automatiquement les chaînes locales comme privées"
           value={privacySettings.lanChannelsDefault}
           onToggle={() => setPrivacySettings({ ...privacySettings, lanChannelsDefault: !privacySettings.lanChannelsDefault })}
+          isTV={isTV}
         />
         
         <ToggleOption
@@ -91,6 +102,7 @@ Vous pouvez modifier cette politique ci-dessous pour personnaliser le traitement
           description="Ne stocker aucune donnée sur des serveurs externes"
           value={privacySettings.localDataOnly}
           onToggle={() => setPrivacySettings({ ...privacySettings, localDataOnly: !privacySettings.localDataOnly })}
+          isTV={isTV}
         />
         
         <ToggleOption
@@ -98,6 +110,7 @@ Vous pouvez modifier cette politique ci-dessous pour personnaliser le traitement
           description="Aider à améliorer l'application avec des données anonymisées"
           value={privacySettings.shareAnalytics}
           onToggle={() => setPrivacySettings({ ...privacySettings, shareAnalytics: !privacySettings.shareAnalytics })}
+          isTV={isTV}
         />
 
         <Text style={styles.sectionTitle}>Politique personnalisée</Text>
@@ -117,10 +130,10 @@ Vous pouvez modifier cette politique ci-dessous pour personnaliser le traitement
           />
         </View>
 
-        <TVFocusable style={styles.saveButton}>
+        <ActionButton style={styles.saveButton}>
           <Icon name="save" size={20} color={colors.text} />
           <Text style={styles.saveButtonText}>Enregistrer la politique</Text>
-        </TVFocusable>
+        </ActionButton>
 
         <View style={styles.infoBox}>
           <Icon name="info" size={20} color={colors.primary} />

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const StatCard = ({ icon, label, value, description }) => (
   <View style={styles.statCard}>
@@ -26,6 +27,7 @@ StatCard.propTypes = {
 };
 
 const SignalSettingsPanel = ({ onClose, channels, epgData }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [signalInfo, setSignalInfo] = useState({
     totalChannels: 0,
     activeChannels: 0,
@@ -51,13 +53,16 @@ const SignalSettingsPanel = ({ onClose, channels, epgData }) => {
     calculateSignalInfo();
   }, [channels, epgData]);
 
+  const CloseButton = isTV ? TVFocusable : TouchableOpacity;
+  const ActionButton = isTV ? TVFocusable : TouchableOpacity;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Signal</Text>
-        <TVFocusable onPress={onClose} style={styles.closeButton} hasTVPreferredFocus={true}>
+        <CloseButton onPress={onClose} style={styles.closeButton} {...(isTV && { hasTVPreferredFocus: true })}>
           <Icon name="close" size={28} color={colors.text} />
-        </TVFocusable>
+        </CloseButton>
       </View>
       
       <ScrollView style={styles.content}>
@@ -99,10 +104,10 @@ const SignalSettingsPanel = ({ onClose, channels, epgData }) => {
           <Text style={styles.updateTime}>{signalInfo.lastUpdate}</Text>
         </View>
 
-        <TVFocusable style={styles.scanButton}>
+        <ActionButton style={styles.scanButton}>
           <Icon name="search" size={20} color={colors.text} />
           <Text style={styles.scanButtonText}>Scanner les chaînes</Text>
-        </TVFocusable>
+        </ActionButton>
       </ScrollView>
     </View>
   );
