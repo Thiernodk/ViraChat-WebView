@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
@@ -38,67 +38,75 @@ const SimpleOnboardingStep = ({ username, subscriberId, onFinish }) => {
   const SubmitButton = isTV ? TVFocusable : TouchableOpacity;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <Icon name="person_add" size={64} color={colors.primary} />
-          <Text style={styles.title}>Bienvenue</Text>
-          <Text style={styles.subtitle}>Entrez vos informations pour commencer</Text>
-        </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <Icon name="person_add" size={64} color={colors.primary} />
+            <Text style={styles.title}>Bienvenue</Text>
+            <Text style={styles.subtitle}>Entrez vos informations pour commencer</Text>
+          </View>
 
-        <View style={styles.form}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Nom d'utilisateur</Text>
-            <View style={[styles.inputWrapper, errors.username && styles.inputError]}>
-              <Icon name="person" size={24} color={colors.textSecondary} style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Votre nom"
-                placeholderTextColor={colors.textTertiary}
-                value={localUsername}
-                onChangeText={setLocalUsername}
-                autoCapitalize="words"
-                autoFocus
-              />
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Nom d'utilisateur</Text>
+              <View style={[styles.inputWrapper, errors.username && styles.inputError]}>
+                <Icon name="person" size={24} color={colors.textSecondary} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Votre nom"
+                  placeholderTextColor={colors.textTertiary}
+                  value={localUsername}
+                  onChangeText={setLocalUsername}
+                  autoCapitalize="words"
+                  autoFocus
+                />
+              </View>
+              {errors.username && <Text style={styles.errorText}>{errors.username}</Text>}
             </View>
-            {errors.username && <Text style={styles.errorText}>{errors.username}</Text>}
-          </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Numéro d'abonné</Text>
-            <View style={[styles.inputWrapper, errors.subscriberId && styles.inputError]}>
-              <Icon name="credit_card" size={24} color={colors.textSecondary} style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Votre numéro d'abonné"
-                placeholderTextColor={colors.textTertiary}
-                value={localSubscriberId}
-                onChangeText={setLocalSubscriberId}
-                keyboardType="numeric"
-                maxLength={20}
-              />
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Numéro d'abonné</Text>
+              <View style={[styles.inputWrapper, errors.subscriberId && styles.inputError]}>
+                <Icon name="credit_card" size={24} color={colors.textSecondary} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Votre numéro d'abonné"
+                  placeholderTextColor={colors.textTertiary}
+                  value={localSubscriberId}
+                  onChangeText={setLocalSubscriberId}
+                  keyboardType="numeric"
+                  maxLength={20}
+                />
+              </View>
+              {errors.subscriberId && <Text style={styles.errorText}>{errors.subscriberId}</Text>}
             </View>
-            {errors.subscriberId && <Text style={styles.errorText}>{errors.subscriberId}</Text>}
-          </View>
 
-          <View style={styles.infoBox}>
-            <Icon name="info" size={20} color={colors.primary} />
-            <Text style={styles.infoText}>
-              Chaque numéro d'abonné vous donne 1 mois d'accès gratuit
-            </Text>
-          </View>
+            <View style={styles.infoBox}>
+              <Icon name="info" size={20} color={colors.primary} />
+              <Text style={styles.infoText}>
+                Chaque numéro d'abonné vous donne 1 mois d'accès gratuit
+              </Text>
+            </View>
 
-          <SubmitButton
-            style={styles.submitButton}
-            onPress={handleSubmit}
-            {...(isTV && { hasTVPreferredFocus: true })}
-          >
-            <Icon name="check_circle" size={24} color="#000" />
-            <Text style={styles.submitButtonText}>Commencer</Text>
-          </SubmitButton>
+            <SubmitButton
+              style={styles.submitButton}
+              onPress={handleSubmit}
+              {...(isTV && { hasTVPreferredFocus: true })}
+            >
+              <Icon name="check_circle" size={24} color="#000" />
+              <Text style={styles.submitButtonText}>Commencer</Text>
+            </SubmitButton>
+          </View>
         </View>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -113,10 +121,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
   content: {
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 32,
+    paddingVertical: 20,
   },
   header: {
     alignItems: 'center',
