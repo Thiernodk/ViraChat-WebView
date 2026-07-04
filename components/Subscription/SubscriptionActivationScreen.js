@@ -8,6 +8,7 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -15,8 +16,10 @@ import colors from '../../theme/colors';
 import subscriptionService from '../../services/subscriptionService';
 import userService from '../../services/userService';
 import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const SubscriptionActivationScreen = ({ onActivationSuccess, onCancel }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [subscriptionNumber, setSubscriptionNumber] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -89,27 +92,41 @@ const SubscriptionActivationScreen = ({ onActivationSuccess, onCancel }) => {
                 </View>
               ) : null}
 
-              <TVFocusable
-                style={[styles.button, loading && styles.buttonDisabled]}
-                onPress={handleActivate}
-                disabled={loading}
-                hasTVPreferredFocus={true}
-                nextFocusDown="cancel"
-              >
-                {loading ? (
-                  <ActivityIndicator color="#000" size="small" />
-                ) : (
-                  <Text style={styles.buttonText}>Activer</Text>
-                )}
-              </TVFocusable>
+              {(() => {
+                const ActivateButton = isTV ? TVFocusable : TouchableOpacity;
+                return (
+                  <ActivateButton
+                    style={[styles.button, loading && styles.buttonDisabled]}
+                    onPress={handleActivate}
+                    disabled={loading}
+                    {...(isTV && {
+                      hasTVPreferredFocus: true,
+                      nextFocusDown: 'cancel',
+                    })}
+                  >
+                    {loading ? (
+                      <ActivityIndicator color="#000" size="small" />
+                    ) : (
+                      <Text style={styles.buttonText}>Activer</Text>
+                    )}
+                  </ActivateButton>
+                );
+              })()}
 
-              <TVFocusable
-                style={styles.cancelButton}
-                onPress={onCancel}
-                nextFocusUp="activate"
-              >
-                <Text style={styles.cancelButtonText}>Annuler</Text>
-              </TVFocusable>
+              {(() => {
+                const CancelButton = isTV ? TVFocusable : TouchableOpacity;
+                return (
+                  <CancelButton
+                    style={styles.cancelButton}
+                    onPress={onCancel}
+                    {...(isTV && {
+                      nextFocusUp: 'activate',
+                    })}
+                  >
+                    <Text style={styles.cancelButtonText}>Annuler</Text>
+                  </CancelButton>
+                );
+              })()}
 
               <View style={styles.infoContainer}>
                 <Icon name="info" size={20} color={colors.primary} />

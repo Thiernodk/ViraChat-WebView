@@ -5,11 +5,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import subscriptionService from '../../services/subscriptionService';
 import onboardingService from '../../services/onboardingService';
+import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const isLandscape = screenWidth > screenHeight;
 
 const SubscriptionReactivedModal = ({ visible, onClose }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const [userName, setUserName] = React.useState('');
 
   useEffect(() => {
@@ -21,7 +24,7 @@ const SubscriptionReactivedModal = ({ visible, onClose }) => {
   const loadUserName = async () => {
     const userData = await onboardingService.getUserData();
     if (userData) {
-      setUserName(`${userData.firstName} ${userData.lastName}`);
+      setUserName(userData.firstName);
     }
   };
 
@@ -29,6 +32,8 @@ const SubscriptionReactivedModal = ({ visible, onClose }) => {
     await subscriptionService.setReactivationShown();
     onClose();
   };
+
+  const FinishButton = isTV ? TVFocusable : TouchableOpacity;
 
   return (
     <Modal
@@ -58,14 +63,15 @@ const SubscriptionReactivedModal = ({ visible, onClose }) => {
             Vous pouvez maintenant profiter de toutes les chaînes Limon+ TV.
           </Text>
 
-          <TouchableOpacity
+          <FinishButton
             style={styles.finishButton}
             onPress={handleFinish}
             activeOpacity={0.8}
+            {...(isTV && { hasTVPreferredFocus: true })}
           >
             <Text style={styles.finishButtonText}>Terminer</Text>
             <Icon name="check" size={24} color="#000" />
-          </TouchableOpacity>
+          </FinishButton>
         </View>
       </View>
     </Modal>

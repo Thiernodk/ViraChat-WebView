@@ -3,8 +3,11 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
+import TVFocusable from '../TVFocusable/TVFocusable';
+import platformDetectionService from '../../services/platformDetectionService';
 
 const BottomMenu = ({ onMenuPress, activeMenu }) => {
+  const isTV = platformDetectionService.shouldEnableTVFeatures();
   const menuItems = [
     { id: 'program', icon: 'tv', label: 'Programme' },
     { id: 'channel', icon: 'live_tv', label: 'Chaînes' },
@@ -12,14 +15,21 @@ const BottomMenu = ({ onMenuPress, activeMenu }) => {
     { id: 'settings', icon: 'settings', label: 'Paramètres' },
   ];
 
+  const MenuButton = isTV ? TVFocusable : TouchableOpacity;
+
   return (
     <View style={styles.container}>
-      {menuItems.map((item) => (
-        <TouchableOpacity
+      {menuItems.map((item, index) => (
+        <MenuButton
           key={item.id}
           style={[styles.menuButton, activeMenu === item.id && styles.activeButton]}
           onPress={() => onMenuPress(item.id)}
           activeOpacity={0.7}
+          {...(isTV && {
+            nextFocusLeft: index > 0 ? index - 1 : null,
+            nextFocusRight: index < menuItems.length - 1 ? index + 1 : null,
+            hasTVPreferredFocus: index === 0,
+          })}
         >
           <Icon 
             name={item.icon} 
@@ -27,7 +37,7 @@ const BottomMenu = ({ onMenuPress, activeMenu }) => {
             color={activeMenu === item.id ? '#000' : colors.textSecondary}
             style={styles.icon}
           />
-        </TouchableOpacity>
+        </MenuButton>
       ))}
     </View>
   );
