@@ -156,7 +156,7 @@ const AccountSettingsPanel = ({ onClose, onShowLanguageSettings, onShowRegionSet
               <Icon name="person" size={48} color={colors.primary} />
             </View>
             <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>{userData.firstName} {userData.lastName}</Text>
+              <Text style={styles.profileName}>{userData.firstName}</Text>
               <Text style={styles.profileStatus}>{userData.status}</Text>
             </View>
           </View>
@@ -164,8 +164,7 @@ const AccountSettingsPanel = ({ onClose, onShowLanguageSettings, onShowRegionSet
 
         <Text style={styles.sectionTitle}>Informations du compte</Text>
         
-        <AccountItem label="Nom" value={userData.firstName} icon="person" />
-        <AccountItem label="Prénom" value={userData.lastName} icon="badge" />
+        <AccountItem label="Nom d'utilisateur" value={userData.firstName} icon="person" />
         <AccountItem label="Numéro d'abonné" value={userData.subscriberId} icon="credit_card" />
         <AccountItem label="Offre" value={userData.offer} icon="star" />
         <AccountItem label="Statut" value={userData.status} icon="verified" />

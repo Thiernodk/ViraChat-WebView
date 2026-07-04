@@ -8,6 +8,8 @@ const STORAGE_KEYS = {
   COUNTRY: '@limontvbox_country',
   REGION: '@limontvbox_region',
   SUBSCRIBER_ID: '@limontvbox_subscriber_id',
+  USERNAME: '@limontvbox_username',
+  SUBSCRIPTION_EXPIRATION: '@limontvbox_subscription_expiration',
 };
 
 const onboardingService = {
@@ -31,7 +33,47 @@ const onboardingService = {
     }
   },
 
-  // Save user data
+  // Save username
+  saveUsername: async (username) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.USERNAME, username);
+    } catch (error) {
+      console.error('Error saving username:', error);
+    }
+  },
+
+  // Get username
+  getUsername: async () => {
+    try {
+      return await AsyncStorage.getItem(STORAGE_KEYS.USERNAME);
+    } catch (error) {
+      console.error('Error getting username:', error);
+      return null;
+    }
+  },
+
+  // Save subscription expiration
+  saveSubscriptionExpiration: async (expirationDate) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.SUBSCRIPTION_EXPIRATION, expirationDate);
+      await subscriptionService.saveExpirationDate(expirationDate);
+      await subscriptionService.saveSubscriptionStatus('active');
+    } catch (error) {
+      console.error('Error saving subscription expiration:', error);
+    }
+  },
+
+  // Get subscription expiration
+  getSubscriptionExpiration: async () => {
+    try {
+      return await AsyncStorage.getItem(STORAGE_KEYS.SUBSCRIPTION_EXPIRATION);
+    } catch (error) {
+      console.error('Error getting subscription expiration:', error);
+      return null;
+    }
+  },
+
+  // Save user data (simplified for new onboarding)
   saveUserData: async (userData) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
@@ -45,9 +87,26 @@ const onboardingService = {
     }
   },
 
-  // Get user data
+  // Get user data (simplified for new onboarding)
   getUserData: async () => {
     try {
+      const username = await AsyncStorage.getItem(STORAGE_KEYS.USERNAME);
+      const subscriberId = await AsyncStorage.getItem(STORAGE_KEYS.SUBSCRIBER_ID);
+      const expirationDate = await AsyncStorage.getItem(STORAGE_KEYS.SUBSCRIPTION_EXPIRATION);
+      
+      if (username && subscriberId) {
+        return {
+          firstName: username,
+          lastName: '',
+          subscriberId: subscriberId,
+          status: 'Actif',
+          expirationDate: expirationDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          offer: 'Gratuit',
+          profilePhoto: null,
+        };
+      }
+      
+      // Fallback to old format if exists
       const value = await AsyncStorage.getItem(STORAGE_KEYS.USER_DATA);
       return value ? JSON.parse(value) : null;
     } catch (error) {
@@ -142,6 +201,8 @@ const onboardingService = {
         STORAGE_KEYS.COUNTRY,
         STORAGE_KEYS.REGION,
         STORAGE_KEYS.SUBSCRIBER_ID,
+        STORAGE_KEYS.USERNAME,
+        STORAGE_KEYS.SUBSCRIPTION_EXPIRATION,
       ]);
     } catch (error) {
       console.error('Error clearing onboarding data:', error);
