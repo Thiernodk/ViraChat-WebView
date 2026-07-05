@@ -443,10 +443,7 @@ const PlayerScreen = ({ channels, epgData }) => {
             channels={channels}
             onChannelSelect={handleChannelSelect}
             currentChannel={currentChannel}
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-            showFavoritesOnly={showFavoritesOnly}
-            onToggleShowFavorites={toggleShowFavorites}
+            onClose={() => setActiveMenu(null)}
           />
         );
       case 'settings':

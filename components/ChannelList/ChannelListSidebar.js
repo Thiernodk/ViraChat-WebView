@@ -2,14 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   FlatList,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../theme/colors';
 import TVFocusable from '../TVFocusable/TVFocusable';
 import platformDetectionService from '../../services/platformDetectionService';
@@ -17,20 +14,16 @@ import platformDetectionService from '../../services/platformDetectionService';
 const ChannelListSidebar = ({ 
   channels, 
   onChannelSelect, 
-  currentChannel, 
-  favorites, 
-  onToggleFavorite, 
-  showFavoritesOnly, 
-  onToggleShowFavorites 
+  currentChannel,
+  onClose 
 }) => {
   const isTV = platformDetectionService.shouldEnableTVFeatures();
-  const [searchQuery, setSearchQuery] = useState('');
   const flatListRef = useRef(null);
 
   // Scroll to current channel when it changes
   useEffect(() => {
     if (currentChannel && flatListRef.current) {
-      const index = filteredChannels.findIndex(ch => ch.id === currentChannel.id);
+      const index = channels.findIndex(ch => ch.id === currentChannel.id);
       if (index >= 0) {
         flatListRef.current.scrollToIndex({
           index,
@@ -39,124 +32,62 @@ const ChannelListSidebar = ({
         });
       }
     }
-  }, [currentChannel, filteredChannels]);
+  }, [currentChannel, channels]);
 
-  const filteredChannels = channels.filter((channel) => {
-    const matchesSearch = channel.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFavorites = showFavoritesOnly ? favorites.includes(channel.id) : true;
-    return matchesSearch && matchesFavorites;
-  });
+  const handleChannelSelect = (channel) => {
+    onChannelSelect(channel);
+    // Auto-close list after selection on TV
+    if (isTV && onClose) {
+      onClose();
+    }
+  };
 
   const renderChannel = ({ item, index }) => {
     const ChannelButton = isTV ? TVFocusable : TouchableOpacity;
+    const isSelected = currentChannel?.id === item.id;
     
     return (
       <ChannelButton
-        style={[styles.channelItem, currentChannel?.id === item.id && styles.selectedChannel]}
-        onPress={() => onChannelSelect(item)}
+        style={[
+          styles.channelItem,
+          isSelected && styles.selectedChannel
+        ]}
+        onPress={() => handleChannelSelect(item)}
         {...(isTV && {
           nextFocusUp: index > 0 ? index - 1 : null,
-          nextFocusDown: index < filteredChannels.length - 1 ? index + 1 : null,
+          nextFocusDown: index < channels.length - 1 ? index + 1 : null,
           nextFocusLeft: null,
           nextFocusRight: null,
           hasTVPreferredFocus: index === 0,
         })}
       >
-        <View style={styles.channelInfoRow}>
-          <Text style={styles.channelNumber}>{item.number}</Text>
-          <Image source={{ uri: item.logo }} style={styles.channelLogo} />
-          <Text style={styles.channelName} numberOfLines={1}>{item.name}</Text>
-        </View>
-        <ChannelButton
-          onPress={() => onToggleFavorite(item.id)}
-          style={styles.favoriteButton}
-          {...(isTV && {
-            nextFocusUp: index > 0 ? index - 1 : null,
-            nextFocusDown: index < filteredChannels.length - 1 ? index + 1 : null,
-            nextFocusLeft: index,
-            nextFocusRight: null,
-          })}
-        >
-          <Icon 
-            name={favorites.includes(item.id) ? 'favorite' : 'star_border'} 
-            size={20} 
-            color={favorites.includes(item.id) ? colors.primary : 'rgba(255, 255, 255, 0.5)'}
-          />
-        </ChannelButton>
+        <Text style={[
+          styles.channelNumber,
+          isSelected && styles.selectedText
+        ]}>{item.number}</Text>
+        <Text style={[
+          styles.channelName,
+          isSelected && styles.selectedText
+        ]} numberOfLines={1}>{item.name}</Text>
       </ChannelButton>
     );
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Chaînes</Text>
-        {isTV ? (
-          <TVFocusable
-            style={[styles.headerFilterButton, showFavoritesOnly && styles.filterButtonActive]}
-            onPress={onToggleShowFavorites}
-            hasTVPreferredFocus={true}
-          >
-            <Icon 
-              name={showFavoritesOnly ? 'favorite' : 'star_border'} 
-              size={18} 
-              color={showFavoritesOnly ? colors.primary : 'rgba(255, 255, 255, 0.5)'}
-            />
-          </TVFocusable>
-        ) : (
-          <TouchableOpacity
-            style={[styles.headerFilterButton, showFavoritesOnly && styles.filterButtonActive]}
-            onPress={onToggleShowFavorites}
-          >
-            <Icon 
-              name={showFavoritesOnly ? 'favorite' : 'star_border'} 
-              size={18} 
-              color={showFavoritesOnly ? colors.primary : 'rgba(255, 255, 255, 0.5)'}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
-      
       <FlatList
         ref={flatListRef}
-        data={filteredChannels}
+        data={channels}
         renderItem={renderChannel}
         keyExtractor={(item) => item.id}
         style={styles.list}
         initialNumToRender={20}
         getItemLayout={(data, index) => ({
-          length: 56,
-          offset: 56 * index,
+          length: 48,
+          offset: 48 * index,
           index,
         })}
       />
-      
-      <View style={styles.remoteHints}>
-        <View style={styles.hintItem}>
-          <View style={styles.hintKey}>
-            <Text style={styles.hintKeyText}>OK</Text>
-          </View>
-          <Text style={styles.hintText}>Sélectionner</Text>
-        </View>
-        <View style={styles.hintItem}>
-          <View style={styles.hintKey}>
-            <Text style={styles.hintKeyText}>EXIT</Text>
-          </View>
-          <Text style={styles.hintText}>Sortie</Text>
-        </View>
-        <View style={styles.hintItem}>
-          <View style={styles.hintKey}>
-            <Text style={styles.hintKeyText}>MENU</Text>
-          </View>
-          <Text style={styles.hintText}>Menu</Text>
-        </View>
-        <View style={styles.hintItem}>
-          <View style={styles.hintKey}>
-            <Text style={styles.hintKeyText}>⬅</Text>
-          </View>
-          <Text style={styles.hintText}>Retour</Text>
-        </View>
-      </View>
     </View>
   );
 };
@@ -165,10 +96,7 @@ ChannelListSidebar.propTypes = {
   channels: PropTypes.array.isRequired,
   onChannelSelect: PropTypes.func.isRequired,
   currentChannel: PropTypes.object,
-  favorites: PropTypes.array.isRequired,
-  onToggleFavorite: PropTypes.func.isRequired,
-  showFavoritesOnly: PropTypes.bool.isRequired,
-  onToggleShowFavorites: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
@@ -177,86 +105,11 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
-    width: 320,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    width: 280,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
     borderRightWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
     elevation: 30,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 8,
-    backgroundColor: colors.surfaceLight,
-    borderBottomWidth: 1,
-    borderColor: colors.border,
-  },
-  headerTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: colors.text,
-  },
-  headerFilterButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.surfaceLight,
-    width: 36,
-    height: 36,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  headerFilterButtonText: {
-    color: colors.textSecondary,
-    fontWeight: '600',
-    fontSize: 10,
-    marginLeft: 3,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.surfaceLight,
-    margin: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    color: colors.text,
-    fontSize: 13,
-  },
-  filterButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.surfaceLight,
-    marginHorizontal: 8,
-    marginBottom: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  filterButtonActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  filterButtonText: {
-    color: colors.textSecondary,
-    fontWeight: '600',
-    fontSize: 12,
-    marginLeft: 6,
-  },
-  filterButtonTextActive: {
-    color: '#000',
   },
   list: {
     flex: 1,
@@ -264,75 +117,30 @@ const styles = StyleSheet.create({
   channelItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderBottomWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
     minHeight: 48,
   },
   selectedChannel: {
-    backgroundColor: 'rgba(0, 254, 102, 0.2)',
-    borderLeftWidth: 3,
-    borderLeftColor: colors.primary,
-  },
-  channelInfoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
+    backgroundColor: colors.primary,
   },
   channelNumber: {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginRight: 4,
-    minWidth: 24,
-  },
-  channelLogo: {
-    width: 40,
-    height: 25,
-    resizeMode: 'contain',
-    marginRight: 6,
+    color: 'rgba(255, 255, 255, 0.7)',
+    marginRight: 16,
+    minWidth: 32,
   },
   channelName: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: colors.text,
+    fontSize: 14,
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.9)',
     flex: 1,
   },
-  favoriteButton: {
-    padding: 4,
-    marginLeft: 4,
-  },
-  remoteHints: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 6,
-    backgroundColor: colors.surfaceLight,
-    borderTopWidth: 1,
-    borderColor: colors.border,
-  },
-  hintItem: {
-    alignItems: 'center',
-  },
-  hintKey: {
-    width: 26,
-    height: 26,
-    borderRadius: 4,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 2,
-  },
-  hintKeyText: {
-    fontSize: 9,
-    fontWeight: 'bold',
+  selectedText: {
     color: '#000000',
-  },
-  hintText: {
-    fontSize: 8,
-    color: '#FFFFFF',
   },
 });
 
