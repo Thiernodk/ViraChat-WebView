@@ -158,7 +158,7 @@ const TVFocusable = ({
         {
           transform: [{ scale: scaleAnim }],
           borderColor,
-          borderWidth,
+          borderWidth: 3,
           shadowColor: '#00FE66',
           shadowOpacity,
           shadowRadius,

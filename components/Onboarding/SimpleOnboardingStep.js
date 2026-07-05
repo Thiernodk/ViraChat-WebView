@@ -48,7 +48,7 @@ const SimpleOnboardingStep = ({ username, subscriberId, onFinish }) => {
       >
         <View style={styles.content}>
           <View style={styles.header}>
-            <Icon name="person_add" size={64} color={colors.primary} />
+            <Icon name="add_circle" size={64} color={colors.primary} />
             <Text style={styles.title}>Bienvenue</Text>
             <Text style={styles.subtitle}>Entrez vos informations pour commencer</Text>
           </View>
@@ -74,7 +74,7 @@ const SimpleOnboardingStep = ({ username, subscriberId, onFinish }) => {
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Numéro d'abonné</Text>
               <View style={[styles.inputWrapper, errors.subscriberId && styles.inputError]}>
-                <Icon name="credit_card" size={24} color={colors.textSecondary} style={styles.inputIcon} />
+                <Icon name="payment" size={24} color={colors.textSecondary} style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="Votre numéro d'abonné"
@@ -100,7 +100,7 @@ const SimpleOnboardingStep = ({ username, subscriberId, onFinish }) => {
               onPress={handleSubmit}
               {...(isTV && { hasTVPreferredFocus: true })}
             >
-              <Icon name="check_circle" size={24} color="#000" />
+              <Icon name="check" size={24} color="#000" />
               <Text style={styles.submitButtonText}>Commencer</Text>
             </SubmitButton>
           </View>
