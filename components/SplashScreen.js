@@ -9,7 +9,6 @@ const SplashScreen = ({ onFinish }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0.8));
   const [pulseAnim] = useState(new Animated.Value(1));
-  const [progressAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
     // Animation d'entrée
@@ -44,14 +43,7 @@ const SplashScreen = ({ onFinish }) => {
     );
     pulseAnimation.start();
 
-    // Animation de la barre de chargement
-    Animated.timing(progressAnim, {
-      toValue: 1,
-      duration: 2500,
-      useNativeDriver: false,
-    }).start();
-
-    // Timer pour finir le splash
+    // Timer pour finir le splash (10 secondes)
     const timer = setTimeout(() => {
       Animated.parallel([
         Animated.timing(fadeAnim, {
@@ -67,7 +59,7 @@ const SplashScreen = ({ onFinish }) => {
       ]).start(() => {
         onFinish();
       });
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearTimeout(timer);
@@ -102,26 +94,6 @@ const SplashScreen = ({ onFinish }) => {
         {/* Logo texte */}
         <Text style={styles.title}>Limon+ TV</Text>
         <Text style={styles.subtitle}>BOX</Text>
-
-        {/* Barre de progression style décodeur */}
-        <View style={styles.progressContainer}>
-          <View style={styles.progressBar}>
-            <Animated.View
-              style={[
-                styles.progressFill,
-                {
-                  width: progressAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['0%', '100%'],
-                  }),
-                },
-              ]}
-            />
-          </View>
-        </View>
-
-        {/* Texte de chargement */}
-        <Text style={styles.loadingText}>Chargement...</Text>
       </Animated.View>
     </View>
   );
@@ -186,27 +158,6 @@ const styles = StyleSheet.create({
     letterSpacing: 8,
     marginTop: -5,
     marginBottom: 40,
-  },
-  progressContainer: {
-    width: width * 0.6,
-    marginBottom: 20,
-  },
-  progressBar: {
-    height: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#00FE66',
-    borderRadius: 2,
-  },
-  loadingText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    letterSpacing: 2,
-    opacity: 0.7,
   },
 });
 

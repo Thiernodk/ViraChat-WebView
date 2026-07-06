@@ -41,6 +41,7 @@
     },
     "android": {
       "package": "com.limonplustvbox.app",
+      "icon": "./assets/android-icon-background.png",
       "adaptiveIcon": {
         "backgroundColor": "#000000",
         "foregroundImage": "./assets/android-icon-foreground.png",
