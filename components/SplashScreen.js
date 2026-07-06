@@ -18,7 +18,7 @@ const SplashScreen = ({ onFinish }) => {
     <View style={styles.container}>
       <StatusBar hidden={true} />
       <Image 
-        source={require('../../assets/splash.png')} 
+        source={require('../assets/splash.png')} 
         style={styles.splashImage}
         resizeMode="cover"
       />
